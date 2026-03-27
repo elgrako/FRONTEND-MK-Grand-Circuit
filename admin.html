@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — MK Grand Circuit</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07080f;--bg2:#0e1019;--bg3:#141720;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);--accent:#f0c419;--win:#22d06e;--lose:#ff4d6d;--text:#eef0f8;--muted:#6b7399;--muted2:#9299b8;--head:'Bebas Neue',sans-serif;--body:'Outfit',sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:14px;line-height:1.6;min-height:100vh}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:3px}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:56px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.logo{font-family:var(--head);font-size:20px;letter-spacing:.08em;display:flex;align-items:center;gap:8px}
+.logo-flag{width:8px;height:8px;background:var(--accent);transform:rotate(45deg)}
+.admin-badge{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:rgba(240,196,25,0.1);color:var(--accent);border:1px solid rgba(240,196,25,0.25)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.btn-sm{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted2);transition:all .18s}
+.btn-sm:hover{border-color:var(--border2);color:var(--text)}
+.btn-sm:disabled{opacity:.4;cursor:not-allowed}
+.btn-accent{background:var(--accent);color:#07080f;border-color:var(--accent)}
+.btn-accent:hover{background:#ffd23f;border-color:#ffd23f}
+.btn-danger{background:rgba(255,77,109,0.1);color:var(--lose);border-color:rgba(255,77,109,0.25)}
+.btn-danger:hover{background:rgba(255,77,109,0.2)}
+.btn-win{background:rgba(34,208,110,0.1);color:var(--win);border-color:rgba(34,208,110,0.25)}
+.btn-win:hover{background:rgba(34,208,110,0.2)}
+
+/* LOGIN WALL */
+.login-wall{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-card{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;width:100%;max-width:360px;padding:36px}
+.lc-title{font-family:var(--head);font-size:28px;letter-spacing:.06em;margin-bottom:6px}
+.lc-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:20px 0}
+.sidebar-section{margin-bottom:6px}
+.sidebar-label{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 16px 8px}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;transition:background .15s;font-size:13px;font-weight:500;color:var(--muted2);border:none;background:transparent;width:100%;text-align:left}
+.sidebar-item:hover{background:rgba(255,255,255,0.03);color:var(--text)}
+.sidebar-item.active{background:rgba(240,196,25,0.08);color:var(--accent);border-right:2px solid var(--accent)}
+.sidebar-icon{width:16px;height:16px;opacity:.7;font-size:14px}
+.main{padding:28px;overflow-y:auto}
+
+/* SECTIONS */
+.page{display:none}.page.active{display:block}
+.page-title{font-family:var(--head);font-size:28px;letter-spacing:.06em;margin-bottom:6px}
+.page-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+.card-title{font-family:var(--head);font-size:16px;letter-spacing:.06em;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+
+/* FORM */
+.fg{margin-bottom:14px}
+.fl{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.fi{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:10px 13px;color:var(--text);font-family:var(--body);font-size:13px;transition:border-color .2s;outline:none}
+.fi:focus{border-color:rgba(240,196,25,0.4)}
+.fi::placeholder{color:var(--muted)}
+select.fi{cursor:pointer}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ferr{background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.2);border-radius:6px;padding:8px 12px;font-size:12px;color:#ff8fa3;margin-bottom:10px;display:none}
+.ferr.show{display:block}
+.fok{background:rgba(34,208,110,0.08);border:1px solid rgba(34,208,110,0.2);border-radius:6px;padding:8px 12px;font-size:12px;color:#5ef0a0;margin-bottom:10px;display:none}
+.fok.show{display:block}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:0 10px 10px;text-align:left}
+.tbl td{padding:10px;border-top:1px solid var(--border);font-size:13px;vertical-align:middle}
+.tbl tr:hover td{background:rgba(255,255,255,.012)}
+.tbl-actions{display:flex;gap:6px;align-items:center}
+.status-pill{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:4px}
+.sp-active{background:rgba(34,208,110,0.1);color:var(--win);border:1px solid rgba(34,208,110,0.2)}
+.sp-pending{background:rgba(240,196,25,0.08);color:var(--accent);border:1px solid rgba(240,196,25,0.2)}
+.sp-live{background:rgba(255,77,109,0.1);color:var(--lose);border:1px solid rgba(255,77,109,0.2)}
+.sp-completed{background:rgba(136,145,176,0.1);color:var(--muted2);border:1px solid rgba(136,145,176,0.15)}
+
+/* STAT ROW */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px}
+.sc-n{font-family:var(--head);font-size:32px;color:var(--accent);letter-spacing:.02em}
+.sc-l{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(7,8,15,0.85);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;width:100%;max-width:400px;max-height:90vh;overflow-y:auto;animation:sUp .2s ease}
+@keyframes sUp{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mhead{display:flex;align-items:center;justify-content:space-between;padding:20px 22px 0}
+.mtitle{font-family:var(--head);font-size:22px;letter-spacing:.06em}
+.mclose{width:28px;height:28px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}
+.mclose:hover{border-color:var(--border2);color:var(--text)}
+.mbody{padding:18px 22px 22px}
+.fsubmit{width:100%;background:var(--accent);color:#07080f;border:none;padding:12px;border-radius:7px;font-family:var(--head);font-size:17px;letter-spacing:.08em;cursor:pointer;margin-top:4px;transition:background .18s}
+.fsubmit:hover{background:#ffd23f}
+.fsubmit:disabled{opacity:.5;cursor:not-allowed}
+
+/* SCORE INPUTS */
+.score-row{display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;gap:10px;margin-bottom:14px}
+.score-team{text-align:center;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.score-vs{text-align:center;font-family:var(--head);font-size:18px;color:var(--muted)}
+.score-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:10px;color:var(--text);font-family:var(--head);font-size:24px;text-align:center;outline:none;transition:border-color .2s}
+.score-input:focus{border-color:rgba(240,196,25,0.4)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 18px;font-size:13px;font-weight:500;z-index:999;opacity:0;transition:all .3s;pointer-events:none;transform:translateY(10px)}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.ok{border-color:rgba(34,208,110,0.3);color:var(--win)}
+.toast.err{border-color:rgba(255,77,109,0.3);color:var(--lose)}
+
+.spinner{width:20px;height:20px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:40px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN WALL (si no es admin) -->
+<div class="login-wall" id="login-wall">
+  <div class="login-card">
+    <div class="lc-title">ADMIN</div>
+    <div class="lc-sub">Acceso restringido a administradores</div>
+    <div class="ferr" id="adm-err"></div>
+    <div class="fg"><label class="fl">Email</label><input class="fi" id="adm-email" type="email" placeholder="admin@email.com"></div>
+    <div class="fg"><label class="fl">Contraseña</label><input class="fi" id="adm-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+    <button class="btn-sm btn-accent" style="width:100%;padding:12px;font-size:14px;border-radius:8px" id="adm-btn" onclick="adminLogin()">ENTRAR</button>
+    <div style="margin-top:16px;text-align:center"><a href="index.html" style="font-size:12px;color:var(--muted);text-decoration:none">← Volver al torneo</a></div>
+  </div>
+</div>
+
+<!-- PANEL ADMIN -->
+<div id="admin-panel" style="display:none">
+  <nav class="nav">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="logo"><div class="logo-flag"></div>MK GRAND CIRCUIT</div>
+      <span class="admin-badge">ADMIN</span>
+    </div>
+    <div class="nav-right">
+      <span style="font-size:12px;color:var(--muted)" id="adm-user-label"></span>
+      <a href="index.html" style="text-decoration:none"><button class="btn-sm">Ver sitio público</button></a>
+      <button class="btn-sm" onclick="adminLogout()">Salir</button>
+    </div>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">General</div>
+        <button class="sidebar-item active" onclick="goto('dashboard')"><span class="sidebar-icon">📊</span>Dashboard</button>
+        <button class="sidebar-item" onclick="goto('tournament')"><span class="sidebar-icon">🏆</span>Torneo</button>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Competición</div>
+        <button class="sidebar-item" onclick="goto('rounds')"><span class="sidebar-icon">🔄</span>Rondas</button>
+        <button class="sidebar-item" onclick="goto('matches')"><span class="sidebar-icon">🎮</span>Partidos</button>
+        <button class="sidebar-item" onclick="goto('registrations')"><span class="sidebar-icon">📋</span>Inscripciones</button>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Entidades</div>
+        <button class="sidebar-item" onclick="goto('teams')"><span class="sidebar-icon">👥</span>Equipos</button>
+        <button class="sidebar-item" onclick="goto('users')"><span class="sidebar-icon">👤</span>Usuarios</button>
+      </div>
+    </aside>
+
+    <main class="main">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-title">DASHBOARD</div>
+        <div class="page-sub">Resumen del torneo activo</div>
+        <div class="stat-row">
+          <div class="stat-card"><div class="sc-n" id="d-teams">—</div><div class="sc-l">Equipos</div></div>
+          <div class="stat-card"><div class="sc-n" id="d-rounds">—</div><div class="sc-l">Rondas</div></div>
+          <div class="stat-card"><div class="sc-n" id="d-matches">—</div><div class="sc-l">Partidos</div></div>
+          <div class="stat-card"><div class="sc-n" id="d-regs">—</div><div class="sc-l">Inscritos</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Partidos pendientes <button class="btn-sm btn-accent" onclick="goto('matches')">Gestionar →</button></div>
+          <div id="d-pending"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Partidos en vivo</div>
+          <div id="d-live"></div>
+        </div>
+      </div>
+
+      <!-- TORNEO -->
+      <div class="page" id="page-tournament">
+        <div class="page-title">TORNEO</div>
+        <div class="page-sub">Editar información del torneo activo</div>
+        <div class="card">
+          <div class="ferr" id="tour-err"></div><div class="fok" id="tour-ok"></div>
+          <div class="fg"><label class="fl">Nombre del torneo</label><input class="fi" id="t-name" type="text" placeholder="Grand Prix Valencia"></div>
+          <div class="fg"><label class="fl">Descripción</label><input class="fi" id="t-desc" type="text" placeholder="Descripción corta"></div>
+          <div class="fg"><label class="fl">Estado</label>
+            <select class="fi" id="t-status">
+              <option value="upcoming">Próximamente</option>
+              <option value="active">Activo</option>
+              <option value="finished">Finalizado</option>
+            </select>
+          </div>
+          <button class="btn-sm btn-accent" id="btn-save-tour" onclick="saveTournament()">Guardar cambios</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Crear nuevo torneo</div>
+          <div class="ferr" id="nt-err"></div><div class="fok" id="nt-ok"></div>
+          <div class="fg"><label class="fl">Nombre</label><input class="fi" id="nt-name" type="text" placeholder="Nombre del torneo"></div>
+          <div class="fg"><label class="fl">Descripción</label><input class="fi" id="nt-desc" type="text" placeholder="Descripción"></div>
+          <button class="btn-sm btn-accent" id="btn-new-tour" onclick="createTournament()">Crear torneo</button>
+        </div>
+      </div>
+
+      <!-- RONDAS -->
+      <div class="page" id="page-rounds">
+        <div class="page-title">RONDAS</div>
+        <div class="page-sub">Gestiona las rondas del torneo</div>
+        <div class="card">
+          <div class="card-title">Nueva ronda <button class="btn-sm btn-accent" onclick="open_('ov-round')">+ Añadir</button></div>
+          <div id="rounds-table"></div>
+        </div>
+      </div>
+
+      <!-- PARTIDOS -->
+      <div class="page" id="page-matches">
+        <div class="page-title">PARTIDOS</div>
+        <div class="page-sub">Actualiza resultados y estado de los partidos</div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap" id="matches-round-filter"></div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div id="matches-table"></div>
+        </div>
+      </div>
+
+      <!-- INSCRIPCIONES -->
+      <div class="page" id="page-registrations">
+        <div class="page-title">INSCRIPCIONES</div>
+        <div class="page-sub">Equipos inscritos al torneo</div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div id="regs-table"></div>
+        </div>
+      </div>
+
+      <!-- EQUIPOS -->
+      <div class="page" id="page-teams">
+        <div class="page-title">EQUIPOS</div>
+        <div class="page-sub">Todos los equipos registrados</div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div id="teams-table"></div>
+        </div>
+      </div>
+
+      <!-- USUARIOS -->
+      <div class="page" id="page-users">
+        <div class="page-title">USUARIOS</div>
+        <div class="page-sub">Gestión de usuarios registrados</div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div id="users-table"></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- MODAL NUEVA RONDA -->
+<div class="overlay" id="ov-round" onclick="closeBg(event,'ov-round')">
+  <div class="modal">
+    <div class="mhead"><div class="mtitle">NUEVA RONDA</div><button class="mclose" onclick="close_('ov-round')">✕</button></div>
+    <div class="mbody">
+      <div class="ferr" id="r-err"></div><div class="fok" id="r-ok"></div>
+      <div class="fg"><label class="fl">Nombre de la ronda</label><input class="fi" id="r-name" type="text" placeholder="Ej: Cuartos de Final"></div>
+      <div class="fg"><label class="fl">Número de ronda</label><input class="fi" id="r-num" type="number" placeholder="1" min="1"></div>
+      <button class="fsubmit" id="btn-r" onclick="createRound()">CREAR RONDA</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NUEVO PARTIDO -->
+<div class="overlay" id="ov-match" onclick="closeBg(event,'ov-match')">
+  <div class="modal">
+    <div class="mhead"><div class="mtitle">NUEVO PARTIDO</div><button class="mclose" onclick="close_('ov-match')">✕</button></div>
+    <div class="mbody">
+      <div class="ferr" id="nm-err"></div><div class="fok" id="nm-ok"></div>
+      <div class="fg"><label class="fl">Ronda</label><select class="fi" id="nm-round"></select></div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Equipo 1</label><select class="fi" id="nm-t1"></select></div>
+        <div class="fg"><label class="fl">Equipo 2</label><select class="fi" id="nm-t2"></select></div>
+      </div>
+      <button class="fsubmit" id="btn-nm" onclick="createMatch()">CREAR PARTIDO</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL RESULTADO -->
+<div class="overlay" id="ov-score" onclick="closeBg(event,'ov-score')">
+  <div class="modal">
+    <div class="mhead"><div class="mtitle">RESULTADO</div><button class="mclose" onclick="close_('ov-score')">✕</button></div>
+    <div class="mbody">
+      <div class="ferr" id="sc-err"></div><div class="fok" id="sc-ok"></div>
+      <div class="score-row">
+        <div class="score-team" id="sc-t1">—</div>
+        <div class="score-vs">VS</div>
+        <div class="score-team" id="sc-t2">—</div>
+      </div>
+      <div class="score-row">
+        <input class="score-input" id="sc-s1" type="number" min="0" placeholder="0">
+        <div class="score-vs" style="font-size:14px">—</div>
+        <input class="score-input" id="sc-s2" type="number" min="0" placeholder="0">
+      </div>
+      <div class="fg"><label class="fl">Estado</label>
+        <select class="fi" id="sc-status">
+          <option value="pending">Pendiente</option>
+          <option value="live">En vivo</option>
+          <option value="completed">Completado</option>
+        </select>
+      </div>
+      <button class="fsubmit" id="btn-sc" onclick="saveScore()">GUARDAR RESULTADO</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API='https://backend-mk-grand-circuit.vercel.app';
+let ADM={user:null,tournament:null,teams:[],rounds:[],matches:[],registrations:[],users:[],editMatchId:null,activeRoundFilter:null};
+
+// ── SESSION ──
+function saveAdm(){if(ADM.user)localStorage.setItem('mkgc_adm',JSON.stringify(ADM.user))}
+function loadAdm(){try{const u=localStorage.getItem('mkgc_adm');if(u)ADM.user=JSON.parse(u)}catch(e){}}
+function clearAdm(){localStorage.removeItem('mkgc_adm');ADM.user=null}
+
+// ── API ──
+async function api(path,opts={}){
+  const h={'Content-Type':'application/json',...opts.headers};
+  if(ADM.user?.token)h['Authorization']='Bearer '+ADM.user.token;
+  const r=await fetch(API+path,{...opts,headers:h});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok)throw Object.assign(new Error(d.message||d.error||'HTTP '+r.status),{status:r.status});
+  return d;
+}
+const arr=v=>Array.isArray(v)?v:v?.data||v?.teams||v?.tournaments||v?.rounds||v?.matches||v?.registrations||v?.users||[];
+const ini=(n='?')=>n.split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase().slice(0,3)||'?';
+const byId=id=>ADM.teams.find(t=>t.id==id);
+function setBtn(id,loading,lbl=''){const b=document.getElementById(id);if(!b)return;b.disabled=loading;if(loading)b.dataset.o=b.textContent;b.textContent=loading?'…':(lbl||b.dataset.o)}
+function clrMsg(...ids){ids.forEach(id=>{const el=document.getElementById(id);if(el){el.textContent='';el.classList.remove('show')}})}
+function showErr(id,msg){const el=document.getElementById(id);if(!el)return;el.textContent=msg;el.classList.add('show')}
+function showOk(id,msg){const el=document.getElementById(id);if(!el)return;el.textContent=msg;el.classList.add('show')}
+function toast(msg,type='ok'){const el=document.getElementById('toast');el.textContent=msg;el.className='toast show '+type;setTimeout(()=>el.classList.remove('show'),3000)}
+function open_(id){document.getElementById(id).classList.add('open')}
+function close_(id){document.getElementById(id).classList.remove('open')}
+function closeBg(e,id){if(e.target===e.currentTarget)close_(id)}
+
+// ── INIT ──
+loadAdm();
+if(ADM.user&&ADM.user.role==='admin'){showPanel();loadAll()}
+else{document.getElementById('login-wall').style.display='flex'}
+
+// ── ADMIN LOGIN ──
+async function adminLogin(){
+  clrMsg('adm-err');
+  const email=document.getElementById('adm-email').value.trim();
+  const pass=document.getElementById('adm-pass').value;
+  if(!email||!pass)return showErr('adm-err','Rellena todos los campos.');
+  setBtn('adm-btn',true);
+  try{
+    const d=await api('/auth/login',{method:'POST',body:JSON.stringify({email,password:pass})});
+    const u=d.user||d;
+    if((u.role||'').toLowerCase()!=='admin')throw new Error('Esta cuenta no tiene permisos de administrador.');
+    ADM.user={id:u.id,username:u.username||u.name||email.split('@')[0],email:u.email||email,role:u.role,token:d.token||d.accessToken};
+    saveAdm();showPanel();loadAll();
+  }catch(e){showErr('adm-err',e.message||'Credenciales incorrectas.')}
+  finally{setBtn('adm-btn',false,'ENTRAR')}
+}
+
+function showPanel(){
+  document.getElementById('login-wall').style.display='none';
+  document.getElementById('admin-panel').style.display='block';
+  document.getElementById('adm-user-label').textContent=ADM.user?.username||'Admin';
+}
+
+function adminLogout(){clearAdm();location.reload()}
+
+// ── LOAD ALL ──
+async function loadAll(){
+  try{
+    const [td,te,ro,re,us]=await Promise.all([
+      api('/tournaments').catch(()=>[]),
+      api('/teams').catch(()=>[]),
+      api('/rounds').catch(()=>[]),
+      api('/registrations').catch(()=>[]),
+      api('/users').catch(()=>[])
+    ]);
+    const tours=arr(td);
+    ADM.tournament=tours[0]||null;
+    ADM.teams=arr(te);
+    ADM.rounds=arr(ro);
+    ADM.registrations=arr(re);
+    ADM.users=arr(us);
+    if(ADM.tournament){
+      const ma=await api(`/tournaments/${ADM.tournament.id}/matches`).catch(()=>[]);
+      ADM.matches=arr(ma);
+    }
+    renderAll();
+  }catch(e){toast('Error cargando datos: '+e.message,'err')}
+}
+
+function renderAll(){
+  renderDashboard();renderTournamentForm();renderRounds();renderMatchesTable();
+  renderRegistrations();renderTeamsTable();renderUsersTable();
+}
+
+// ── SIDEBAR ──
+function goto(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.sidebar-item')[['dashboard','tournament','rounds','matches','registrations','teams','users'].indexOf(name)]?.classList.add('active');
+  if(name==='matches')renderMatchesTable();
+}
+
+// ── DASHBOARD ──
+function renderDashboard(){
+  document.getElementById('d-teams').textContent=ADM.teams.length;
+  document.getElementById('d-rounds').textContent=ADM.rounds.length;
+  document.getElementById('d-matches').textContent=ADM.matches.length;
+  document.getElementById('d-regs').textContent=ADM.registrations.length;
+  const pending=ADM.matches.filter(m=>m.status==='pending');
+  const live=ADM.matches.filter(m=>m.status==='live');
+  document.getElementById('d-pending').innerHTML=pending.length
+    ?`<table class="tbl"><thead><tr><th>Equipo 1</th><th>Equipo 2</th><th>Ronda</th><th></th></tr></thead><tbody>${
+      pending.slice(0,5).map(m=>{
+        const t1=byId(m.team1Id),t2=byId(m.team2Id),r=ADM.rounds.find(x=>x.id===m.roundId);
+        return `<tr><td>${t1?t1.name:'TBD'}</td><td>${t2?t2.name:'TBD'}</td><td>${r?.name||'—'}</td>
+          <td><button class="btn-sm btn-win" onclick="openScore(${m.id})">Actualizar</button></td></tr>`;
+      }).join('')
+    }</tbody></table>`
+    :`<div class="empty">No hay partidos pendientes</div>`;
+  document.getElementById('d-live').innerHTML=live.length
+    ?`<table class="tbl"><thead><tr><th>Equipo 1</th><th>Equipo 2</th><th>Ronda</th><th></th></tr></thead><tbody>${
+      live.map(m=>{
+        const t1=byId(m.team1Id),t2=byId(m.team2Id),r=ADM.rounds.find(x=>x.id===m.roundId);
+        return `<tr><td>${t1?t1.name:'TBD'}</td><td>${t2?t2.name:'TBD'}</td><td>${r?.name||'—'}</td>
+          <td><button class="btn-sm btn-win" onclick="openScore(${m.id})">Resultado</button></td></tr>`;
+      }).join('')
+    }</tbody></table>`
+    :`<div class="empty">No hay partidos en vivo</div>`;
+}
+
+// ── TOURNAMENT FORM ──
+function renderTournamentForm(){
+  if(!ADM.tournament)return;
+  document.getElementById('t-name').value=ADM.tournament.name||'';
+  document.getElementById('t-desc').value=ADM.tournament.description||'';
+  document.getElementById('t-status').value=ADM.tournament.status||'active';
+}
+
+async function saveTournament(){
+  clrMsg('tour-err','tour-ok');
+  if(!ADM.tournament)return showErr('tour-err','No hay torneo activo.');
+  const name=document.getElementById('t-name').value.trim();
+  const description=document.getElementById('t-desc').value.trim();
+  const status=document.getElementById('t-status').value;
+  if(!name)return showErr('tour-err','El nombre es obligatorio.');
+  setBtn('btn-save-tour',true);
+  try{
+    await api(`/tournaments/${ADM.tournament.id}`,{method:'PATCH',body:JSON.stringify({name,description,status})});
+    ADM.tournament={...ADM.tournament,name,description,status};
+    showOk('tour-ok','Cambios guardados.');toast('Torneo actualizado');
+  }catch(e){showErr('tour-err',e.message||'Error al guardar.')}
+  finally{setBtn('btn-save-tour',false,'Guardar cambios')}
+}
+
+async function createTournament(){
+  clrMsg('nt-err','nt-ok');
+  const name=document.getElementById('nt-name').value.trim();
+  const description=document.getElementById('nt-desc').value.trim();
+  if(!name)return showErr('nt-err','El nombre es obligatorio.');
+  setBtn('btn-new-tour',true);
+  try{
+    await api('/tournaments',{method:'POST',body:JSON.stringify({name,description:description||undefined})});
+    showOk('nt-ok','¡Torneo creado!');document.getElementById('nt-name').value='';document.getElementById('nt-desc').value='';
+    toast('Torneo creado');await loadAll();
+  }catch(e){showErr('nt-err',e.message||'Error al crear.')}
+  finally{setBtn('btn-new-tour',false,'Crear torneo')}
+}
+
+// ── ROUNDS ──
+function renderRounds(){
+  const sr=[...ADM.rounds].sort((a,b)=>(a.roundNumber||0)-(b.roundNumber||0));
+  document.getElementById('rounds-table').innerHTML=sr.length
+    ?`<table class="tbl"><thead><tr><th>#</th><th>Nombre</th><th>Partidos</th><th></th></tr></thead><tbody>${
+      sr.map(r=>{
+        const cnt=ADM.matches.filter(m=>m.roundId===r.id).length;
+        return `<tr><td>${r.roundNumber||'—'}</td><td>${r.name}</td><td>${cnt}</td>
+          <td class="tbl-actions">
+            <button class="btn-sm" onclick="openNewMatch(${r.id})">+ Partido</button>
+            <button class="btn-sm btn-danger" onclick="deleteRound(${r.id})">Eliminar</button>
+          </td></tr>`;
+      }).join('')
+    }</tbody></table>`
+    :`<div class="empty">No hay rondas. Añade la primera.</div>`;
+}
+
+async function createRound(){
+  clrMsg('r-err','r-ok');
+  if(!ADM.tournament)return showErr('r-err','No hay torneo activo.');
+  const name=document.getElementById('r-name').value.trim();
+  const roundNumber=parseInt(document.getElementById('r-num').value)||1;
+  if(!name)return showErr('r-err','El nombre es obligatorio.');
+  setBtn('btn-r',true);
+  try{
+    await api('/rounds',{method:'POST',body:JSON.stringify({name,roundNumber,tournamentId:ADM.tournament.id})});
+    showOk('r-ok','Ronda creada.');document.getElementById('r-name').value='';document.getElementById('r-num').value='';
+    toast('Ronda creada');await loadAll();setTimeout(()=>close_('ov-round'),1000);
+  }catch(e){showErr('r-err',e.message||'Error al crear la ronda.')}
+  finally{setBtn('btn-r',false,'CREAR RONDA')}
+}
+
+async function deleteRound(id){
+  if(!confirm('¿Eliminar esta ronda? Se eliminarán también sus partidos.'))return;
+  try{await api('/rounds/'+id,{method:'DELETE'});toast('Ronda eliminada');await loadAll()}
+  catch(e){toast('Error: '+e.message,'err')}
+}
+
+// ── MATCHES TABLE ──
+function renderMatchesTable(){
+  const sr=[...ADM.rounds].sort((a,b)=>(a.roundNumber||0)-(b.roundNumber||0));
+  // filter buttons
+  document.getElementById('matches-round-filter').innerHTML=
+    `<button class="btn-sm ${ADM.activeRoundFilter===null?'btn-accent':''}" onclick="setMatchRound(null)">Todos</button>`+
+    sr.map(r=>`<button class="btn-sm ${ADM.activeRoundFilter===r.id?'btn-accent':''}" onclick="setMatchRound(${r.id})">${r.name||'R'+r.roundNumber}</button>`).join('')+
+    `<button class="btn-sm" onclick="openNewMatch(null)" style="margin-left:auto">+ Nuevo partido</button>`;
+
+  const vis=ADM.activeRoundFilter?ADM.matches.filter(m=>m.roundId===ADM.activeRoundFilter):ADM.matches;
+  const stCls={pending:'sp-pending',live:'sp-live',completed:'sp-completed'};
+  document.getElementById('matches-table').innerHTML=vis.length
+    ?`<table class="tbl" style="padding:0"><thead><tr><th style="padding:12px 10px">Equipo 1</th><th>Equipo 2</th><th>Resultado</th><th>Ronda</th><th>Estado</th><th></th></tr></thead><tbody>${
+      vis.map(m=>{
+        const t1=byId(m.team1Id),t2=byId(m.team2Id),r=ADM.rounds.find(x=>x.id===m.roundId);
+        const sc=m.score1!==null&&m.score2!==null?`${m.score1} — ${m.score2}`:'—';
+        return `<tr><td>${t1?t1.name:'TBD'}</td><td>${t2?t2.name:'TBD'}</td>
+          <td style="font-family:var(--head);font-size:16px">${sc}</td>
+          <td>${r?.name||'—'}</td>
+          <td><span class="status-pill ${stCls[m.status]||'sp-pending'}">${m.status||'pending'}</span></td>
+          <td class="tbl-actions">
+            <button class="btn-sm btn-win" onclick="openScore(${m.id})">Resultado</button>
+            <button class="btn-sm btn-danger" onclick="deleteMatch(${m.id})">✕</button>
+          </td></tr>`;
+      }).join('')
+    }</tbody></table>`
+    :`<div class="empty">No hay partidos${ADM.activeRoundFilter?' en esta ronda':''}.</div>`;
+}
+function setMatchRound(id){ADM.activeRoundFilter=id;renderMatchesTable()}
+
+// ── NUEVO PARTIDO ──
+function openNewMatch(roundId){
+  clrMsg('nm-err','nm-ok');
+  const rSelect=document.getElementById('nm-round');
+  const sr=[...ADM.rounds].sort((a,b)=>(a.roundNumber||0)-(b.roundNumber||0));
+  rSelect.innerHTML=sr.map(r=>`<option value="${r.id}" ${r.id===roundId?'selected':''}>${r.name||'Ronda '+r.roundNumber}</option>`).join('');
+  const opts=ADM.teams.map(t=>`<option value="${t.id}">${t.name}</option>`).join('');
+  document.getElementById('nm-t1').innerHTML=opts;
+  document.getElementById('nm-t2').innerHTML=opts;
+  open_('ov-match');
+}
+
+async function createMatch(){
+  clrMsg('nm-err','nm-ok');
+  const roundId=parseInt(document.getElementById('nm-round').value);
+  const team1Id=parseInt(document.getElementById('nm-t1').value);
+  const team2Id=parseInt(document.getElementById('nm-t2').value);
+  if(team1Id===team2Id)return showErr('nm-err','Los dos equipos deben ser diferentes.');
+  if(!ADM.tournament)return showErr('nm-err','No hay torneo activo.');
+  setBtn('btn-nm',true);
+  try{
+    await api('/matches',{method:'POST',body:JSON.stringify({roundId,team1Id,team2Id,tournamentId:ADM.tournament.id})});
+    showOk('nm-ok','Partido creado.');toast('Partido creado');
+    await loadAll();setTimeout(()=>close_('ov-match'),1000);
+  }catch(e){showErr('nm-err',e.message||'Error al crear el partido.')}
+  finally{setBtn('btn-nm',false,'CREAR PARTIDO')}
+}
+
+async function deleteMatch(id){
+  if(!confirm('¿Eliminar este partido?'))return;
+  try{await api('/matches/'+id,{method:'DELETE'});toast('Partido eliminado');await loadAll()}
+  catch(e){toast('Error: '+e.message,'err')}
+}
+
+// ── SCORE / RESULTADO ──
+function openScore(matchId){
+  const m=ADM.matches.find(x=>x.id===matchId);if(!m)return;
+  ADM.editMatchId=matchId;
+  const t1=byId(m.team1Id),t2=byId(m.team2Id);
+  document.getElementById('sc-t1').textContent=t1?t1.name:'TBD';
+  document.getElementById('sc-t2').textContent=t2?t2.name:'TBD';
+  document.getElementById('sc-s1').value=m.score1??'';
+  document.getElementById('sc-s2').value=m.score2??'';
+  document.getElementById('sc-status').value=m.status||'pending';
+  clrMsg('sc-err','sc-ok');open_('ov-score');
+}
+
+async function saveScore(){
+  clrMsg('sc-err','sc-ok');
+  const m=ADM.matches.find(x=>x.id===ADM.editMatchId);if(!m)return;
+  const s1=document.getElementById('sc-s1').value;
+  const s2=document.getElementById('sc-s2').value;
+  const status=document.getElementById('sc-status').value;
+  const score1=s1!==''?parseInt(s1):null;
+  const score2=s2!==''?parseInt(s2):null;
+  let winnerId=null;
+  if(score1!==null&&score2!==null){
+    if(score1>score2)winnerId=m.team1Id;
+    else if(score2>score1)winnerId=m.team2Id;
+  }
+  setBtn('btn-sc',true);
+  try{
+    await api('/matches/'+ADM.editMatchId,{method:'PATCH',body:JSON.stringify({score1,score2,status,winnerId})});
+    showOk('sc-ok','Resultado guardado.');toast('Resultado actualizado');
+    await loadAll();setTimeout(()=>close_('ov-score'),1000);
+  }catch(e){showErr('sc-err',e.message||'Error al guardar.')}
+  finally{setBtn('btn-sc',false,'GUARDAR RESULTADO')}
+}
+
+// ── REGISTRATIONS ──
+function renderRegistrations(){
+  document.getElementById('regs-table').innerHTML=ADM.registrations.length
+    ?`<table class="tbl"><thead><tr><th style="padding:12px 10px">Equipo</th><th>Torneo</th><th>Estado</th><th></th></tr></thead><tbody>${
+      ADM.registrations.map(reg=>{
+        const t=ADM.teams.find(x=>x.id===reg.teamId);
+        const st=reg.status||'registered';
+        return `<tr><td>${t?t.name:reg.teamId}</td><td>${ADM.tournament?.name||reg.tournamentId}</td>
+          <td><span class="status-pill sp-active">${st}</span></td>
+          <td><button class="btn-sm btn-danger" onclick="deleteReg(${reg.id})">Eliminar</button></td></tr>`;
+      }).join('')
+    }</tbody></table>`
+    :`<div class="empty">No hay inscripciones aún.</div>`;
+}
+
+async function deleteReg(id){
+  if(!confirm('¿Eliminar esta inscripción?'))return;
+  try{await api('/registrations/'+id,{method:'DELETE'});toast('Inscripción eliminada');await loadAll()}
+  catch(e){toast('Error: '+e.message,'err')}
+}
+
+// ── TEAMS TABLE ──
+function renderTeamsTable(){
+  document.getElementById('teams-table').innerHTML=ADM.teams.length
+    ?`<table class="tbl"><thead><tr><th style="padding:12px 10px">Equipo</th><th>Descripción</th><th></th></tr></thead><tbody>${
+      ADM.teams.map(t=>`<tr>
+        <td><div style="display:flex;align-items:center;gap:8px">
+          ${t.logoUrl?`<img src="${t.logoUrl}" style="width:28px;height:28px;border-radius:5px;object-fit:cover" alt="">`:`<div style="width:28px;height:28px;border-radius:5px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-size:11px">${ini(t.name)}</div>`}
+          <span style="font-weight:600">${t.name}</span>
+        </div></td>
+        <td style="color:var(--muted)">${t.description||'—'}</td>
+        <td><button class="btn-sm btn-danger" onclick="deleteTeam(${t.id})">Eliminar</button></td>
+      </tr>`).join('')
+    }</tbody></table>`
+    :`<div class="empty">No hay equipos.</div>`;
+}
+
+async function deleteTeam(id){
+  if(!confirm('¿Eliminar este equipo? Esta acción no se puede deshacer.'))return;
+  try{await api('/teams/'+id,{method:'DELETE'});toast('Equipo eliminado');await loadAll()}
+  catch(e){toast('Error: '+e.message,'err')}
+}
+
+// ── USERS TABLE ──
+function renderUsersTable(){
+  document.getElementById('users-table').innerHTML=ADM.users.length
+    ?`<table class="tbl"><thead><tr><th style="padding:12px 10px">Usuario</th><th>Email</th><th>Rol</th></tr></thead><tbody>${
+      ADM.users.map(u=>`<tr>
+        <td style="font-weight:600">${u.username||u.name||'—'}</td>
+        <td style="color:var(--muted)">${u.email||'—'}</td>
+        <td><span class="status-pill ${u.role==='admin'?'sp-live':'sp-active'}">${u.role||'user'}</span></td>
+      </tr>`).join('')
+    }</tbody></table>`
+    :`<div class="empty">No se pudieron cargar los usuarios.</div>`;
+}
+</script>
+</body>
+</html>
