@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,781 +7,594 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ─────────────────────────────────────
-   TOKENS
-───────────────────────────────────── */
 :root {
-  --ink:     #0b0c10;
-  --ink2:    #111318;
-  --ink3:    #181c24;
-  --ink4:    #1f2430;
-  --line:    rgba(255,255,255,0.055);
-  --line2:   rgba(255,255,255,0.11);
-  --gold:    #e8c547;
-  --gold2:   #f5d877;
-  --green:   #34d17a;
-  --red:     #f04f6a;
-  --blue:    #4f8ff0;
-  --snow:    #eef1fa;
-  --fog:     #7e879e;
-  --fog2:    #a8b0c4;
-  --mono:    'JetBrains Mono', monospace;
-  --sans:    'Syne', sans-serif;
-  --r:       6px;
-  --r2:      10px;
-  --r3:      14px;
+  --ink:    #0b0c10;
+  --ink2:   #111318;
+  --ink3:   #181c24;
+  --ink4:   #1f2430;
+  --line:   rgba(255,255,255,0.055);
+  --line2:  rgba(255,255,255,0.11);
+  --gold:   #e8c547;
+  --gold2:  #f5d877;
+  --green:  #34d17a;
+  --red:    #f04f6a;
+  --snow:   #eef1fa;
+  --fog:    #7e879e;
+  --fog2:   #a8b0c4;
+  --mono:   'JetBrains Mono', monospace;
+  --sans:   'Syne', sans-serif;
+  --r:      6px;
+  --r2:     10px;
+  --r3:     14px;
 }
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
+html { -webkit-font-smoothing:antialiased; scroll-behavior:smooth }
+body { background:var(--ink); color:var(--snow); font-family:var(--sans); font-size:14px; line-height:1.65; min-height:100vh; overflow-x:hidden }
+a { color:inherit; text-decoration:none }
+button,input,select { font-family:inherit }
+::-webkit-scrollbar { width:4px; height:4px }
+::-webkit-scrollbar-track { background:var(--ink2) }
+::-webkit-scrollbar-thumb { background:var(--ink4); border-radius:2px }
 
-/* ─────────────────────────────────────
-   RESET & BASE
-───────────────────────────────────── */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--ink);color:var(--snow);font-family:var(--sans);font-size:14px;line-height:1.65;min-height:100vh;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-button{font-family:inherit}
-input,select,textarea{font-family:inherit}
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:var(--ink2)}
-::-webkit-scrollbar-thumb{background:var(--ink4);border-radius:2px}
+/* ── CANVAS ── */
+#bg { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.4 }
 
-/* ─────────────────────────────────────
-   CANVAS BACKGROUND
-───────────────────────────────────── */
-#canvas-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: .45;
-}
-
-/* ─────────────────────────────────────
-   NAV
-───────────────────────────────────── */
+/* ── NAV ── */
 .nav {
-  position: sticky; top: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 56px; padding: 0 24px;
-  background: rgba(11,12,16,0.88);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--line);
+  position:sticky; top:0; z-index:100;
+  display:flex; align-items:center; justify-content:space-between;
+  height:56px; padding:0 24px;
+  background:rgba(11,12,16,.9); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line);
 }
 .logo {
-  display: flex; align-items: center; gap: 10px;
-  font-weight: 800; font-size: 15px; letter-spacing: .06em;
-  text-transform: uppercase; cursor: pointer;
-  user-select: none;
+  display:flex; align-items:center; gap:10px;
+  font-weight:800; font-size:15px; letter-spacing:.06em;
+  text-transform:uppercase; cursor:pointer; user-select:none;
 }
-.logo-gem {
-  width: 18px; height: 18px;
-  background: var(--gold);
-  clip-path: polygon(50% 0%,100% 50%,50% 100%,0% 50%);
-  flex-shrink: 0;
-  animation: gem-spin 8s linear infinite;
+.gem {
+  width:18px; height:18px;
+  background:var(--gold);
+  clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);
+  flex-shrink:0; animation:spin-gem 8s linear infinite;
 }
-@keyframes gem-spin {
-  0%   { transform: rotate(0deg) scale(1); }
-  50%  { transform: rotate(180deg) scale(1.1); }
-  100% { transform: rotate(360deg) scale(1); }
-}
-.nav-center {
-  display: flex; gap: 2px;
-  background: var(--ink2);
-  border: 1px solid var(--line);
-  border-radius: var(--r2);
-  padding: 3px;
+@keyframes spin-gem { 0%{transform:rotate(0)scale(1)} 50%{transform:rotate(180deg)scale(1.1)} 100%{transform:rotate(360deg)scale(1)} }
+.nav-tabs {
+  display:flex; gap:2px;
+  background:var(--ink2); border:1px solid var(--line);
+  border-radius:var(--r2); padding:3px;
 }
 .ntab {
-  padding: 5px 16px; border-radius: var(--r);
-  font-size: 12px; font-weight: 600; letter-spacing: .04em;
-  color: var(--fog); cursor: pointer;
-  border: none; background: transparent;
-  transition: all .18s; white-space: nowrap;
+  padding:5px 16px; border-radius:var(--r);
+  font-size:12px; font-weight:600; letter-spacing:.04em;
+  color:var(--fog); cursor:pointer; border:none; background:transparent;
+  transition:all .18s;
 }
-.ntab.on, .ntab:hover { background: var(--ink3); color: var(--snow); }
-.ntab.on { color: var(--gold); }
-.nav-right { display: flex; align-items: center; gap: 8px; }
+.ntab.on,.ntab:hover { background:var(--ink3); color:var(--snow) }
+.ntab.on { color:var(--gold) }
+.nav-right { display:flex; align-items:center; gap:8px }
 .live-badge {
-  display: flex; align-items: center; gap: 5px;
-  background: rgba(232,197,71,0.08);
-  border: 1px solid rgba(232,197,71,0.22);
-  border-radius: 100px; padding: 4px 11px;
-  font-family: var(--mono); font-size: 10px;
-  font-weight: 500; color: var(--gold); letter-spacing: .08em;
+  display:flex; align-items:center; gap:5px;
+  background:rgba(232,197,71,.08); border:1px solid rgba(232,197,71,.22);
+  border-radius:100px; padding:4px 11px;
+  font-family:var(--mono); font-size:10px; color:var(--gold); letter-spacing:.08em;
 }
-.live-dot {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--gold);
-  animation: pulse 1.8s ease-in-out infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.25;transform:scale(.7)} }
-
-/* nav buttons */
+.live-dot { width:5px; height:5px; border-radius:50%; background:var(--gold); animation:pulse 1.8s ease-in-out infinite }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.2} }
 .nb {
-  padding: 6px 14px; border-radius: var(--r);
-  font-size: 12px; font-weight: 600;
-  cursor: pointer; transition: all .18s;
-  border: 1px solid var(--line2);
-  background: transparent; color: var(--fog2);
+  padding:6px 14px; border-radius:var(--r);
+  font-size:12px; font-weight:600;
+  cursor:pointer; border:1px solid var(--line2);
+  background:transparent; color:var(--fog2);
+  transition:all .18s;
 }
-.nb:hover { border-color: var(--line2); color: var(--snow); background: var(--ink3); }
-.nb-gold { background: var(--gold); color: var(--ink); border-color: var(--gold); }
-.nb-gold:hover { background: var(--gold2); border-color: var(--gold2); }
+.nb:hover { background:var(--ink3); color:var(--snow) }
+.nb-gold { background:var(--gold); color:var(--ink); border-color:var(--gold) }
+.nb-gold:hover { background:var(--gold2) }
 .user-chip {
-  display: flex; align-items: center; gap: 8px;
-  padding: 4px 12px 4px 4px;
-  background: var(--ink2); border: 1px solid var(--line);
-  border-radius: 100px; cursor: pointer;
-  transition: border-color .18s;
+  display:flex; align-items:center; gap:8px;
+  padding:4px 12px 4px 4px;
+  background:var(--ink2); border:1px solid var(--line);
+  border-radius:100px; cursor:pointer; transition:border-color .18s;
 }
-.user-chip:hover { border-color: var(--line2); }
+.user-chip:hover { border-color:var(--line2) }
 .ava {
-  width: 26px; height: 26px; border-radius: 50%;
-  background: var(--ink3);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--mono); font-size: 10px; color: var(--gold);
-  border: 1px solid rgba(232,197,71,0.2);
+  width:26px; height:26px; border-radius:50%;
+  background:var(--ink3); display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono); font-size:10px; color:var(--gold);
+  border:1px solid rgba(232,197,71,.2);
 }
-.uname { font-size: 12px; font-weight: 600; color: var(--fog2); }
+.uname { font-size:12px; font-weight:600; color:var(--fog2) }
 
-/* ─────────────────────────────────────
-   HERO
-───────────────────────────────────── */
+/* ── HERO ── */
 .hero {
-  position: relative; z-index: 1;
-  padding: 56px 24px 52px;
-  border-bottom: 1px solid var(--line);
-  overflow: hidden;
+  position:relative; z-index:1;
+  padding:52px 24px 48px; border-bottom:1px solid var(--line); overflow:hidden;
 }
 .hero::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent 0%, var(--gold) 40%, var(--gold) 60%, transparent 100%);
-  opacity: .25;
+  content:''; position:absolute; bottom:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent); opacity:.2;
 }
 .hero-inner {
-  max-width: 1060px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr auto;
-  align-items: end; gap: 40px;
+  max-width:1060px; margin:0 auto;
+  display:grid; grid-template-columns:1fr auto;
+  align-items:end; gap:40px;
 }
 .hero-tag {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-family: var(--mono); font-size: 10px;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 14px;
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:var(--mono); font-size:10px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--gold); margin-bottom:14px;
 }
-.hero-tag::before {
-  content: '';
-  width: 20px; height: 1px; background: var(--gold); opacity: .6;
-}
+.hero-tag::before { content:''; width:20px; height:1px; background:var(--gold); opacity:.6 }
 .hero-h1 {
-  font-size: clamp(42px, 5.5vw, 72px);
-  font-weight: 800; letter-spacing: -.02em;
-  line-height: .95; margin-bottom: 18px;
+  font-size:clamp(40px,5.5vw,70px);
+  font-weight:800; letter-spacing:-.02em; line-height:.95; margin-bottom:16px;
 }
-.hero-h1 em { color: var(--gold); font-style: normal; }
-.hero-sub {
-  font-size: 14px; color: var(--fog2); line-height: 1.7;
-  max-width: 440px;
-}
-.hero-stats { display: flex; gap: 10px; flex-shrink: 0; }
+.hero-h1 em { color:var(--gold); font-style:normal }
+.hero-sub { font-size:13px; color:var(--fog2); line-height:1.7; max-width:440px }
+.hero-stats { display:flex; gap:10px; flex-shrink:0 }
 .hstat {
-  text-align: center; padding: 16px 20px;
-  background: var(--ink2); border: 1px solid var(--line);
-  border-radius: var(--r2);
-  min-width: 90px;
+  text-align:center; padding:16px 20px;
+  background:var(--ink2); border:1px solid var(--line); border-radius:var(--r2);
+  min-width:86px;
 }
-.hstat-n {
-  font-family: var(--mono); font-size: 32px;
-  color: var(--gold); line-height: 1;
-  font-weight: 500;
-}
-.hstat-l {
-  font-size: 9px; font-weight: 700; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--fog);
-  margin-top: 4px;
-}
+.hstat-n { font-family:var(--mono); font-size:30px; color:var(--gold); line-height:1 }
+.hstat-l { font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--fog); margin-top:4px }
 
-/* ─────────────────────────────────────
-   MAIN CONTENT
-───────────────────────────────────── */
-.wrap { max-width: 1060px; margin: 0 auto; padding: 32px 24px 80px; position: relative; z-index: 1; }
-.panel { display: none; animation: fadeIn .22s ease; }
-.panel.on { display: block; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-
-.sh {
-  display: flex; align-items: baseline; justify-content: space-between;
-  margin-bottom: 20px; gap: 12px;
-}
-.sh-title {
-  font-size: 11px; font-weight: 700; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--fog);
-}
+/* ── CONTENT ── */
+.wrap { max-width:1060px; margin:0 auto; padding:28px 24px 80px; position:relative; z-index:1 }
+.panel { display:none; animation:fade .2s ease }
+.panel.on { display:block }
+@keyframes fade { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+.sh { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; gap:12px }
+.sh-title { font-size:10px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--fog) }
 .sh-badge {
-  font-family: var(--mono); font-size: 10px;
-  padding: 3px 9px; border-radius: var(--r);
-  background: rgba(232,197,71,0.07);
-  color: var(--gold); border: 1px solid rgba(232,197,71,0.18);
-  letter-spacing: .06em;
+  font-family:var(--mono); font-size:10px; padding:3px 9px; border-radius:var(--r);
+  background:rgba(232,197,71,.07); color:var(--gold); border:1px solid rgba(232,197,71,.18); letter-spacing:.06em;
 }
 
-/* ─────────────────────────────────────
-   BRACKET
-───────────────────────────────────── */
-.bracket-scroll { overflow-x: auto; padding-bottom: 12px; }
-.bracket-scroll::-webkit-scrollbar { height: 3px; }
-.bracket-body {
-  display: flex; align-items: stretch;
-  min-width: max-content; gap: 0;
-}
-.r-col { display: flex; flex-direction: column; min-width: 185px; }
+/* ── BRACKET ── */
+.bracket-scroll { overflow-x:auto; padding-bottom:12px }
+.bracket-scroll::-webkit-scrollbar { height:3px }
+.bracket-body { display:flex; align-items:stretch; min-width:max-content }
+.r-col { display:flex; flex-direction:column; min-width:180px }
 .r-label {
-  font-family: var(--mono); font-size: 9px; font-weight: 500;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: var(--fog); text-align: center;
-  padding: 0 8px 12px;
+  font-family:var(--mono); font-size:9px; font-weight:500; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--fog); text-align:center; padding:0 8px 12px;
 }
-.r-matches {
-  display: flex; flex-direction: column; flex: 1;
-  justify-content: space-around; gap: 0;
-}
-.m-slot { padding: 5px 8px; }
+.r-matches { display:flex; flex-direction:column; flex:1; justify-content:space-around }
+.m-slot { padding:5px 8px }
 .m-card {
-  background: var(--ink2);
-  border: 1px solid var(--line);
-  border-radius: var(--r2);
-  overflow: hidden;
-  transition: border-color .2s;
-  position: relative;
+  background:var(--ink2); border:1px solid var(--line);
+  border-radius:var(--r2); overflow:hidden; transition:border-color .2s; position:relative;
 }
-.m-card:hover { border-color: var(--line2); }
-.m-card.live { border-color: rgba(232,197,71,0.3); }
-.m-card-live-bar {
-  height: 2px;
-  background: linear-gradient(90deg, var(--gold), var(--gold2));
-}
+.m-card:hover { border-color:var(--line2) }
+.m-card.live { border-color:rgba(232,197,71,.35) }
+.m-live-bar { height:2px; background:linear-gradient(90deg,var(--gold),var(--gold2)) }
 .m-team {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 10px;
-  transition: background .15s;
+  display:flex; align-items:center; gap:8px; padding:8px 10px;
 }
-.m-team + .m-team { border-top: 1px solid var(--line); }
-.m-team.won { background: rgba(52,209,122,0.04); }
-.m-team.lost { opacity: .38; }
+.m-team+.m-team { border-top:1px solid var(--line) }
+.m-team.won { background:rgba(52,209,122,.04) }
+.m-team.lost { opacity:.35 }
 .m-logo {
-  width: 24px; height: 24px; border-radius: 4px;
-  background: var(--ink3); border: 1px solid var(--line);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--mono); font-size: 9px; color: var(--fog);
-  flex-shrink: 0; overflow: hidden;
+  width:24px; height:24px; border-radius:4px;
+  background:var(--ink3); border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono); font-size:9px; color:var(--fog); flex-shrink:0; overflow:hidden;
 }
-.m-logo img { width: 100%; height: 100%; object-fit: cover; }
-.m-tname {
-  font-size: 11px; font-weight: 600; flex: 1;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.m-tname.tbd { color: var(--fog); font-weight: 400; font-style: italic; }
-.m-score {
-  font-family: var(--mono); font-size: 13px;
-  color: var(--fog); min-width: 16px; text-align: right;
-}
-.m-score.w { color: var(--green); }
-
-/* bracket connector */
-.b-sep {
-  width: 24px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  padding-top: 32px;
-}
-.b-sep-line { width: 100%; height: 1px; background: var(--line2); opacity: .4; }
-
-/* bracket winner */
-.b-winner {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 0 18px; min-width: 120px;
-}
+.m-logo img { width:100%; height:100%; object-fit:cover }
+.m-tname { font-size:11px; font-weight:600; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.m-tname.tbd { color:var(--fog); font-weight:400; font-style:italic }
+.m-score { font-family:var(--mono); font-size:13px; color:var(--fog); min-width:16px; text-align:right }
+.m-score.w { color:var(--green) }
+.b-sep { width:22px; flex-shrink:0; display:flex; align-items:center; justify-content:center; padding-top:30px }
+.b-line { width:100%; height:1px; background:var(--line2); opacity:.4 }
+.b-winner { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 16px; min-width:120px }
 .winner-card {
-  background: linear-gradient(145deg, rgba(232,197,71,0.1), rgba(232,197,71,0.04));
-  border: 1px solid rgba(232,197,71,0.28);
-  border-radius: var(--r2); padding: 20px 16px;
-  text-align: center;
+  background:linear-gradient(145deg,rgba(232,197,71,.1),rgba(232,197,71,.04));
+  border:1px solid rgba(232,197,71,.28); border-radius:var(--r2); padding:20px 16px; text-align:center;
 }
-.winner-crown { font-size: 24px; margin-bottom: 8px; display: block; }
-.winner-label {
-  font-family: var(--mono); font-size: 9px; font-weight: 500;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 6px;
-}
-.winner-name { font-size: 14px; font-weight: 700; }
+.winner-crown { font-size:24px; margin-bottom:8px; display:block }
+.winner-lbl { font-family:var(--mono); font-size:9px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); margin-bottom:6px }
+.winner-name { font-size:14px; font-weight:700 }
 
-/* ─────────────────────────────────────
-   MY ZONE
-───────────────────────────────────── */
+/* ── MY ZONE ── */
 .my-zone {
-  background: var(--ink2);
-  border: 1px solid var(--line);
-  border-radius: var(--r3); padding: 20px;
-  margin-bottom: 24px;
-  transition: border-color .2s;
+  background:var(--ink2); border:1px solid var(--line);
+  border-radius:var(--r3); padding:20px; margin-bottom:22px;
 }
-.my-zone.has-team { border-color: rgba(232,197,71,0.2); }
-.mz-head {
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 12px; margin-bottom: 16px;
-}
-.mz-title {
-  font-size: 11px; font-weight: 700; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--fog);
-}
-.mz-title span { color: var(--gold); margin-left: 6px; }
-.mz-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.mz-stats { display: flex; gap: 8px; flex-wrap: wrap; }
-.mz-stat {
-  flex: 1; min-width: 100px;
-  background: var(--ink3); border: 1px solid var(--line);
-  border-radius: var(--r); padding: 10px 14px;
-}
-.mz-stat-n { font-family: var(--mono); font-size: 22px; line-height: 1; }
-.mz-stat-l { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--fog); margin-top: 2px; }
-.enrolled-pill {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 6px 12px; border-radius: var(--r);
-  background: rgba(52,209,122,0.08);
-  border: 1px solid rgba(52,209,122,0.2);
-  font-size: 11px; font-weight: 600; color: var(--green);
+.my-zone.has { border-color:rgba(232,197,71,.2) }
+.mz-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:14px }
+.mz-title { font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--fog) }
+.mz-title span { color:var(--gold); margin-left:6px; text-transform:none; letter-spacing:0; font-size:13px }
+.mz-btns { display:flex; gap:8px; flex-wrap:wrap }
+.mz-stats { display:flex; gap:8px; flex-wrap:wrap }
+.mz-s { flex:1; min-width:100px; background:var(--ink3); border:1px solid var(--line); border-radius:var(--r); padding:10px 14px }
+.mz-s-n { font-family:var(--mono); font-size:20px; line-height:1 }
+.mz-s-l { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--fog); margin-top:2px }
+.enrolled-tag {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:6px 12px; border-radius:var(--r);
+  background:rgba(52,209,122,.08); border:1px solid rgba(52,209,122,.2);
+  font-size:11px; font-weight:600; color:var(--green);
 }
 
-/* ─────────────────────────────────────
-   TEAMS GRID
-───────────────────────────────────── */
-.teams-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
-}
+/* ── TEAMS GRID ── */
+.teams-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px }
 .t-card {
-  background: var(--ink2); border: 1px solid var(--line);
-  border-radius: var(--r3); overflow: hidden;
-  transition: border-color .2s, transform .2s;
+  background:var(--ink2); border:1px solid var(--line);
+  border-radius:var(--r3); overflow:hidden; transition:border-color .2s,transform .2s;
 }
-.t-card:hover { border-color: var(--line2); transform: translateY(-2px); }
-.t-card.mine { border-color: rgba(232,197,71,0.28); }
-.t-banner {
-  height: 56px; background: var(--ink3);
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden; position: relative;
-}
-.t-banner img { width: 100%; height: 100%; object-fit: cover; }
-.t-banner-ph {
-  font-size: 38px; font-weight: 800; letter-spacing: -.02em;
-  color: rgba(255,255,255,0.035); user-select: none;
-}
-.t-body { padding: 10px 12px; }
-.t-ident { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.t-card:hover { border-color:var(--line2); transform:translateY(-2px) }
+.t-card.mine { border-color:rgba(232,197,71,.28) }
+.t-banner { height:56px; background:var(--ink3); display:flex; align-items:center; justify-content:center; overflow:hidden }
+.t-banner img { width:100%; height:100%; object-fit:cover }
+.t-banner-ph { font-size:36px; font-weight:800; color:rgba(255,255,255,.04); user-select:none }
+.t-body { padding:10px 12px }
+.t-ident { display:flex; align-items:center; gap:10px; margin-bottom:10px }
 .t-logo {
-  width: 36px; height: 36px; border-radius: var(--r);
-  background: var(--ink3); border: 2px solid var(--ink);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--mono); font-size: 12px;
-  overflow: hidden; flex-shrink: 0;
-  margin-top: -20px; position: relative; z-index: 1;
+  width:36px; height:36px; border-radius:var(--r);
+  background:var(--ink3); border:2px solid var(--ink);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono); font-size:12px; overflow:hidden; flex-shrink:0;
+  margin-top:-20px; position:relative; z-index:1;
 }
-.t-logo img { width: 100%; height: 100%; object-fit: cover; }
-.t-name { font-size: 13px; font-weight: 700; }
-.t-desc { font-size: 11px; color: var(--fog); }
+.t-logo img { width:100%; height:100%; object-fit:cover }
+.t-name { font-size:13px; font-weight:700 }
+.t-tag { font-size:11px; color:var(--fog) }
 .t-mine-tag {
-  display: inline-block; font-family: var(--mono); font-size: 9px;
-  padding: 2px 6px; border-radius: 3px;
-  background: rgba(232,197,71,0.1); color: var(--gold);
-  border: 1px solid rgba(232,197,71,0.22); margin-top: 2px;
-  letter-spacing: .06em;
+  display:inline-block; font-family:var(--mono); font-size:9px;
+  padding:2px 6px; border-radius:3px; letter-spacing:.06em;
+  background:rgba(232,197,71,.1); color:var(--gold); border:1px solid rgba(232,197,71,.22); margin-top:2px;
 }
-.t-row {
-  display: flex; border-top: 1px solid var(--line); padding-top: 8px;
-}
-.t-st { flex: 1; text-align: center; }
-.t-st + .t-st { border-left: 1px solid var(--line); }
-.t-st-n { font-family: var(--mono); font-size: 16px; }
-.t-st-l { font-size: 9px; color: var(--fog); letter-spacing: .06em; }
+.t-row { display:flex; border-top:1px solid var(--line); padding-top:8px }
+.t-st { flex:1; text-align:center }
+.t-st+.t-st { border-left:1px solid var(--line) }
+.t-st-n { font-family:var(--mono); font-size:16px }
+.t-st-l { font-size:9px; color:var(--fog); letter-spacing:.06em }
 
-/* ─────────────────────────────────────
-   MATCHES
-───────────────────────────────────── */
-.round-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
-.rf-btn {
-  padding: 5px 13px; border-radius: var(--r);
-  font-size: 11px; font-weight: 600; letter-spacing: .04em;
-  border: 1px solid var(--line); background: transparent;
-  color: var(--fog); cursor: pointer; transition: all .15s;
+/* ── MATCHES ── */
+.round-filter { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px }
+.rfbtn {
+  padding:5px 13px; border-radius:var(--r); font-size:11px; font-weight:600; letter-spacing:.04em;
+  border:1px solid var(--line); background:transparent; color:var(--fog); cursor:pointer; transition:all .15s;
 }
-.rf-btn.on, .rf-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(232,197,71,0.06); }
-.matches-list { display: flex; flex-direction: column; gap: 8px; }
+.rfbtn.on,.rfbtn:hover { border-color:var(--gold); color:var(--gold); background:rgba(232,197,71,.06) }
+.matches-list { display:flex; flex-direction:column; gap:8px }
 .mr {
-  background: var(--ink2); border: 1px solid var(--line);
-  border-radius: var(--r2); padding: 14px 16px;
-  display: grid; grid-template-columns: 1fr auto 1fr;
-  align-items: center; gap: 14px;
-  transition: border-color .2s;
-  position: relative; overflow: hidden;
+  background:var(--ink2); border:1px solid var(--line); border-radius:var(--r2);
+  padding:14px 16px; display:grid; grid-template-columns:1fr auto 1fr;
+  align-items:center; gap:14px; transition:border-color .2s; position:relative; overflow:hidden;
 }
 .mr::before {
-  content: '';
-  position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
-  background: var(--line2); transition: background .2s;
+  content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+  background:var(--line2); transition:background .2s;
 }
-.mr.live::before { background: var(--gold); }
-.mr.done::before { background: var(--green); opacity: .5; }
-.mr:hover { border-color: var(--line2); }
-.mr-side { display: flex; align-items: center; gap: 10px; }
-.mr-side.right { flex-direction: row-reverse; text-align: right; }
+.mr.live::before { background:var(--gold) }
+.mr.done::before { background:var(--green); opacity:.5 }
+.mr:hover { border-color:var(--line2) }
+.mr-side { display:flex; align-items:center; gap:10px }
+.mr-side.right { flex-direction:row-reverse; text-align:right }
 .mr-logo {
-  width: 32px; height: 32px; border-radius: var(--r);
-  background: var(--ink3); border: 1px solid var(--line);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--mono); font-size: 11px; color: var(--fog);
-  flex-shrink: 0; overflow: hidden;
+  width:32px; height:32px; border-radius:var(--r);
+  background:var(--ink3); border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono); font-size:11px; color:var(--fog); flex-shrink:0; overflow:hidden;
 }
-.mr-logo img { width: 100%; height: 100%; object-fit: cover; }
-.mr-tname { font-size: 13px; font-weight: 700; }
-.mr-tname.w { color: var(--green); }
-.mr-tname.l { color: var(--fog); font-weight: 400; }
-.mr-meta { font-size: 10px; color: var(--fog); }
-.mr-center { text-align: center; }
-.mr-score { font-family: var(--mono); font-size: 22px; letter-spacing: .06em; color: var(--snow); }
-.mr-status { font-family: var(--mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--fog); margin-top: 2px; }
-.mr-status.live { color: var(--gold); animation: pulse 1.8s infinite; }
-.mr-vs { font-family: var(--mono); font-size: 14px; color: var(--fog); }
+.mr-logo img { width:100%; height:100%; object-fit:cover }
+.mr-tname { font-size:13px; font-weight:700 }
+.mr-tname.w { color:var(--green) }
+.mr-tname.l { color:var(--fog); font-weight:400 }
+.mr-meta { font-size:10px; color:var(--fog) }
+.mr-center { text-align:center }
+.mr-score { font-family:var(--mono); font-size:22px; letter-spacing:.06em }
+.mr-status { font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--fog); margin-top:2px }
+.mr-status.live { color:var(--gold); animation:pulse 1.8s infinite }
+.mr-vs { font-family:var(--mono); font-size:14px; color:var(--fog) }
 
-/* ─────────────────────────────────────
-   STANDINGS
-───────────────────────────────────── */
-.st-table { width: 100%; border-collapse: collapse; }
+/* ── STANDINGS ── */
+.st-table { width:100%; border-collapse:collapse }
 .st-table th {
-  font-family: var(--mono); font-size: 9px; font-weight: 500;
-  letter-spacing: .12em; text-transform: uppercase;
-  color: var(--fog); padding: 0 10px 12px; text-align: left;
+  font-family:var(--mono); font-size:9px; font-weight:500; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--fog); padding:0 10px 12px; text-align:left;
 }
-.st-table th:last-child,.st-table td:last-child { text-align: right; }
-.st-tr { border-top: 1px solid var(--line); transition: background .12s; }
-.st-tr:hover td { background: rgba(255,255,255,.012); }
-.st-tr td { padding: 11px 10px; }
-.st-rk { font-family: var(--mono); font-size: 16px; color: var(--fog); min-width: 30px; }
-.st-rk.g { color: #ffd700; }
-.st-rk.s { color: #c0c0c0; }
-.st-rk.b { color: #cd7f32; }
-.st-team { display: flex; align-items: center; gap: 10px; }
+.st-table th:last-child,.st-table td:last-child { text-align:right }
+.st-tr { border-top:1px solid var(--line); transition:background .12s }
+.st-tr:hover td { background:rgba(255,255,255,.012) }
+.st-tr td { padding:11px 10px }
+.st-rk { font-family:var(--mono); font-size:16px; color:var(--fog) }
+.st-rk.g { color:#ffd700 }
+.st-rk.s { color:#c0c0c0 }
+.st-rk.b { color:#cd7f32 }
+.st-team { display:flex; align-items:center; gap:10px }
 .st-logo {
-  width: 28px; height: 28px; border-radius: var(--r);
-  background: var(--ink3); border: 1px solid var(--line);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--mono); font-size: 10px; color: var(--fog);
-  overflow: hidden; flex-shrink: 0;
+  width:28px; height:28px; border-radius:var(--r);
+  background:var(--ink3); border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono); font-size:10px; color:var(--fog); overflow:hidden; flex-shrink:0;
 }
-.st-logo img { width: 100%; height: 100%; object-fit: cover; }
-.st-tn { font-size: 13px; font-weight: 700; }
-.st-num { font-family: var(--mono); font-size: 14px; }
-.st-pts { font-family: var(--mono); font-size: 16px; color: var(--gold); }
+.st-logo img { width:100%; height:100%; object-fit:cover }
+.st-tn { font-size:13px; font-weight:700 }
+.st-ttag { font-size:11px; color:var(--fog) }
+.st-num { font-family:var(--mono); font-size:14px }
+.st-pts { font-family:var(--mono); font-size:16px; color:var(--gold) }
 
-/* ─────────────────────────────────────
-   STATE BOXES
-───────────────────────────────────── */
+/* ── EMPTY / LOADING ── */
 .empty {
-  text-align: center; padding: 48px 20px;
-  background: var(--ink2); border: 1px dashed var(--line2);
-  border-radius: var(--r3);
+  text-align:center; padding:52px 20px;
+  background:var(--ink2); border:1px dashed var(--line2); border-radius:var(--r3);
 }
-.empty-ico { font-size: 28px; margin-bottom: 10px; opacity: .3; }
-.empty-title {
-  font-size: 13px; font-weight: 700; color: var(--fog2);
-  letter-spacing: .04em; margin-bottom: 4px;
-}
-.empty-sub { font-size: 12px; color: var(--fog); }
+.empty-ico { font-size:28px; margin-bottom:10px; opacity:.3 }
+.empty-title { font-size:13px; font-weight:700; color:var(--fog2); letter-spacing:.04em; margin-bottom:4px }
+.empty-sub { font-size:12px; color:var(--fog) }
 .spin {
-  width: 20px; height: 20px;
-  border: 2px solid var(--line2);
-  border-top-color: var(--gold);
-  border-radius: 50%;
-  animation: spin .7s linear infinite;
-  margin: 0 auto 12px;
+  width:20px; height:20px; border:2px solid var(--line2); border-top-color:var(--gold);
+  border-radius:50%; animation:spinr .7s linear infinite; margin:0 auto 12px;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spinr { to{transform:rotate(360deg)} }
 .err-bar {
-  background: rgba(240,79,106,0.07); border: 1px solid rgba(240,79,106,0.2);
-  border-radius: var(--r); padding: 9px 14px;
-  font-family: var(--mono); font-size: 11px; color: #f08898;
-  margin-bottom: 18px; display: none; letter-spacing: .02em;
+  background:rgba(240,79,106,.07); border:1px solid rgba(240,79,106,.2);
+  border-radius:var(--r); padding:9px 14px; font-family:var(--mono); font-size:11px;
+  color:#f08898; margin-bottom:18px; display:none; letter-spacing:.02em;
 }
-.err-bar.on { display: block; }
+.err-bar.on { display:block }
 
-/* ─────────────────────────────────────
-   MODALS
-───────────────────────────────────── */
+/* ── MODALS ── */
 .ov {
-  position: fixed; inset: 0; z-index: 500;
-  background: rgba(11,12,16,0.82);
-  backdrop-filter: blur(12px);
-  display: none; align-items: center; justify-content: center;
-  padding: 20px;
+  position:fixed; inset:0; z-index:500;
+  background:rgba(11,12,16,.85); backdrop-filter:blur(12px);
+  display:none; align-items:center; justify-content:center; padding:20px;
 }
-.ov.on { display: flex; }
+.ov.on { display:flex }
 .modal {
-  background: var(--ink2); border: 1px solid var(--line2);
-  border-radius: var(--r3); width: 100%; max-width: 400px;
-  max-height: 90vh; overflow-y: auto;
-  animation: modal-in .22s cubic-bezier(.22,.68,0,1.2);
+  background:var(--ink2); border:1px solid var(--line2); border-radius:var(--r3);
+  width:100%; max-width:400px; max-height:90vh; overflow-y:auto;
+  animation:modal-in .22s cubic-bezier(.22,.68,0,1.2);
 }
-@keyframes modal-in {
-  from { transform: scale(.96) translateY(10px); opacity: 0; }
-  to   { transform: scale(1) translateY(0); opacity: 1; }
+@keyframes modal-in { from{transform:scale(.96) translateY(10px);opacity:0} to{transform:scale(1) translateY(0);opacity:1} }
+.mhead { display:flex; align-items:center; justify-content:space-between; padding:20px 22px 0 }
+.mtitle { font-size:16px; font-weight:800; letter-spacing:.02em }
+.mx {
+  width:28px; height:28px; border-radius:var(--r);
+  border:1px solid var(--line); background:transparent; color:var(--fog);
+  cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center;
+  transition:all .15s;
 }
-.modal-head {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 20px 22px 0;
-}
-.modal-title { font-size: 16px; font-weight: 800; letter-spacing: .02em; }
-.modal-x {
-  width: 28px; height: 28px; border-radius: var(--r);
-  border: 1px solid var(--line); background: transparent;
-  color: var(--fog); cursor: pointer; font-size: 14px;
-  display: flex; align-items: center; justify-content: center;
-  transition: all .15s;
-}
-.modal-x:hover { border-color: var(--line2); color: var(--snow); }
-.modal-body { padding: 18px 22px 22px; }
-.mtabs {
-  display: flex; border-bottom: 1px solid var(--line);
-  margin-bottom: 18px;
-}
+.mx:hover { border-color:var(--line2); color:var(--snow) }
+.mbody { padding:18px 22px 22px }
+.mtabs { display:flex; border-bottom:1px solid var(--line); margin-bottom:18px }
 .mtab {
-  flex: 1; padding: 9px; font-size: 12px; font-weight: 700;
-  text-align: center; cursor: pointer; border: none;
-  background: transparent; color: var(--fog);
-  border-bottom: 2px solid transparent; margin-bottom: -1px;
-  transition: all .18s; letter-spacing: .04em;
+  flex:1; padding:9px; font-size:12px; font-weight:700; text-align:center;
+  cursor:pointer; border:none; background:transparent; color:var(--fog);
+  border-bottom:2px solid transparent; margin-bottom:-1px; transition:all .18s; letter-spacing:.04em;
 }
-.mtab.on { color: var(--gold); border-bottom-color: var(--gold); }
-
-/* form elements */
-.fg { margin-bottom: 14px; }
-.fl {
-  display: block; font-family: var(--mono); font-size: 9px;
-  font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--fog); margin-bottom: 6px;
-}
+.mtab.on { color:var(--gold); border-bottom-color:var(--gold) }
+.fg { margin-bottom:14px }
+.fl { display:block; font-family:var(--mono); font-size:9px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--fog); margin-bottom:6px }
 .fi {
-  width: 100%; background: var(--ink3);
-  border: 1px solid var(--line); border-radius: var(--r);
-  padding: 10px 12px; color: var(--snow);
-  font-family: var(--sans); font-size: 13px;
-  transition: border-color .2s; outline: none;
+  width:100%; background:var(--ink3); border:1px solid var(--line); border-radius:var(--r);
+  padding:10px 12px; color:var(--snow); font-size:13px; transition:border-color .2s; outline:none;
 }
-.fi:focus { border-color: rgba(232,197,71,0.38); }
-.fi::placeholder { color: var(--fog); }
-.fi-hint { font-size: 11px; color: var(--fog); margin-top: 4px; }
-.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.ferr {
-  background: rgba(240,79,106,0.07); border: 1px solid rgba(240,79,106,0.2);
-  border-radius: var(--r); padding: 8px 12px;
-  font-size: 11px; color: #f08898; margin-bottom: 12px; display: none;
-}
-.ferr.on { display: block; }
-.fok {
-  background: rgba(52,209,122,0.07); border: 1px solid rgba(52,209,122,0.2);
-  border-radius: var(--r); padding: 8px 12px;
-  font-size: 11px; color: #5ef0a0; margin-bottom: 12px; display: none;
-}
-.fok.on { display: block; }
+.fi:focus { border-color:rgba(232,197,71,.38) }
+.fi::placeholder { color:var(--fog) }
+.fi-hint { font-size:11px; color:var(--fog); margin-top:4px }
+.ferr { background:rgba(240,79,106,.07); border:1px solid rgba(240,79,106,.2); border-radius:var(--r); padding:8px 12px; font-size:11px; color:#f08898; margin-bottom:12px; display:none }
+.ferr.on { display:block }
+.fok { background:rgba(52,209,122,.07); border:1px solid rgba(52,209,122,.2); border-radius:var(--r); padding:8px 12px; font-size:11px; color:#5ef0a0; margin-bottom:12px; display:none }
+.fok.on { display:block }
 .fsub {
-  width: 100%; background: var(--gold); color: var(--ink);
-  border: none; padding: 12px; border-radius: var(--r);
-  font-family: var(--sans); font-size: 13px; font-weight: 800;
-  letter-spacing: .06em; cursor: pointer; margin-top: 4px;
-  transition: background .18s; text-transform: uppercase;
+  width:100%; background:var(--gold); color:var(--ink); border:none; padding:12px;
+  border-radius:var(--r); font-size:13px; font-weight:800; letter-spacing:.06em;
+  cursor:pointer; margin-top:4px; transition:background .18s; text-transform:uppercase;
 }
-.fsub:hover { background: var(--gold2); }
-.fsub:disabled { opacity: .45; cursor: not-allowed; }
-.info-box {
-  background: var(--ink3); border: 1px solid var(--line);
-  border-radius: var(--r); padding: 12px 14px; margin-bottom: 14px;
+.fsub:hover { background:var(--gold2) }
+.fsub:disabled { opacity:.45; cursor:not-allowed }
+.ibox { background:var(--ink3); border:1px solid var(--line); border-radius:var(--r); padding:12px 14px; margin-bottom:14px }
+.ibox-l { font-family:var(--mono); font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--fog); margin-bottom:4px }
+.ibox-v { font-size:14px; font-weight:700 }
+.members-list { display:flex; flex-direction:column; gap:6px; margin-top:12px }
+.member-row {
+  display:flex; align-items:center; justify-content:space-between;
+  background:var(--ink3); border:1px solid var(--line); border-radius:var(--r); padding:8px 12px;
 }
-.info-box-label { font-family: var(--mono); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--fog); margin-bottom: 4px; }
-.info-box-val { font-size: 14px; font-weight: 700; }
+.member-info { display:flex; align-items:center; gap:8px }
+.member-ava {
+  width:24px; height:24px; border-radius:50%; background:var(--ink4);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono); font-size:9px; color:var(--gold);
+}
+.member-name { font-size:12px; font-weight:600 }
+.member-role { font-family:var(--mono); font-size:9px; color:var(--fog); letter-spacing:.06em }
+.role-tag {
+  font-family:var(--mono); font-size:9px; padding:2px 7px; border-radius:3px; letter-spacing:.06em;
+  background:rgba(232,197,71,.08); color:var(--gold); border:1px solid rgba(232,197,71,.2);
+}
+.role-tag.member { background:rgba(79,143,240,.08); color:#6ba3f5; border-color:rgba(79,143,240,.2) }
+.remove-btn {
+  background:transparent; border:none; color:var(--fog); cursor:pointer;
+  font-size:14px; padding:2px 6px; border-radius:4px; transition:color .15s;
+}
+.remove-btn:hover { color:var(--red) }
 
-/* ─────────────────────────────────────
-   TOAST
-───────────────────────────────────── */
+/* ── TOAST ── */
 .toast {
-  position: fixed; bottom: 24px; left: 50%;
-  transform: translateX(-50%) translateY(12px);
-  background: var(--ink3); border: 1px solid var(--line2);
-  border-radius: var(--r); padding: 9px 18px;
-  font-size: 12px; font-weight: 600;
-  z-index: 999; opacity: 0; pointer-events: none;
-  transition: all .28s cubic-bezier(.22,.68,0,1.2);
-  white-space: nowrap;
+  position:fixed; bottom:24px; left:50%;
+  transform:translateX(-50%) translateY(12px);
+  background:var(--ink3); border:1px solid var(--line2); border-radius:var(--r);
+  padding:9px 18px; font-size:12px; font-weight:600;
+  z-index:999; opacity:0; pointer-events:none;
+  transition:all .28s cubic-bezier(.22,.68,0,1.2); white-space:nowrap;
 }
-.toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
-.toast.ok { color: var(--green); border-color: rgba(52,209,122,.3); }
-.toast.err { color: var(--red); border-color: rgba(240,79,106,.3); }
+.toast.on { opacity:1; transform:translateX(-50%) translateY(0) }
+.toast.ok { color:var(--green); border-color:rgba(52,209,122,.3) }
+.toast.err { color:var(--red); border-color:rgba(240,79,106,.3) }
 
-/* ─────────────────────────────────────
-   RESPONSIVE
-───────────────────────────────────── */
-@media (max-width: 680px) {
-  .hero-inner { grid-template-columns: 1fr; }
-  .hero-stats { display: grid; grid-template-columns: repeat(3,1fr); width: 100%; }
-  .nav-center { display: none; }
-  .mr { grid-template-columns: 1fr; gap: 6px; }
-  .mr-side.right { flex-direction: row; text-align: left; }
+@media(max-width:680px) {
+  .hero-inner { grid-template-columns:1fr }
+  .hero-stats { display:grid; grid-template-columns:repeat(3,1fr); width:100% }
+  .nav-tabs { display:none }
+  .mr { grid-template-columns:1fr; gap:6px }
+  .mr-side.right { flex-direction:row; text-align:left }
 }
 </style>
 </head>
 <body>
+<canvas id="bg"></canvas>
 
-<!-- CANVAS PARTICLES -->
-<canvas id="canvas-bg"></canvas>
-
-<!-- NAV -->
 <nav class="nav">
   <div class="logo" onclick="gotoTab('bracket')">
-    <div class="logo-gem"></div>
-    MK Grand Circuit
+    <div class="gem"></div>MK Grand Circuit
   </div>
-  <div class="nav-center">
-    <button class="ntab on" onclick="gotoTab('bracket')">Bracket</button>
-    <button class="ntab" onclick="gotoTab('teams')">Equipos</button>
-    <button class="ntab" onclick="gotoTab('matches')">Partidos</button>
-    <button class="ntab" onclick="gotoTab('standings')">Clasificación</button>
+  <div class="nav-tabs">
+    <button class="ntab on"  onclick="gotoTab('bracket')">Bracket</button>
+    <button class="ntab"     onclick="gotoTab('teams')">Teams</button>
+    <button class="ntab"     onclick="gotoTab('matches')">Matches</button>
+    <button class="ntab"     onclick="gotoTab('standings')">Standings</button>
   </div>
   <div class="nav-right" id="nav-right"></div>
 </nav>
 
-<!-- HERO -->
 <div class="hero">
   <div class="hero-inner">
     <div>
-      <div class="hero-tag" id="hero-tag">Cargando torneo…</div>
+      <div class="hero-tag" id="hero-tag">Loading…</div>
       <h1 class="hero-h1" id="hero-h1">MK Grand<br><em>Circuit</em></h1>
-      <p class="hero-sub" id="hero-sub">El torneo oficial de Mario Kart. Sigue el bracket en tiempo real.</p>
+      <p class="hero-sub" id="hero-sub">The official Mario Kart tournament platform. Follow the bracket live.</p>
     </div>
     <div class="hero-stats">
-      <div class="hstat"><div class="hstat-n" id="st-teams">—</div><div class="hstat-l">Equipos</div></div>
-      <div class="hstat"><div class="hstat-n" id="st-matches">—</div><div class="hstat-l">Partidos</div></div>
-      <div class="hstat"><div class="hstat-n" id="st-round">—</div><div class="hstat-l">Ronda</div></div>
+      <div class="hstat"><div class="hstat-n" id="st-teams">—</div><div class="hstat-l">Teams</div></div>
+      <div class="hstat"><div class="hstat-n" id="st-rounds">—</div><div class="hstat-l">Rounds</div></div>
+      <div class="hstat"><div class="hstat-n" id="st-matches">—</div><div class="hstat-l">Matches</div></div>
     </div>
   </div>
 </div>
 
-<!-- MAIN -->
 <div class="wrap">
-  <div class="err-bar" id="err-bar">⚠ No se pudo conectar con el servidor — mostrando datos de ejemplo</div>
+  <div class="err-bar" id="err-bar">⚠ Could not reach the server. Check your connection.</div>
 
   <!-- BRACKET -->
   <div class="panel on" id="panel-bracket">
-    <div class="sh"><span class="sh-title">Bracket del torneo</span><span class="sh-badge" id="bracket-badge">—</span></div>
-    <div id="bracket-root"><div class="empty"><div class="spin"></div><div class="empty-title">Cargando bracket…</div></div></div>
+    <div class="sh"><span class="sh-title">Tournament Bracket</span><span class="sh-badge" id="bracket-badge">—</span></div>
+    <div id="bracket-root"><div class="empty"><div class="spin"></div><div class="empty-title">Loading bracket…</div></div></div>
   </div>
 
   <!-- TEAMS -->
   <div class="panel" id="panel-teams">
     <div id="myzone-root"></div>
-    <div class="sh"><span class="sh-title">Equipos participantes</span><span class="sh-badge" id="teams-badge">—</span></div>
-    <div class="teams-grid" id="teams-root"><div class="empty" style="grid-column:1/-1"><div class="spin"></div><div class="empty-title">Cargando…</div></div></div>
+    <div class="sh"><span class="sh-title">Participating Teams</span><span class="sh-badge" id="teams-badge">—</span></div>
+    <div class="teams-grid" id="teams-root"><div class="empty" style="grid-column:1/-1"><div class="spin"></div><div class="empty-title">Loading teams…</div></div></div>
   </div>
 
   <!-- MATCHES -->
   <div class="panel" id="panel-matches">
-    <div class="sh"><span class="sh-title">Partidos</span></div>
+    <div class="sh"><span class="sh-title">Matches</span></div>
     <div class="round-filter" id="round-filter"></div>
-    <div class="matches-list" id="matches-root"><div class="empty"><div class="spin"></div><div class="empty-title">Cargando…</div></div></div>
+    <div class="matches-list" id="matches-root"><div class="empty"><div class="spin"></div><div class="empty-title">Loading matches…</div></div></div>
   </div>
 
   <!-- STANDINGS -->
   <div class="panel" id="panel-standings">
-    <div class="sh"><span class="sh-title">Clasificación general</span><span class="sh-badge">2026</span></div>
-    <div id="standings-root"><div class="empty"><div class="spin"></div><div class="empty-title">Cargando…</div></div></div>
+    <div class="sh"><span class="sh-title">Standings</span><span class="sh-badge" id="standings-badge">—</span></div>
+    <div id="standings-root"><div class="empty"><div class="spin"></div><div class="empty-title">Loading standings…</div></div></div>
   </div>
 </div>
 
-<!-- ═══ MODAL: AUTH ═══ -->
+<!-- MODAL: AUTH -->
 <div class="ov" id="ov-auth" onclick="closeBg(event,'ov-auth')">
   <div class="modal">
-    <div class="modal-head">
-      <div class="modal-title" id="auth-modal-title">Acceder</div>
-      <button class="modal-x" onclick="closeOv('ov-auth')">✕</button>
-    </div>
-    <div class="modal-body">
+    <div class="mhead"><div class="mtitle" id="auth-title">Sign In</div><button class="mx" onclick="closeOv('ov-auth')">✕</button></div>
+    <div class="mbody">
       <div class="mtabs">
-        <button class="mtab on" id="mt-login" onclick="authSwitch('login')">Iniciar sesión</button>
-        <button class="mtab" id="mt-reg" onclick="authSwitch('register')">Crear cuenta</button>
+        <button class="mtab on" id="mt-login" onclick="authTab('login')">Sign In</button>
+        <button class="mtab"    id="mt-reg"   onclick="authTab('register')">Create Account</button>
       </div>
-
-      <!-- login -->
       <div id="f-login">
-        <div class="ferr" id="login-err"></div>
-        <div class="fok" id="login-ok"></div>
-        <div class="fg"><label class="fl">Email</label><input class="fi" id="l-email" type="email" placeholder="tu@email.com"></div>
-        <div class="fg"><label class="fl">Contraseña</label><input class="fi" id="l-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-        <button class="fsub" id="btn-login" onclick="doLogin()">Entrar</button>
+        <div class="ferr" id="l-err"></div><div class="fok" id="l-ok"></div>
+        <div class="fg"><label class="fl">Email</label><input class="fi" id="l-email" type="email" placeholder="you@email.com"></div>
+        <div class="fg"><label class="fl">Password</label><input class="fi" id="l-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+        <button class="fsub" id="btn-login" onclick="doLogin()">Sign In</button>
       </div>
-
-      <!-- register -->
       <div id="f-reg" style="display:none">
-        <div class="ferr" id="reg-err"></div>
-        <div class="fok" id="reg-ok"></div>
-        <div class="fg"><label class="fl">Usuario</label><input class="fi" id="r-user" type="text" placeholder="NombreJugador"></div>
-        <div class="fg"><label class="fl">Email</label><input class="fi" id="r-email" type="email" placeholder="tu@email.com"></div>
-        <div class="fg"><label class="fl">Contraseña</label><input class="fi" id="r-pass" type="password" placeholder="Mínimo 6 caracteres" onkeydown="if(event.key==='Enter')doRegister()"></div>
-        <button class="fsub" id="btn-reg" onclick="doRegister()">Crear cuenta</button>
+        <div class="ferr" id="r-err"></div><div class="fok" id="r-ok"></div>
+        <div class="fg"><label class="fl">Username</label><input class="fi" id="r-user" type="text" placeholder="YourUsername"></div>
+        <div class="fg"><label class="fl">Email</label><input class="fi" id="r-email" type="email" placeholder="you@email.com"></div>
+        <div class="fg"><label class="fl">Password</label><input class="fi" id="r-pass" type="password" placeholder="At least 6 characters" onkeydown="if(event.key==='Enter')doRegister()"></div>
+        <button class="fsub" id="btn-reg" onclick="doRegister()">Create Account</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══ MODAL: CREAR EQUIPO ═══ -->
+<!-- MODAL: CREATE TEAM -->
 <div class="ov" id="ov-cteam" onclick="closeBg(event,'ov-cteam')">
   <div class="modal">
-    <div class="modal-head"><div class="modal-title">Crear equipo</div><button class="modal-x" onclick="closeOv('ov-cteam')">✕</button></div>
-    <div class="modal-body">
+    <div class="mhead"><div class="mtitle">Create Team</div><button class="mx" onclick="closeOv('ov-cteam')">✕</button></div>
+    <div class="mbody">
       <div class="ferr" id="ct-err"></div><div class="fok" id="ct-ok"></div>
-      <div class="fg"><label class="fl">Nombre del equipo</label><input class="fi" id="ct-name" type="text" placeholder="Ej: Skyline Racers"></div>
-      <div class="fg"><label class="fl">Descripción (opcional)</label><input class="fi" id="ct-desc" type="text" placeholder="Breve descripción"></div>
-      <div class="fg"><label class="fl">URL del logo (opcional)</label><input class="fi" id="ct-logo" type="url" placeholder="https://…"><div class="fi-hint">Puedes añadirlo más adelante</div></div>
-      <button class="fsub" id="btn-ct" onclick="doCreateTeam()">Crear equipo</button>
+      <div class="fg"><label class="fl">Team Name</label><input class="fi" id="ct-name" type="text" placeholder="e.g. Skyline Racers"></div>
+      <div class="fg"><label class="fl">Tag <span style="font-weight:400;text-transform:none;letter-spacing:0">(short code, max 15 chars)</span></label><input class="fi" id="ct-tag" type="text" placeholder="SKY" maxlength="15"></div>
+      <div class="fg"><label class="fl">Description (optional)</label><input class="fi" id="ct-desc" type="text" placeholder="Short team description"></div>
+      <button class="fsub" id="btn-ct" onclick="doCreateTeam()">Create Team</button>
     </div>
   </div>
 </div>
 
-<!-- ═══ MODAL: INSCRIBIR ═══ -->
+<!-- MODAL: ENROLL TEAM -->
 <div class="ov" id="ov-enroll" onclick="closeBg(event,'ov-enroll')">
   <div class="modal">
-    <div class="modal-head"><div class="modal-title">Inscribir al torneo</div><button class="modal-x" onclick="closeOv('ov-enroll')">✕</button></div>
-    <div class="modal-body">
+    <div class="mhead"><div class="mtitle">Enroll in Tournament</div><button class="mx" onclick="closeOv('ov-enroll')">✕</button></div>
+    <div class="mbody">
       <div class="ferr" id="en-err"></div><div class="fok" id="en-ok"></div>
-      <div class="info-box"><div class="info-box-label">Torneo</div><div class="info-box-val" id="en-tour">—</div></div>
-      <div class="info-box"><div class="info-box-label">Tu equipo</div><div class="info-box-val" id="en-team">—</div></div>
-      <p style="font-size:12px;color:var(--fog);margin-bottom:16px;line-height:1.7">Al inscribir tu equipo confirmas que todos los miembros estarán disponibles para los partidos programados.</p>
-      <button class="fsub" id="btn-en" onclick="doEnroll()">Confirmar inscripción</button>
+      <div class="ibox"><div class="ibox-l">Tournament</div><div class="ibox-v" id="en-tour">—</div></div>
+      <div class="ibox"><div class="ibox-l">Your Team</div><div class="ibox-v" id="en-team">—</div></div>
+      <p style="font-size:12px;color:var(--fog);margin-bottom:16px;line-height:1.7">By enrolling your team you confirm all members will be available for scheduled matches. Your registration will be reviewed by an admin.</p>
+      <button class="fsub" id="btn-en" onclick="doEnroll()">Confirm Enrollment</button>
     </div>
   </div>
 </div>
 
-<!-- ═══ MODAL: INVITAR ═══ -->
-<div class="ov" id="ov-invite" onclick="closeBg(event,'ov-invite')">
+<!-- MODAL: MANAGE TEAM (captain) -->
+<div class="ov" id="ov-team" onclick="closeBg(event,'ov-team')">
   <div class="modal">
-    <div class="modal-head"><div class="modal-title">Invitar jugador</div><button class="modal-x" onclick="closeOv('ov-invite')">✕</button></div>
-    <div class="modal-body">
-      <div class="ferr" id="inv-err"></div><div class="fok" id="inv-ok"></div>
+    <div class="mhead"><div class="mtitle">Manage Team</div><button class="mx" onclick="closeOv('ov-team')">✕</button></div>
+    <div class="mbody">
+      <div class="ibox"><div class="ibox-l">Your team</div><div class="ibox-v" id="tm-name">—</div></div>
+
+      <!-- add member -->
+      <div class="ferr" id="am-err"></div><div class="fok" id="am-ok"></div>
       <div class="fg">
-        <label class="fl">Email o usuario</label>
-        <input class="fi" id="inv-u" type="text" placeholder="jugador@email.com" onkeydown="if(event.key==='Enter')doInvite()">
-        <div class="fi-hint">El jugador debe tener cuenta en MK Grand Circuit</div>
+        <label class="fl">Add member by User ID</label>
+        <input class="fi" id="am-uid" type="text" placeholder="Paste the player's User ID" onkeydown="if(event.key==='Enter')doAddMember()">
+        <div class="fi-hint">Players can find their ID in their profile. Only the team owner can add members.</div>
       </div>
-      <button class="fsub" id="btn-inv" onclick="doInvite()">Enviar invitación</button>
+      <button class="fsub" id="btn-am" onclick="doAddMember()" style="margin-bottom:16px">Add Member</button>
+
+      <!-- current members -->
+      <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fog);margin-bottom:8px">Current Members</div>
+      <div class="members-list" id="members-list"><div style="font-size:12px;color:var(--fog)">Loading…</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: MY PROFILE (show user ID) -->
+<div class="ov" id="ov-profile" onclick="closeBg(event,'ov-profile')">
+  <div class="modal">
+    <div class="mhead"><div class="mtitle">My Profile</div><button class="mx" onclick="closeOv('ov-profile')">✕</button></div>
+    <div class="mbody">
+      <div class="ibox">
+        <div class="ibox-l">Username</div>
+        <div class="ibox-v" id="prof-username">—</div>
+      </div>
+      <div class="ibox">
+        <div class="ibox-l">User ID <span style="font-size:10px;color:var(--fog);font-weight:400">(share with your captain to be added to a team)</span></div>
+        <div class="ibox-v" id="prof-id" style="font-family:var(--mono);font-size:12px;word-break:break-all">—</div>
+      </div>
+      <div class="ibox">
+        <div class="ibox-l">Role</div>
+        <div class="ibox-v" id="prof-role">—</div>
+      </div>
+      <button class="fsub" onclick="closeOv('ov-profile')" style="background:var(--ink4);color:var(--fog2)">Close</button>
     </div>
   </div>
 </div>
@@ -789,371 +602,427 @@ input,select,textarea{font-family:inherit}
 <div class="toast" id="toast"></div>
 
 <script>
-/* ═══════════════════════════════════════
-   CANVAS PARTICLES
-═══════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   CANVAS BACKGROUND
+═══════════════════════════════════════════ */
 (function(){
-  const c = document.getElementById('canvas-bg');
-  const ctx = c.getContext('2d');
-  let W, H, pts = [];
-
-  function resize(){
-    W = c.width = window.innerWidth;
-    H = c.height = window.innerHeight;
-  }
-
+  const c=document.getElementById('bg'),ctx=c.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
   function init(){
-    pts = [];
-    const n = Math.floor((W * H) / 18000);
-    for(let i=0; i<n; i++){
-      pts.push({
-        x: Math.random()*W, y: Math.random()*H,
-        vx: (Math.random()-.5)*.18, vy: (Math.random()-.5)*.18,
-        r: Math.random()*1.2+.3,
-        a: Math.random()*.6+.15
-      });
-    }
+    pts=[];
+    const n=Math.floor(W*H/22000);
+    for(let i=0;i<n;i++)
+      pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.15,vy:(Math.random()-.5)*.15,r:Math.random()*1.1+.3,a:Math.random()*.5+.12});
   }
-
   function draw(){
     ctx.clearRect(0,0,W,H);
-    pts.forEach(p=>{
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(232,197,71,${p.a})`;
-      ctx.fill();
-      p.x += p.vx; p.y += p.vy;
-      if(p.x<0||p.x>W) p.vx*=-1;
-      if(p.y<0||p.y>H) p.vy*=-1;
-    });
-    // draw connections
-    for(let i=0; i<pts.length; i++){
-      for(let j=i+1; j<pts.length; j++){
-        const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
-        const d=Math.sqrt(dx*dx+dy*dy);
-        if(d<90){
-          ctx.beginPath();
-          ctx.moveTo(pts[i].x, pts[i].y);
-          ctx.lineTo(pts[j].x, pts[j].y);
-          ctx.strokeStyle=`rgba(232,197,71,${.06*(1-d/90)})`;
-          ctx.lineWidth=.5;
-          ctx.stroke();
+    for(let i=0;i<pts.length;i++){
+      const p=pts[i];
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(232,197,71,${p.a})`;ctx.fill();
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+      for(let j=i+1;j<pts.length;j++){
+        const q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<85){
+          ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+          ctx.strokeStyle=`rgba(232,197,71,${.055*(1-d/85)})`;ctx.lineWidth=.5;ctx.stroke();
         }
       }
     }
     requestAnimationFrame(draw);
   }
-
-  window.addEventListener('resize', ()=>{ resize(); init(); });
-  resize(); init(); draw();
+  window.addEventListener('resize',()=>{resize();init()});
+  resize();init();draw();
 })();
 
-/* ═══════════════════════════════════════
-   CONFIG & STATE
-═══════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   CONFIG
+═══════════════════════════════════════════ */
 const API = 'https://backend-mk-grand-circuit.vercel.app';
 
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
 const S = {
-  user:        null,   // { id, username, email, role, token }
-  myTeam:      null,   // equipo del usuario logueado
-  enrolled:    false,  // si myTeam está inscrito al torneo
-  tournament:  null,
-  teams:       [],
-  rounds:      [],
-  matches:     [],
-  roundFilter: null,
+  user:       null,   // { id, username, role, token }
+  myTeam:     null,   // full team object from GET /teams/my-team
+  enrolled:   false,
+  tournament: null,   // from GET /tournaments (first result)
+  pubView:    null,   // from GET /tournaments/:id/public
+  rounds:     [],     // pubView.rounds
+  teams:      [],     // pubView.teams  (registered + approved)
+  matches:    [],     // all matches flattened
+  roundFilter:null,
 };
 
-/* ── persistencia ── */
-(function loadSession(){
-  try {
-    const u = localStorage.getItem('mkgc_u');
-    if (u) S.user = JSON.parse(u);
-  } catch(e){}
-})();
-function saveSession(){ if(S.user) localStorage.setItem('mkgc_u', JSON.stringify(S.user)); }
-function killSession(){ localStorage.removeItem('mkgc_u'); S.user=null; S.myTeam=null; S.enrolled=false; }
+/* ── session ── */
+(function(){ try{ const u=localStorage.getItem('mkgc_u'); if(u) S.user=JSON.parse(u); }catch(e){} })();
+function saveS(){ if(S.user) localStorage.setItem('mkgc_u', JSON.stringify(S.user)); }
+function killS(){ localStorage.removeItem('mkgc_u'); S.user=null; S.myTeam=null; S.enrolled=false; }
 
-/* ── helpers ── */
-const arr = v => Array.isArray(v) ? v : v?.data || v?.teams || v?.tournaments || v?.rounds || v?.matches || v?.registrations || [];
-const ini = (n='?') => (n||'?').split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase().slice(0,3) || '?';
-const byId = id => S.teams.find(t => t.id == id);
-
-async function call(path, opts={}) {
-  const h = { 'Content-Type':'application/json', ...opts.headers };
-  if (S.user?.token) h['Authorization'] = 'Bearer ' + S.user.token;
-  const r = await fetch(API + path, { ...opts, headers: h });
-  const d = await r.json().catch(()=>({}));
-  if (!r.ok) throw Object.assign(new Error(d.message || d.error || 'Error '+r.status), {status:r.status, data:d});
+/* ── api ── */
+async function api(path, opts={}){
+  const h={'Content-Type':'application/json',...opts.headers};
+  if(S.user?.token) h['Authorization']='Bearer '+S.user.token;
+  const r=await fetch(API+path,{...opts,headers:h});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok) throw Object.assign(new Error(d.error||d.message||'HTTP '+r.status),{status:r.status,data:d});
   return d;
 }
 
-function logoEl(team, sz) {
-  const classes = { sm:'m-logo', md:'t-logo', st:'st-logo', mr:'mr-logo' };
-  const cls = classes[sz] || 'm-logo';
-  const lbl = team ? ini(team.name) : '?';
-  return `<div class="${cls}">${team?.logoUrl ? `<img src="${team.logoUrl}" alt="${lbl}" loading="lazy" onerror="this.outerHTML='${lbl}'">` : lbl}</div>`;
+/* ── helpers ── */
+const ini=(n='?')=>(n||'?').split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase().slice(0,3)||'?';
+function logoEl(team, sz){
+  const cls={sm:'m-logo',md:'t-logo',st:'st-logo',mr:'mr-logo'}[sz]||'m-logo';
+  const lbl=team?ini(team.name||team.teamA||'?'):'?';
+  const url=team?.logoUrl||team?.logo_url||null;
+  return `<div class="${cls}">${url?`<img src="${url}" alt="${lbl}" loading="lazy" onerror="this.outerHTML='${lbl}'">`:`${lbl}`}</div>`;
 }
+function setBtn(id,l,fb=''){ const b=document.getElementById(id); if(!b)return; b.disabled=l; if(l)b.dataset.o=b.textContent; b.textContent=l?'…':(fb||b.dataset.o); }
+function msg(id,type,text){ const el=document.getElementById(id); if(!el)return; el.textContent=text; el.className=(type==='err'?'ferr':'fok')+(text?' on':''); }
+function clr(...ids){ ids.forEach(id=>msg(id,'err','')); }
+function toast(text,type='ok'){ const el=document.getElementById('toast'); el.textContent=text; el.className='toast on '+type; setTimeout(()=>el.classList.remove('on'),3000); }
+function openOv(id){ document.getElementById(id).classList.add('on'); }
+function closeOv(id){ document.getElementById(id).classList.remove('on'); }
+function closeBg(e,id){ if(e.target===e.currentTarget) closeOv(id); }
 
-function setBtn(id, loading, fallback='') {
-  const b = document.getElementById(id);
-  if (!b) return;
-  b.disabled = loading;
-  if (loading) b.dataset.orig = b.textContent;
-  b.textContent = loading ? '…' : (fallback || b.dataset.orig || b.textContent);
-}
-
-function msg(id, type, text) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.textContent = text;
-  el.className = (type === 'err' ? 'ferr' : 'fok') + (text ? ' on' : '');
-}
-
-function clearMsgs(...ids) { ids.forEach(id => msg(id, 'err', '')); }
-
-function toast(text, type='ok') {
-  const el = document.getElementById('toast');
-  el.textContent = text;
-  el.className = `toast on ${type}`;
-  setTimeout(()=>el.classList.remove('on'), 3000);
-}
-
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════
    TABS
-═══════════════════════════════════════ */
-function gotoTab(name) {
+═══════════════════════════════════════════ */
+function gotoTab(name){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('on'));
   document.getElementById('panel-'+name).classList.add('on');
-  const order = ['bracket','teams','matches','standings'];
-  document.querySelectorAll('.ntab')[order.indexOf(name)]?.classList.add('on');
+  document.querySelectorAll('.ntab')[['bracket','teams','matches','standings'].indexOf(name)]?.classList.add('on');
 }
 
-/* ═══════════════════════════════════════
-   NAV RENDER
-═══════════════════════════════════════ */
-function renderNav() {
-  const el = document.getElementById('nav-right');
-  const liveBadge = `<div class="live-badge" id="live-badge" style="display:none"><div class="live-dot"></div>EN VIVO</div>`;
-  if (!S.user) {
-    el.innerHTML = `${liveBadge}
-      <button class="nb" onclick="openOv('ov-auth');authSwitch('login')">Entrar</button>
-      <button class="nb nb-gold" onclick="openOv('ov-auth');authSwitch('register')">Registrarse</button>`;
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+function renderNav(){
+  const el=document.getElementById('nav-right');
+  const lb=`<div class="live-badge" id="live-badge" style="display:none"><div class="live-dot"></div>LIVE</div>`;
+  if(!S.user){
+    el.innerHTML=`${lb}
+      <button class="nb" onclick="openOv('ov-auth');authTab('login')">Sign In</button>
+      <button class="nb nb-gold" onclick="openOv('ov-auth');authTab('register')">Register</button>`;
   } else {
-    const isAdmin = S.user.role === 'admin';
-    el.innerHTML = `${liveBadge}
-      ${isAdmin ? `<a href="admin.html"><button class="nb" style="color:var(--gold);border-color:rgba(232,197,71,0.3)">⚙ Admin</button></a>` : ''}
-      <div class="user-chip" onclick="gotoTab('teams')">
+    const isAdmin=S.user.role==='ADMIN';
+    el.innerHTML=`${lb}
+      ${isAdmin?`<a href="admin.html"><button class="nb" style="color:var(--gold);border-color:rgba(232,197,71,.3)">⚙ Admin</button></a>`:''}
+      <div class="user-chip" onclick="openProfile()">
         <div class="ava">${ini(S.user.username)}</div>
         <span class="uname">${S.user.username}</span>
       </div>
-      <button class="nb" onclick="doLogout()">Salir</button>`;
+      <button class="nb" onclick="doLogout()">Sign Out</button>`;
   }
 }
 
-/* ═══════════════════════════════════════
-   AUTH
-═══════════════════════════════════════ */
-function authSwitch(tab) {
-  document.getElementById('f-login').style.display = tab==='login' ? 'block' : 'none';
-  document.getElementById('f-reg').style.display   = tab==='register' ? 'block' : 'none';
-  document.getElementById('mt-login').classList.toggle('on', tab==='login');
-  document.getElementById('mt-reg').classList.toggle('on', tab==='register');
-  document.getElementById('auth-modal-title').textContent = tab==='login' ? 'Acceder' : 'Crear cuenta';
-  clearMsgs('login-err','login-ok','reg-err','reg-ok');
+function openProfile(){
+  document.getElementById('prof-username').textContent=S.user.username;
+  document.getElementById('prof-id').textContent=S.user.id;
+  document.getElementById('prof-role').textContent=S.user.role;
+  openOv('ov-profile');
 }
 
-async function doLogin() {
-  clearMsgs('login-err','login-ok');
-  const email    = document.getElementById('l-email').value.trim();
-  const password = document.getElementById('l-pass').value;
-  if (!email || !password) return msg('login-err','err','Rellena todos los campos.');
-  setBtn('btn-login', true);
-  try {
-    const d = await call('/auth/login', { method:'POST', body: JSON.stringify({email, password}) });
-    /* Mapeo flexible de respuesta */
-    const token = d.token || d.accessToken || d.access_token;
-    const u     = d.user  || d;
-    S.user = {
-      id:       u.id,
-      username: u.username || u.name || email.split('@')[0],
-      email:    u.email    || email,
-      role:     u.role     || 'user',
-      token
-    };
-    saveSession();
+/* ═══════════════════════════════════════════
+   AUTH
+═══════════════════════════════════════════ */
+function authTab(t){
+  document.getElementById('f-login').style.display=t==='login'?'block':'none';
+  document.getElementById('f-reg').style.display=t==='register'?'block':'none';
+  document.getElementById('mt-login').classList.toggle('on',t==='login');
+  document.getElementById('mt-reg').classList.toggle('on',t==='register');
+  document.getElementById('auth-title').textContent=t==='login'?'Sign In':'Create Account';
+  clr('l-err','l-ok','r-err','r-ok');
+}
+
+async function doLogin(){
+  clr('l-err','l-ok');
+  const email=document.getElementById('l-email').value.trim();
+  const password=document.getElementById('l-pass').value;
+  if(!email||!password) return msg('l-err','err','Please fill in all fields.');
+  setBtn('btn-login',true);
+  try{
+    /* Response: { token, user: { id, username, role } } */
+    const d=await api('/auth/login',{method:'POST',body:JSON.stringify({email,password})});
+    S.user={id:d.user.id, username:d.user.username, role:d.user.role, token:d.token};
+    saveS();
     closeOv('ov-auth');
     renderNav();
-    await resolveMyTeam();
+    await loadMyTeam();
     renderMyZone();
-    toast('¡Bienvenido, ' + S.user.username + '!');
-  } catch(e) {
-    msg('login-err','err', e.message || 'Email o contraseña incorrectos.');
-  } finally {
-    setBtn('btn-login', false, 'Entrar');
-  }
+    toast('Welcome back, '+S.user.username+'!');
+  }catch(e){
+    msg('l-err','err',e.status===401?'Invalid email or password.':e.message||'Login failed.');
+  }finally{ setBtn('btn-login',false,'Sign In'); }
 }
 
-async function doRegister() {
-  clearMsgs('reg-err','reg-ok');
-  const username = document.getElementById('r-user').value.trim();
-  const email    = document.getElementById('r-email').value.trim();
-  const password = document.getElementById('r-pass').value;
-  if (!username||!email||!password) return msg('reg-err','err','Rellena todos los campos.');
-  if (password.length < 6) return msg('reg-err','err','La contraseña debe tener al menos 6 caracteres.');
-  setBtn('btn-reg', true);
-  try {
-    await call('/auth/register', { method:'POST', body: JSON.stringify({username, email, password}) });
-    msg('reg-ok','ok','¡Cuenta creada! Ahora puedes iniciar sesión.');
-    setTimeout(()=>authSwitch('login'), 1500);
-  } catch(e) {
-    msg('reg-err','err', e.message || 'No se pudo crear la cuenta.');
-  } finally {
-    setBtn('btn-reg', false, 'Crear cuenta');
-  }
+async function doRegister(){
+  clr('r-err','r-ok');
+  const username=document.getElementById('r-user').value.trim();
+  const email=document.getElementById('r-email').value.trim();
+  const password=document.getElementById('r-pass').value;
+  if(!username||!email||!password) return msg('r-err','err','Please fill in all fields.');
+  if(password.length<6) return msg('r-err','err','Password must be at least 6 characters.');
+  setBtn('btn-reg',true);
+  try{
+    /* POST /auth/register  body: { username, email, password } */
+    await api('/auth/register',{method:'POST',body:JSON.stringify({username,email,password})});
+    msg('r-ok','ok','Account created! You can now sign in.');
+    setTimeout(()=>authTab('login'),1500);
+  }catch(e){
+    msg('r-err','err',e.status===409?'Username or email already taken.':e.message||'Registration failed.');
+  }finally{ setBtn('btn-reg',false,'Create Account'); }
 }
 
-function doLogout() {
-  killSession();
+function doLogout(){
+  killS();
   renderNav();
   renderMyZone();
-  toast('Sesión cerrada');
+  toast('Signed out');
 }
 
-/* ═══════════════════════════════════════
-   CREAR EQUIPO
-═══════════════════════════════════════ */
-async function doCreateTeam() {
-  clearMsgs('ct-err','ct-ok');
-  const name      = document.getElementById('ct-name').value.trim();
-  const description = document.getElementById('ct-desc').value.trim();
-  const logoUrl   = document.getElementById('ct-logo').value.trim();
-  if (!name) return msg('ct-err','err','El nombre del equipo es obligatorio.');
-  setBtn('btn-ct', true);
-  try {
-    const body = { name };
-    if (description) body.description = description;
-    if (logoUrl)      body.logoUrl     = logoUrl;
-    const d = await call('/teams', { method:'POST', body: JSON.stringify(body) });
-    S.myTeam = d.team || d;
-    msg('ct-ok','ok','¡Equipo "'+name+'" creado correctamente!');
-    setTimeout(async ()=>{ closeOv('ov-cteam'); await loadAll(); }, 1200);
-  } catch(e) {
-    msg('ct-err','err', e.message || 'No se pudo crear el equipo.');
-  } finally {
-    setBtn('btn-ct', false, 'Crear equipo');
-  }
+/* ═══════════════════════════════════════════
+   CREATE TEAM
+   POST /teams  body: { name, tag, description? }
+   Requires JWT. User must not already belong to a team.
+═══════════════════════════════════════════ */
+async function doCreateTeam(){
+  clr('ct-err','ct-ok');
+  const name=document.getElementById('ct-name').value.trim();
+  const tag=document.getElementById('ct-tag').value.trim();
+  const description=document.getElementById('ct-desc').value.trim();
+  if(!name) return msg('ct-err','err','Team name is required.');
+  if(!tag)  return msg('ct-err','err','Tag is required (short code like SKY).');
+  setBtn('btn-ct',true);
+  try{
+    const body={name,tag};
+    if(description) body.description=description;
+    const d=await api('/teams',{method:'POST',body:JSON.stringify(body)});
+    S.myTeam=d;
+    msg('ct-ok','ok','Team "'+name+'" created!');
+    setTimeout(async()=>{ closeOv('ov-cteam'); await loadMyTeam(); renderMyZone(); if(S.pubView) renderTeams(); },1200);
+  }catch(e){
+    msg('ct-err','err',e.status===409?'That team name or tag is already taken.':e.message||'Could not create team.');
+  }finally{ setBtn('btn-ct',false,'Create Team'); }
 }
 
-/* ═══════════════════════════════════════
-   INSCRIBIR EQUIPO
-═══════════════════════════════════════ */
-function openEnroll() {
-  if (!S.tournament || !S.myTeam) return;
-  document.getElementById('en-tour').textContent = S.tournament.name;
-  document.getElementById('en-team').textContent = S.myTeam.name;
-  clearMsgs('en-err','en-ok');
+/* ═══════════════════════════════════════════
+   ENROLL TEAM
+   POST /tournaments/:id/register  body: { teamId }
+   Requires JWT + OWNER role in team.
+   Tournament must be OPEN. Creates PENDING registration.
+═══════════════════════════════════════════ */
+function openEnroll(){
+  if(!S.tournament||!S.myTeam) return;
+  document.getElementById('en-tour').textContent=S.tournament.name;
+  document.getElementById('en-team').textContent=S.myTeam.name;
+  clr('en-err','en-ok');
   openOv('ov-enroll');
 }
 
-async function doEnroll() {
-  clearMsgs('en-err','en-ok');
-  setBtn('btn-en', true);
-  try {
-    await call('/registrations', {
+async function doEnroll(){
+  clr('en-err','en-ok');
+  setBtn('btn-en',true);
+  try{
+    /* POST /tournaments/:id/register  body: { teamId } */
+    await api(`/tournaments/${S.tournament.id}/register`,{
       method:'POST',
-      body: JSON.stringify({ tournamentId: S.tournament.id, teamId: S.myTeam.id })
+      body:JSON.stringify({teamId:S.myTeam.id})
     });
-    S.enrolled = true;
-    msg('en-ok','ok','¡Equipo inscrito correctamente!');
-    setTimeout(()=>{ closeOv('ov-enroll'); renderMyZone(); }, 1100);
-    toast('Equipo inscrito al torneo ✓');
-  } catch(e) {
-    msg('en-err','err', e.message || 'No se pudo inscribir el equipo.');
-  } finally {
-    setBtn('btn-en', false, 'Confirmar inscripción');
+    S.enrolled=true;
+    msg('en-ok','ok','Enrollment submitted! Awaiting admin approval.');
+    setTimeout(()=>{ closeOv('ov-enroll'); renderMyZone(); },1200);
+    toast('Enrollment submitted ✓');
+  }catch(e){
+    const txt=e.status===409?'Your team is already enrolled or the tournament is closed.':e.message||'Enrollment failed.';
+    msg('en-err','err',txt);
+  }finally{ setBtn('btn-en',false,'Confirm Enrollment'); }
+}
+
+/* ═══════════════════════════════════════════
+   ADD MEMBER
+   POST /teams/:id/members  body: { userId }
+   Requires JWT + OWNER role.
+   userId must be a valid UUID of an existing user.
+═══════════════════════════════════════════ */
+async function doAddMember(){
+  clr('am-err','am-ok');
+  const userId=document.getElementById('am-uid').value.trim();
+  if(!userId) return msg('am-err','err','Paste the player\'s User ID.');
+  if(!S.myTeam) return msg('am-err','err','You don\'t have a team.');
+  setBtn('btn-am',true);
+  try{
+    await api(`/teams/${S.myTeam.id}/members`,{
+      method:'POST',
+      body:JSON.stringify({userId})
+    });
+    msg('am-ok','ok','Member added successfully.');
+    document.getElementById('am-uid').value='';
+    await loadMyTeam();
+    renderMembersList();
+    toast('Member added!');
+  }catch(e){
+    const txt=e.status===409?'That player is already on a team.':
+              e.status===404?'User not found. Check the ID.':
+              e.status===403?'Only the team owner can add members.':
+              e.message||'Could not add member.';
+    msg('am-err','err',txt);
+  }finally{ setBtn('btn-am',false,'Add Member'); }
+}
+
+/* ═══════════════════════════════════════════
+   REMOVE MEMBER
+   DELETE /teams/:teamId/members/:userId
+   Requires JWT + OWNER role. Cannot remove the owner.
+═══════════════════════════════════════════ */
+async function doRemoveMember(userId){
+  if(!confirm('Remove this member from the team?')) return;
+  try{
+    await api(`/teams/${S.myTeam.id}/members/${userId}`,{method:'DELETE'});
+    toast('Member removed');
+    await loadMyTeam();
+    renderMembersList();
+  }catch(e){
+    toast(e.message||'Could not remove member.','err');
   }
 }
 
-/* ═══════════════════════════════════════
-   INVITAR JUGADOR
-═══════════════════════════════════════ */
-async function doInvite() {
-  clearMsgs('inv-err','inv-ok');
-  const userIdentifier = document.getElementById('inv-u').value.trim();
-  if (!userIdentifier) return msg('inv-err','err','Introduce el email o nombre del jugador.');
-  setBtn('btn-inv', true);
-  try {
-    /* endpoint tentativo — si el backend no lo tiene aún, falla silenciosamente */
-    await call(`/teams/${S.myTeam.id}/invite`, {
-      method:'POST',
-      body: JSON.stringify({ userIdentifier })
-    });
-    msg('inv-ok','ok','Invitación enviada.');
-    document.getElementById('inv-u').value = '';
-  } catch(e) {
-    /* fallback amigable si el endpoint no existe todavía */
-    msg('inv-ok','ok','Invitación registrada. El jugador recibirá una notificación cuando esta función esté activa.');
-    document.getElementById('inv-u').value = '';
-  } finally {
-    setBtn('btn-inv', false, 'Enviar invitación');
+function renderMembersList(){
+  const el=document.getElementById('members-list');
+  if(!S.myTeam?.members?.length){ el.innerHTML=`<div style="font-size:12px;color:var(--fog)">No members yet.</div>`; return; }
+  el.innerHTML=S.myTeam.members.map(m=>`
+    <div class="member-row">
+      <div class="member-info">
+        <div class="member-ava">${ini(m.username||'?')}</div>
+        <div>
+          <div class="member-name">${m.username||'Unknown'}</div>
+          <div class="member-role">${m.id}</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="role-tag${m.role==='MEMBER'?' member':''}">${m.role}</span>
+        ${m.role!=='OWNER'?`<button class="remove-btn" onclick="doRemoveMember('${m.id}')" title="Remove member">✕</button>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function openTeamModal(){
+  if(!S.myTeam) return;
+  document.getElementById('tm-name').textContent=S.myTeam.name;
+  clr('am-err','am-ok');
+  document.getElementById('am-uid').value='';
+  renderMembersList();
+  openOv('ov-team');
+}
+
+/* ═══════════════════════════════════════════
+   LOAD MY TEAM
+   GET /teams/my-team  (requires JWT)
+   Returns full team object with members array.
+═══════════════════════════════════════════ */
+async function loadMyTeam(){
+  if(!S.user) return;
+  try{
+    S.myTeam=await api('/teams/my-team');
+  }catch(e){
+    /* 404 = user has no team, that's fine */
+    if(e.status!==404) console.warn('loadMyTeam error:',e.message);
+    S.myTeam=null;
+  }
+  /* check enrollment */
+  S.enrolled=false;
+  if(S.myTeam&&S.tournament){
+    try{
+      const regs=await api(`/tournaments/${S.tournament.id}/registrations`);
+      const arr=Array.isArray(regs)?regs:[];
+      S.enrolled=arr.some(r=>r.teamId===S.myTeam.id||r.team_id===S.myTeam.id);
+    }catch(e){ /* ignore */ }
   }
 }
 
-/* ═══════════════════════════════════════
-   RESOLVE MY TEAM
-═══════════════════════════════════════ */
-async function resolveMyTeam() {
-  if (!S.user) return;
-  /* busca en los equipos ya cargados cuál pertenece a este usuario */
-  const t = S.teams.find(x =>
-    x.ownerId   == S.user.id ||
-    x.captainId == S.user.id ||
-    x.userId    == S.user.id
-  );
-  if (!t) { S.myTeam = null; S.enrolled = false; return; }
-  S.myTeam = t;
-  /* verificar inscripción */
-  try {
-    const regs = arr(await call(`/registrations?teamId=${t.id}`).catch(()=>[]));
-    S.enrolled = S.tournament
-      ? regs.some(r => r.tournamentId == S.tournament?.id)
-      : regs.length > 0;
-  } catch(e) { S.enrolled = false; }
+/* ═══════════════════════════════════════════
+   MY ZONE RENDER
+═══════════════════════════════════════════ */
+function renderMyZone(){
+  const el=document.getElementById('myzone-root');
+  if(!S.user){ el.innerHTML=''; return; }
+  if(!S.myTeam){
+    el.innerHTML=`<div class="my-zone">
+      <div class="mz-head">
+        <div class="mz-title">My Zone</div>
+        <div class="mz-btns"><button class="nb nb-gold" onclick="openOv('ov-cteam')">+ Create Team</button></div>
+      </div>
+      <p style="font-size:12px;color:var(--fog);line-height:1.7">You don't have a team yet. Create one to enroll in the tournament.</p>
+    </div>`;
+    return;
+  }
+  const t=S.myTeam;
+  /* stats from matches */
+  const allM=S.matches.filter(m=>m.teamAId===t.id||m.teamBId===t.id);
+  const wins=allM.filter(m=>m.winnerTeamId===t.id).length;
+  const played=allM.filter(m=>m.status==='PLAYED').length;
+  const isOwner=t.members?.some(m=>m.id===S.user.id&&m.role==='OWNER');
+
+  el.innerHTML=`<div class="my-zone has">
+    <div class="mz-head">
+      <div class="mz-title">My Team<span>${t.name}</span></div>
+      <div class="mz-btns">
+        ${isOwner?`<button class="nb" onclick="openTeamModal()">Manage Team</button>`:''}
+        ${isOwner&&!S.enrolled?`<button class="nb nb-gold" onclick="openEnroll()">Enroll in Tournament</button>`:''}
+        ${S.enrolled?`<div class="enrolled-tag">✓ Enrolled</div>`:''}
+      </div>
+    </div>
+    <div class="mz-stats">
+      <div class="mz-s"><div class="mz-s-n">${t.members?.length||1}</div><div class="mz-s-l">Members</div></div>
+      <div class="mz-s"><div class="mz-s-n">${played}</div><div class="mz-s-l">Played</div></div>
+      <div class="mz-s"><div class="mz-s-n" style="color:var(--green)">${wins}</div><div class="mz-s-l">Wins</div></div>
+      <div class="mz-s">
+        <div class="mz-s-n" style="font-size:13px;font-family:var(--sans);font-weight:700;color:${S.enrolled?'var(--green)':'var(--fog)'}">
+          ${S.enrolled?'Enrolled':'Not enrolled'}
+        </div>
+        <div class="mz-s-l">Tournament</div>
+      </div>
+    </div>
+  </div>`;
 }
 
-/* ═══════════════════════════════════════
-   LOAD DATA
-═══════════════════════════════════════ */
-async function loadAll() {
-  try {
-    const tData = await call('/tournaments');
-    const list  = arr(tData);
-    if (!list.length) { renderEmpty(); return; }
-    S.tournament = list[0];
+/* ═══════════════════════════════════════════
+   LOAD ALL DATA
+   Primary endpoint: GET /tournaments/:id/public
+   Returns: { tournament, teams, rounds[{id,name,orderIndex,matches[]}], unassignedMatches }
+═══════════════════════════════════════════ */
+async function loadAll(){
+  try{
+    /* Step 1: get tournament list */
+    const tours=await api('/tournaments');
+    const list=Array.isArray(tours)?tours:[];
+    if(!list.length){ renderEmpty('No tournament available yet.'); return; }
+    S.tournament=list[0];
 
-    const [teData, roData, maData] = await Promise.all([
-      call('/teams').catch(()=>[]),
-      call(`/tournaments/${S.tournament.id}/rounds`).catch(()=>call('/rounds').catch(()=>[])),
-      call(`/tournaments/${S.tournament.id}/matches`).catch(()=>call('/matches').catch(()=>[]))
-    ]);
+    /* Step 2: get full public view */
+    const pub=await api(`/tournaments/${S.tournament.id}/public`);
+    S.pubView=pub;
 
-    S.teams   = arr(teData);
-    S.rounds  = arr(roData);
-    S.matches = arr(maData);
+    /* Extract data from public view */
+    S.teams=pub.teams||[];                              // [{ teamId, name, tag, logoUrl }]
+    S.rounds=pub.rounds||[];                            // [{ id, name, orderIndex, matches[] }]
+    S.matches=[...pub.rounds.flatMap(r=>r.matches), ...(pub.unassignedMatches||[])];
 
-    await resolveMyTeam();
-    renderAll();
     document.getElementById('err-bar').classList.remove('on');
-  } catch(e) {
-    console.warn('API unavailable, loading demo data', e);
+    await loadMyTeam();
+    renderAll();
+  }catch(e){
+    console.error('loadAll failed:',e);
     document.getElementById('err-bar').classList.add('on');
-    loadDemo();
   }
 }
 
-function renderAll() {
+function renderAll(){
   renderHero();
   renderBracket();
   renderTeams();
@@ -1162,203 +1031,115 @@ function renderAll() {
   renderMyZone();
 }
 
-/* ═══════════════════════════════════════
-   DEMO DATA
-═══════════════════════════════════════ */
-function loadDemo() {
-  S.tournament = { id:1, name:'Grand Prix Valencia', status:'active', description:'El torneo inaugural de MK Grand Circuit — solo los mejores alcanzan el podio.' };
-  S.teams = [
-    {id:1,name:'Skyline Racers'},{id:2,name:'Nova X'},
-    {id:3,name:'Phoenix Squad'},{id:4,name:'Blaze'},
-    {id:5,name:'Storm Riders'},{id:6,name:'Iron Drift'},
-    {id:7,name:'Apex'},{id:8,name:'Ghost Circuit'}
-  ];
-  S.rounds = [
-    {id:1,name:'Cuartos de Final',roundNumber:1},
-    {id:2,name:'Semifinal',roundNumber:2},
-    {id:3,name:'Final',roundNumber:3}
-  ];
-  S.matches = [
-    {id:1,roundId:1,team1Id:1,team2Id:2,score1:3,score2:1,status:'completed',winnerId:1},
-    {id:2,roundId:1,team1Id:3,team2Id:4,score1:2,score2:3,status:'completed',winnerId:4},
-    {id:3,roundId:1,team1Id:5,team2Id:6,score1:null,score2:null,status:'live',winnerId:null},
-    {id:4,roundId:1,team1Id:7,team2Id:8,score1:null,score2:null,status:'pending',winnerId:null},
-    {id:5,roundId:2,team1Id:1,team2Id:4,score1:null,score2:null,status:'pending',winnerId:null},
-    {id:6,roundId:2,team1Id:null,team2Id:null,score1:null,score2:null,status:'pending',winnerId:null},
-    {id:7,roundId:3,team1Id:null,team2Id:null,score1:null,score2:null,status:'pending',winnerId:null}
-  ];
-  renderAll();
-}
-
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════
    RENDER HERO
-═══════════════════════════════════════ */
-function renderHero() {
-  const t = S.tournament;
-  const live = S.matches.find(m => m.status === 'live');
-  const lb = document.getElementById('live-badge');
-  if (lb) lb.style.display = live ? 'flex' : 'none';
-  document.getElementById('hero-tag').textContent =
-    live ? '● Torneo en vivo' : t.status === 'active' ? 'Torneo activo' : (t.status || 'Torneo');
-  // title: rompe en la última palabra
-  document.getElementById('hero-h1').innerHTML =
-    t.name.replace(/^(.*)\s(\S+)$/, '$1<br><em>$2</em>');
-  document.getElementById('hero-sub').textContent =
-    t.description || 'El torneo oficial de MK Grand Circuit.';
-  document.getElementById('st-teams').textContent   = S.teams.length  || '—';
-  document.getElementById('st-matches').textContent = S.matches.length || '—';
-  const sr = [...S.rounds].sort((a,b)=>(a.roundNumber||0)-(b.roundNumber||0));
-  const cur = sr.find(r => S.matches.filter(m=>m.roundId===r.id).some(m=>m.status==='live'||m.status==='pending'));
-  document.getElementById('st-round').textContent = cur ? (cur.roundNumber || '—') : (sr.length || '—');
+═══════════════════════════════════════════ */
+function renderHero(){
+  const t=S.tournament;
+  const hasLive=S.matches.some(m=>m.status==='IN_PROGRESS');
+  const lb=document.getElementById('live-badge');
+  if(lb) lb.style.display=hasLive?'flex':'none';
+
+  const statusMap={OPEN:'Registration open',CLOSED:'Registration closed',IN_PROGRESS:'In progress',FINISHED:'Finished'};
+  document.getElementById('hero-tag').textContent=statusMap[t.status]||t.status||'Active';
+  document.getElementById('hero-h1').innerHTML='MK Grand<br><em>Circuit</em>';
+  document.getElementById('hero-sub').textContent=t.description||'The official Mario Kart Grand Circuit tournament.';
+  document.getElementById('st-teams').textContent=S.teams.length||'—';
+  document.getElementById('st-rounds').textContent=S.rounds.length||'—';
+  document.getElementById('st-matches').textContent=S.matches.length||'—';
 }
 
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════
    RENDER BRACKET
-═══════════════════════════════════════ */
-function renderBracket() {
-  if (!S.rounds.length) {
-    document.getElementById('bracket-root').innerHTML =
-      `<div class="empty"><div class="empty-ico">🏆</div><div class="empty-title">Bracket no disponible aún</div><div class="empty-sub">Se generará cuando comiencen las rondas</div></div>`;
+   pubView.rounds[].matches use: teamAId, teamBId, teamA, teamB,
+   scoreA, scoreB, status, winnerTeamId
+═══════════════════════════════════════════ */
+function renderBracket(){
+  if(!S.rounds.length){
+    document.getElementById('bracket-root').innerHTML=`<div class="empty"><div class="empty-ico">🏆</div><div class="empty-title">Bracket not available yet</div><div class="empty-sub">Rounds will appear here once the tournament starts</div></div>`;
     return;
   }
-  const sr = [...S.rounds].sort((a,b)=>(a.roundNumber||0)-(b.roundNumber||0));
-  document.getElementById('bracket-badge').textContent = sr.length + ' rondas · ' + S.matches.length + ' partidos';
+  const sr=[...S.rounds].sort((a,b)=>(a.orderIndex||0)-(b.orderIndex||0));
+  document.getElementById('bracket-badge').textContent=`${sr.length} rounds · ${S.matches.length} matches`;
 
-  let html = `<div class="bracket-scroll"><div class="bracket-body">`;
-  sr.forEach((r, ri) => {
-    const ms = S.matches.filter(m => m.roundId === r.id);
-    html += `<div class="r-col">
-      <div class="r-label">${r.name || 'Ronda ' + r.roundNumber}</div>
-      <div class="r-matches">`;
-    if (!ms.length) {
-      html += `<div class="m-slot"><div class="m-card"><div class="m-team"><span class="m-tname tbd">Por definir</span></div></div></div>`;
+  let h=`<div class="bracket-scroll"><div class="bracket-body">`;
+  sr.forEach((r,ri)=>{
+    const ms=r.matches||[];
+    h+=`<div class="r-col"><div class="r-label">${r.name}</div><div class="r-matches">`;
+    if(!ms.length){
+      h+=`<div class="m-slot"><div class="m-card"><div class="m-team"><span class="m-tname tbd">TBD</span></div></div></div>`;
     } else {
-      ms.forEach(m => {
-        const t1 = byId(m.team1Id), t2 = byId(m.team2Id);
-        const has = m.score1 !== null && m.score2 !== null;
-        const isLive = m.status === 'live';
-        const t1w = has && m.winnerId == m.team1Id;
-        const t2w = has && m.winnerId == m.team2Id;
-        html += `<div class="m-slot"><div class="m-card${isLive?' live':''}">
-          ${isLive ? '<div class="m-card-live-bar"></div>' : ''}
-          <div class="m-team${t1w?' won':t2w?' lost':''}">
-            ${t1 ? logoEl(t1,'sm') : ''}
-            <span class="m-tname${!t1?' tbd':''}">${t1?t1.name:'Por definir'}</span>
-            ${has ? `<span class="m-score${t1w?' w':''}">${m.score1}</span>` : ''}
+      ms.forEach(m=>{
+        const isLive=m.status==='IN_PROGRESS';
+        const isDone=m.status==='PLAYED';
+        const has=m.scoreA!==null&&m.scoreB!==null&&isDone;
+        const aWin=has&&m.winnerTeamId===m.teamAId;
+        const bWin=has&&m.winnerTeamId===m.teamBId;
+        const aLogo=m.teamAId?logoEl({name:m.teamA,logoUrl:null},'sm'):'';
+        const bLogo=m.teamBId?logoEl({name:m.teamB,logoUrl:null},'sm'):'';
+        h+=`<div class="m-slot"><div class="m-card${isLive?' live':''}">
+          ${isLive?'<div class="m-live-bar"></div>':''}
+          <div class="m-team${aWin?' won':bWin?' lost':''}">
+            ${aLogo}<span class="m-tname${!m.teamAId?' tbd':''}">${m.teamA||'TBD'}</span>
+            ${has?`<span class="m-score${aWin?' w':''}">${m.scoreA}</span>`:''}
           </div>
-          <div class="m-team${t2w?' won':t1w?' lost':''}">
-            ${t2 ? logoEl(t2,'sm') : ''}
-            <span class="m-tname${!t2?' tbd':''}">${t2?t2.name:'Por definir'}</span>
-            ${has ? `<span class="m-score${t2w?' w':''}">${m.score2}</span>` : ''}
+          <div class="m-team${bWin?' won':aWin?' lost':''}">
+            ${bLogo}<span class="m-tname${!m.teamBId?' tbd':''}">${m.teamB||'TBD'}</span>
+            ${has?`<span class="m-score${bWin?' w':''}">${m.scoreB}</span>`:''}
           </div>
         </div></div>`;
       });
     }
-    html += `</div></div>`;
-    if (ri < sr.length - 1) {
-      html += `<div class="b-sep"><div class="b-sep-line"></div></div>`;
-    }
+    h+=`</div></div>`;
+    if(ri<sr.length-1) h+=`<div class="b-sep"><div class="b-line"></div></div>`;
   });
 
-  // campeón
-  const fr = sr[sr.length-1];
-  const fm = fr ? S.matches.find(m=>m.roundId===fr.id) : null;
-  const ch = fm?.winnerId ? byId(fm.winnerId) : null;
-  html += `<div class="b-winner">
-    <div class="winner-card">
-      <span class="winner-crown">🏆</span>
-      <div class="winner-label">Campeón</div>
-      <div class="winner-name">${ch ? ch.name : '???'}</div>
-    </div>
-  </div>`;
-  html += `</div></div>`;
-  document.getElementById('bracket-root').innerHTML = html;
+  /* champion */
+  const last=sr[sr.length-1];
+  const lastMs=last?.matches||[];
+  const final=lastMs[0];
+  const champ=final?.winnerTeamId?final.winnerTeam||'Champion':null;
+  h+=`<div class="b-winner"><div class="winner-card">
+    <span class="winner-crown">🏆</span>
+    <div class="winner-lbl">Champion</div>
+    <div class="winner-name">${champ||'???'}</div>
+  </div></div>`;
+  h+=`</div></div>`;
+  document.getElementById('bracket-root').innerHTML=h;
 }
 
-/* ═══════════════════════════════════════
-   MY ZONE (usuario logueado en pestaña equipos)
-═══════════════════════════════════════ */
-function renderMyZone() {
-  const el = document.getElementById('myzone-root');
-  if (!S.user) { el.innerHTML = ''; return; }
-
-  if (!S.myTeam) {
-    el.innerHTML = `<div class="my-zone">
-      <div class="mz-head">
-        <div class="mz-title">Mi zona</div>
-        <div class="mz-actions">
-          <button class="nb nb-gold" onclick="openOv('ov-cteam')">+ Crear equipo</button>
-        </div>
-      </div>
-      <p style="font-size:12px;color:var(--fog);line-height:1.7">Aún no tienes equipo. Crea uno para inscribirte al torneo.</p>
-    </div>`;
-    return;
-  }
-
-  const t = S.myTeam;
-  const tMs = S.matches.filter(m => m.team1Id==t.id || m.team2Id==t.id);
-  const wins = tMs.filter(m => m.winnerId==t.id).length;
-  const played = tMs.filter(m => m.status==='completed').length;
-
-  el.innerHTML = `<div class="my-zone has-team">
-    <div class="mz-head">
-      <div class="mz-title">Mi equipo<span>${t.name}</span></div>
-      <div class="mz-actions">
-        <button class="nb" onclick="openOv('ov-invite')">+ Invitar jugador</button>
-        ${!S.enrolled
-          ? `<button class="nb nb-gold" onclick="openEnroll()">Inscribir al torneo</button>`
-          : `<div class="enrolled-pill">✓ Inscrito</div>`}
-      </div>
-    </div>
-    <div class="mz-stats">
-      <div class="mz-stat"><div class="mz-stat-n">${played}</div><div class="mz-stat-l">Partidos</div></div>
-      <div class="mz-stat"><div class="mz-stat-n" style="color:var(--green)">${wins}</div><div class="mz-stat-l">Victorias</div></div>
-      <div class="mz-stat"><div class="mz-stat-n">${played>0?Math.round(wins/played*100):0}%</div><div class="mz-stat-l">Win rate</div></div>
-      <div class="mz-stat">
-        <div class="mz-stat-n" style="font-size:13px;font-family:var(--sans);font-weight:700;color:${S.enrolled?'var(--green)':'var(--fog)'}">
-          ${S.enrolled?'Inscrito':'Sin inscribir'}
-        </div>
-        <div class="mz-stat-l">Torneo</div>
-      </div>
-    </div>
-  </div>`;
-}
-
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════
    RENDER TEAMS
-═══════════════════════════════════════ */
-function renderTeams() {
-  document.getElementById('teams-badge').textContent = S.teams.length + ' equipos';
-  if (!S.teams.length) {
-    document.getElementById('teams-root').innerHTML =
-      `<div class="empty" style="grid-column:1/-1"><div class="empty-ico">👥</div><div class="empty-title">Sin equipos aún</div></div>`;
+   S.teams = [{ teamId, name, tag, logoUrl }]
+   (only APPROVED registrations)
+═══════════════════════════════════════════ */
+function renderTeams(){
+  document.getElementById('teams-badge').textContent=`${S.teams.length} teams`;
+  if(!S.teams.length){
+    document.getElementById('teams-root').innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-ico">👥</div><div class="empty-title">No teams enrolled yet</div></div>`;
     return;
   }
-  document.getElementById('teams-root').innerHTML = S.teams.map(t => {
-    const ms    = S.matches.filter(m => m.team1Id==t.id || m.team2Id==t.id);
-    const wins  = ms.filter(m => m.winnerId==t.id).length;
-    const played = ms.filter(m => m.status==='completed').length;
-    const mine  = S.myTeam?.id == t.id;
-    const banner = t.bannerUrl
-      ? `<img src="${t.bannerUrl}" alt="" loading="lazy">`
-      : `<div class="t-banner-ph">${ini(t.name)}</div>`;
-    const logo = t.logoUrl
-      ? `<img src="${t.logoUrl}" alt="${ini(t.name)}" loading="lazy" onerror="this.outerHTML='${ini(t.name)}'">`
-      : ini(t.name);
+  document.getElementById('teams-root').innerHTML=S.teams.map(t=>{
+    const id=t.teamId;
+    const tMs=S.matches.filter(m=>m.teamAId===id||m.teamBId===id);
+    const wins=tMs.filter(m=>m.winnerTeamId===id).length;
+    const played=tMs.filter(m=>m.status==='PLAYED').length;
+    const mine=S.myTeam?.id===id;
+    const logo=t.logoUrl?`<img src="${t.logoUrl}" alt="${ini(t.name)}" loading="lazy" onerror="this.outerHTML='${ini(t.name)}'">`:`${ini(t.name)}`;
     return `<div class="t-card${mine?' mine':''}">
-      <div class="t-banner">${banner}</div>
+      <div class="t-banner"><div class="t-banner-ph">${ini(t.name)}</div></div>
       <div class="t-body">
         <div class="t-ident">
           <div class="t-logo">${logo}</div>
           <div>
             <div class="t-name">${t.name}</div>
-            <div class="t-desc">${t.description||'Equipo participante'}</div>
-            ${mine ? '<div class="t-mine-tag">MI EQUIPO</div>' : ''}
+            <div class="t-tag">${t.tag||''}</div>
+            ${mine?'<div class="t-mine-tag">MY TEAM</div>':''}
           </div>
         </div>
         <div class="t-row">
-          <div class="t-st"><div class="t-st-n">${played}</div><div class="t-st-l">PJ</div></div>
-          <div class="t-st"><div class="t-st-n">${wins}</div><div class="t-st-l">V</div></div>
+          <div class="t-st"><div class="t-st-n">${played}</div><div class="t-st-l">Played</div></div>
+          <div class="t-st"><div class="t-st-n">${wins}</div><div class="t-st-l">Wins</div></div>
           <div class="t-st"><div class="t-st-n">${played>0?Math.round(wins/played*100):0}%</div><div class="t-st-l">WR</div></div>
         </div>
       </div>
@@ -1366,124 +1147,105 @@ function renderTeams() {
   }).join('');
 }
 
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════
    RENDER MATCHES
-═══════════════════════════════════════ */
-function renderMatches() {
-  const sr = [...S.rounds].sort((a,b)=>(a.roundNumber||0)-(b.roundNumber||0));
-  document.getElementById('round-filter').innerHTML =
-    `<button class="rf-btn${S.roundFilter===null?' on':''}" onclick="setRF(null)">Todos</button>` +
-    sr.map(r =>
-      `<button class="rf-btn${S.roundFilter===r.id?' on':''}" onclick="setRF(${r.id})">${r.name||'R'+r.roundNumber}</button>`
-    ).join('');
+   Match fields: teamAId, teamBId, teamA, teamB,
+   scoreA, scoreB, status (PENDING/IN_PROGRESS/PLAYED/CANCELLED),
+   winnerTeamId, roundId
+═══════════════════════════════════════════ */
+function renderMatches(){
+  const sr=[...S.rounds].sort((a,b)=>(a.orderIndex||0)-(b.orderIndex||0));
+  document.getElementById('round-filter').innerHTML=
+    `<button class="rfbtn${S.roundFilter===null?' on':''}" onclick="setRF(null)">All</button>`+
+    sr.map(r=>`<button class="rfbtn${S.roundFilter===r.id?' on':''}" onclick="setRF('${r.id}')">${r.name}</button>`).join('');
 
-  const vis = S.roundFilter ? S.matches.filter(m=>m.roundId===S.roundFilter) : S.matches;
-  if (!vis.length) {
-    document.getElementById('matches-root').innerHTML =
-      `<div class="empty"><div class="empty-ico">🎮</div><div class="empty-title">Sin partidos aún</div></div>`;
+  const vis=S.roundFilter?S.matches.filter(m=>m.roundId===S.roundFilter):S.matches;
+  if(!vis.length){
+    document.getElementById('matches-root').innerHTML=`<div class="empty"><div class="empty-ico">🎮</div><div class="empty-title">No matches scheduled yet</div></div>`;
     return;
   }
-  document.getElementById('matches-root').innerHTML = vis.map(m => {
-    const t1 = byId(m.team1Id), t2 = byId(m.team2Id);
-    const r  = S.rounds.find(x=>x.id===m.roundId);
-    const has = m.score1!==null && m.score2!==null;
-    const isLive = m.status==='live';
-    const isDone = m.status==='completed';
-    const t1w = has && m.winnerId==m.team1Id;
-    const t2w = has && m.winnerId==m.team2Id;
-    const liveLogoEl = (team) => {
-      if (!team) return `<div class="mr-logo">?</div>`;
-      return `<div class="mr-logo">${team.logoUrl?`<img src="${team.logoUrl}" alt="">`:ini(team.name)}</div>`;
-    };
+  document.getElementById('matches-root').innerHTML=vis.map(m=>{
+    const r=S.rounds.find(x=>x.id===m.roundId);
+    const isLive=m.status==='IN_PROGRESS';
+    const isDone=m.status==='PLAYED';
+    const has=m.scoreA!==null&&m.scoreB!==null&&isDone;
+    const aWin=has&&m.winnerTeamId===m.teamAId;
+    const bWin=has&&m.winnerTeamId===m.teamBId;
+    const aLogo=`<div class="mr-logo">${m.teamA?ini(m.teamA):'?'}</div>`;
+    const bLogo=`<div class="mr-logo">${m.teamB?ini(m.teamB):'?'}</div>`;
+    const statusLabel=isLive?'live':isDone?'finished':'pending';
     return `<div class="mr${isLive?' live':isDone?' done':''}">
       <div class="mr-side">
-        ${liveLogoEl(t1)}
+        ${aLogo}
         <div>
-          <div class="mr-tname${t1w?' w':t2w?' l':''}">${t1?t1.name:'Por definir'}</div>
+          <div class="mr-tname${aWin?' w':bWin?' l':''}">${m.teamA||'TBD'}</div>
           <div class="mr-meta">${r?.name||''}</div>
         </div>
       </div>
       <div class="mr-center">
-        ${has
-          ? `<div class="mr-score">${m.score1} — ${m.score2}</div>`
-          : isLive
-          ? `<div class="mr-vs" style="color:var(--gold)">LIVE</div>`
-          : `<div class="mr-vs">VS</div>`}
-        <div class="mr-status${isLive?' live':''}">${isLive?'en curso':has?'finalizado':'pendiente'}</div>
+        ${has?`<div class="mr-score">${m.scoreA} — ${m.scoreB}</div>`:
+          isLive?`<div class="mr-vs" style="color:var(--gold)">LIVE</div>`:
+          `<div class="mr-vs">VS</div>`}
+        <div class="mr-status${isLive?' live':''}">${statusLabel}</div>
       </div>
       <div class="mr-side right">
-        <div>
-          <div class="mr-tname${t2w?' w':t1w?' l':''}" style="text-align:right">${t2?t2.name:'Por definir'}</div>
-        </div>
-        ${liveLogoEl(t2)}
+        <div><div class="mr-tname${bWin?' w':aWin?' l':''}" style="text-align:right">${m.teamB||'TBD'}</div></div>
+        ${bLogo}
       </div>
     </div>`;
   }).join('');
 }
-function setRF(id) { S.roundFilter = id; renderMatches(); }
+function setRF(id){ S.roundFilter=id; renderMatches(); }
 
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════
    RENDER STANDINGS
-═══════════════════════════════════════ */
-function renderStandings() {
-  if (!S.teams.length) {
-    document.getElementById('standings-root').innerHTML =
-      `<div class="empty"><div class="empty-ico">📊</div><div class="empty-title">Sin clasificación</div></div>`;
+   Calculated from match results.
+═══════════════════════════════════════════ */
+function renderStandings(){
+  if(!S.teams.length){
+    document.getElementById('standings-root').innerHTML=`<div class="empty"><div class="empty-ico">📊</div><div class="empty-title">No standings yet</div></div>`;
+    document.getElementById('standings-badge').textContent='—';
     return;
   }
-  const rows = S.teams.map(t => {
-    const ms = S.matches.filter(m=>(m.team1Id==t.id||m.team2Id==t.id)&&m.status==='completed');
-    const w  = ms.filter(m=>m.winnerId==t.id).length;
-    const gf = ms.reduce((s,m)=>s+(m.team1Id==t.id?(m.score1||0):(m.score2||0)),0);
-    const ga = ms.reduce((s,m)=>s+(m.team1Id==t.id?(m.score2||0):(m.score1||0)),0);
-    return { t, w, l:ms.length-w, p:ms.length, pts:w*3, gf, ga };
+  const rows=S.teams.map(t=>{
+    const id=t.teamId;
+    const ms=S.matches.filter(m=>(m.teamAId===id||m.teamBId===id)&&m.status==='PLAYED');
+    const w=ms.filter(m=>m.winnerTeamId===id).length;
+    const gf=ms.reduce((s,m)=>s+(m.teamAId===id?(m.scoreA||0):(m.scoreB||0)),0);
+    const ga=ms.reduce((s,m)=>s+(m.teamAId===id?(m.scoreB||0):(m.scoreA||0)),0);
+    return {t,w,l:ms.length-w,p:ms.length,pts:w*3,gf,ga};
   }).sort((a,b)=>b.pts-a.pts||b.w-a.w||b.gf-a.gf);
 
-  document.getElementById('standings-root').innerHTML = `
+  document.getElementById('standings-badge').textContent=S.tournament?.name||'—';
+  document.getElementById('standings-root').innerHTML=`
     <table class="st-table">
-      <thead><tr>
-        <th>#</th><th>Equipo</th><th>PJ</th><th>V</th><th>D</th><th>GF</th><th>GC</th><th>Pts</th>
-      </tr></thead>
-      <tbody>${rows.map((s,i) => {
-        const rc = i===0?'g':i===1?'s':i===2?'b':'';
-        const lg = s.t.logoUrl
-          ? `<div class="st-logo"><img src="${s.t.logoUrl}" alt="" onerror="this.outerHTML='${ini(s.t.name)}'"></div>`
-          : `<div class="st-logo">${ini(s.t.name)}</div>`;
+      <thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>L</th><th>GF</th><th>GA</th><th>Pts</th></tr></thead>
+      <tbody>${rows.map((s,i)=>{
+        const rc=i===0?'g':i===1?'s':i===2?'b':'';
+        const lg=s.t.logoUrl?`<div class="st-logo"><img src="${s.t.logoUrl}" alt="" onerror="this.outerHTML='${ini(s.t.name)}'"></div>`:`<div class="st-logo">${ini(s.t.name)}</div>`;
         return `<tr class="st-tr">
           <td><div class="st-rk${rc?' '+rc:''}">${String(i+1).padStart(2,'0')}</div></td>
-          <td><div class="st-team">${lg}<div><div class="st-tn">${s.t.name}</div></div></div></td>
-          <td><div class="st-num">${s.p}</div></td>
-          <td><div class="st-num">${s.w}</div></td>
-          <td><div class="st-num">${s.l}</div></td>
-          <td><div class="st-num">${s.gf}</div></td>
-          <td><div class="st-num">${s.ga}</div></td>
-          <td><div class="st-pts">${s.pts}</div></td>
+          <td><div class="st-team">${lg}<div><div class="st-tn">${s.t.name}</div><div class="st-ttag">${s.t.tag||''}</div></div></div></td>
+          <td><div class="st-num">${s.p}</div></td><td><div class="st-num">${s.w}</div></td>
+          <td><div class="st-num">${s.l}</div></td><td><div class="st-num">${s.gf}</div></td>
+          <td><div class="st-num">${s.ga}</div></td><td><div class="st-pts">${s.pts}</div></td>
         </tr>`;
       }).join('')}</tbody>
     </table>`;
 }
 
-function renderEmpty() {
-  document.getElementById('st-teams').textContent   = '0';
-  document.getElementById('st-matches').textContent = '0';
-  document.getElementById('st-round').textContent   = '—';
-  document.getElementById('hero-tag').textContent   = 'Próximamente';
+function renderEmpty(msg){
+  document.getElementById('hero-tag').textContent='Coming soon';
+  document.getElementById('hero-sub').textContent=msg||'The tournament will appear here once it is created.';
   ['bracket-root','teams-root','matches-root','standings-root'].forEach(id=>{
-    const el = document.getElementById(id);
-    if (el) el.innerHTML = `<div class="empty"><div class="empty-ico">🏁</div><div class="empty-title">Sin datos aún</div><div class="empty-sub">El torneo comenzará pronto</div></div>`;
+    const el=document.getElementById(id);
+    if(el) el.innerHTML=`<div class="empty"><div class="empty-ico">🏁</div><div class="empty-title">${msg||'No data yet'}</div></div>`;
   });
 }
 
-/* ═══════════════════════════════════════
-   MODAL HELPERS
-═══════════════════════════════════════ */
-function openOv(id)  { document.getElementById(id).classList.add('on'); }
-function closeOv(id) { document.getElementById(id).classList.remove('on'); }
-function closeBg(e, id) { if (e.target === e.currentTarget) closeOv(id); }
-
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════
    INIT
-═══════════════════════════════════════ */
+═══════════════════════════════════════════ */
 renderNav();
 loadAll();
 setInterval(loadAll, 30000);
