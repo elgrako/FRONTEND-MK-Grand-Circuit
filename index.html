@@ -5,57 +5,48 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MK Grand Circuit</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ─────────────────────────────────────
-   DESIGN TOKENS — Navy / Blue / Black
-───────────────────────────────────── */
+/* ═══════════════════════════════════
+   TOKENS
+═══════════════════════════════════ */
 :root {
-  /* backgrounds */
-  --bg0:   #06080f;   /* deepest black-blue */
-  --bg1:   #0a0e1a;   /* page bg */
-  --bg2:   #0f1525;   /* cards */
-  --bg3:   #141c30;   /* elevated */
-  --bg4:   #1a243d;   /* hover state */
+  --bg0:  #020408;
+  --bg1:  #05080f;
+  --bg2:  #080d1a;
+  --bg3:  #0c1220;
+  --bg4:  #111929;
 
-  /* borders */
-  --br:    rgba(96,139,255,0.10);
-  --br2:   rgba(96,139,255,0.22);
-  --br3:   rgba(96,139,255,0.38);
+  --blue:   #1e6fff;
+  --blue2:  #0a47cc;
+  --cyan:   #00d4ff;
+  --cyan2:  #00a8cc;
+  --glow:   rgba(30,111,255,0.35);
+  --cglow:  rgba(0,212,255,0.25);
 
-  /* accent — electric blue */
-  --blue:  #4f8bff;
-  --blue2: #2563eb;
-  --blue3: #93bbff;   /* light tint */
-  --glow:  rgba(79,139,255,0.18);
+  --green:  #00ff88;
+  --red:    #ff3355;
+  --amber:  #ffb800;
 
-  /* semantic */
-  --green: #22d07a;
-  --red:   #f04f6a;
-  --amber: #f0a829;
+  --t1:  #f0f4ff;
+  --t2:  #8ba0cc;
+  --t3:  #3d5075;
 
-  /* text */
-  --t1:    #e8eeff;   /* primary */
-  --t2:    #8fa3cc;   /* secondary */
-  --t3:    #4a5d84;   /* muted */
+  --br:  rgba(30,111,255,0.12);
+  --br2: rgba(30,111,255,0.28);
+  --br3: rgba(0,212,255,0.4);
 
-  /* type */
-  --head: 'Rajdhani', sans-serif;
-  --body: 'Inter', sans-serif;
-
-  /* radii */
-  --r:  6px;
-  --r2: 10px;
-  --r3: 14px;
+  --head: 'Orbitron', monospace;
+  --body: 'Exo 2', sans-serif;
 }
 
-/* ─────────────────────────────────────
+/* ═══════════════════════════════════
    RESET
-───────────────────────────────────── */
+═══════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
 html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth }
 body {
-  background: var(--bg1);
+  background: var(--bg0);
   color: var(--t1);
   font-family: var(--body);
   font-size: 14px;
@@ -65,698 +56,783 @@ body {
 }
 a { color: inherit; text-decoration: none }
 button, input, select { font-family: inherit }
-img { display: block }
 ::-webkit-scrollbar { width: 4px; height: 4px }
 ::-webkit-scrollbar-track { background: var(--bg0) }
-::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 2px }
+::-webkit-scrollbar-thumb { background: var(--blue2); border-radius: 2px }
 
-/* ─────────────────────────────────────
-   CANVAS BG
-───────────────────────────────────── */
-#bg {
-  position: fixed; inset: 0; z-index: 0;
-  pointer-events: none; opacity: 0.55;
+/* ═══════════════════════════════════
+   CANVAS
+═══════════════════════════════════ */
+#bg { position: fixed; inset: 0; z-index: 0; pointer-events: none }
+
+/* ═══════════════════════════════════
+   SCANLINE OVERLAY
+═══════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.04) 2px,
+    rgba(0,0,0,0.04) 4px
+  );
 }
 
-/* ─────────────────────────────────────
+/* ═══════════════════════════════════
    NAV
-───────────────────────────────────── */
+═══════════════════════════════════ */
 .nav {
   position: sticky; top: 0; z-index: 200;
-  height: 58px;
+  height: 60px;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 28px;
-  background: rgba(10,14,26,0.92);
+  padding: 0 32px;
+  background: rgba(2,4,8,0.95);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--br);
+  box-shadow: 0 0 40px rgba(30,111,255,0.05);
 }
 
 .logo {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; gap: 12px;
   font-family: var(--head);
-  font-size: 20px; font-weight: 700; letter-spacing: .08em;
-  text-transform: uppercase; cursor: pointer; user-select: none;
+  font-size: 16px; font-weight: 800;
+  letter-spacing: .12em; text-transform: uppercase;
+  cursor: pointer; user-select: none;
   flex-shrink: 0;
 }
-.logo-icon {
-  width: 30px; height: 30px;
-  background: var(--blue2);
-  border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; flex-shrink: 0;
-  box-shadow: 0 0 16px rgba(37,99,235,0.5);
-}
+.logo-text { letter-spacing: .14em }
+.logo-text span { color: var(--cyan) }
 
 .nav-tabs {
-  display: flex; gap: 2px;
-  background: var(--bg2);
+  display: flex; gap: 0;
   border: 1px solid var(--br);
-  border-radius: var(--r2);
-  padding: 3px;
+  border-radius: 4px;
+  overflow: hidden;
 }
 .ntab {
-  padding: 5px 18px;
-  border-radius: var(--r);
-  font-size: 13px; font-weight: 500;
+  padding: 8px 20px;
+  font-family: var(--head);
+  font-size: 11px; font-weight: 600; letter-spacing: .1em;
   color: var(--t3); cursor: pointer;
   border: none; background: transparent;
-  transition: all .18s; white-space: nowrap;
-  letter-spacing: .02em;
+  transition: all .2s;
+  border-right: 1px solid var(--br);
+  text-transform: uppercase;
 }
+.ntab:last-child { border-right: none }
 .ntab:hover { color: var(--t2); background: var(--bg3) }
-.ntab.on { background: var(--bg3); color: var(--blue3) }
+.ntab.on {
+  color: var(--cyan);
+  background: linear-gradient(180deg, rgba(0,212,255,0.08) 0%, transparent 100%);
+  box-shadow: inset 0 2px 0 var(--cyan);
+}
 
 .nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0 }
 
 .live-badge {
-  display: flex; align-items: center; gap: 5px;
-  background: rgba(240,79,106,.08);
-  border: 1px solid rgba(240,79,106,.25);
-  border-radius: 100px; padding: 4px 11px;
-  font-size: 11px; font-weight: 600;
-  color: var(--red); letter-spacing: .06em;
-  font-family: var(--head);
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,51,85,0.08);
+  border: 1px solid rgba(255,51,85,0.35);
+  border-radius: 2px; padding: 4px 12px;
+  font-family: var(--head); font-size: 10px;
+  font-weight: 700; color: var(--red); letter-spacing: .12em;
+  text-transform: uppercase;
+  box-shadow: 0 0 12px rgba(255,51,85,0.15);
 }
 .live-dot {
-  width: 6px; height: 6px; border-radius: 50%;
+  width: 5px; height: 5px; border-radius: 50%;
   background: var(--red);
-  animation: pulse 1.8s ease-in-out infinite;
+  animation: blink 1.2s step-end infinite;
 }
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.7)} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
 .nb {
-  padding: 6px 15px; border-radius: var(--r);
-  font-size: 12px; font-weight: 600;
+  padding: 7px 16px; border-radius: 3px;
+  font-family: var(--head); font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
   cursor: pointer; border: 1px solid var(--br2);
   background: transparent; color: var(--t2);
-  transition: all .18s; letter-spacing: .02em;
+  transition: all .2s;
 }
-.nb:hover { background: var(--bg3); color: var(--t1); border-color: var(--br3) }
+.nb:hover { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 12px var(--cglow) }
 .nb-blue {
-  background: var(--blue2); color: #fff;
-  border-color: var(--blue2);
-  box-shadow: 0 0 12px rgba(37,99,235,.4);
+  background: var(--blue2); color: #fff; border-color: var(--blue);
+  box-shadow: 0 0 16px var(--glow);
 }
-.nb-blue:hover { background: var(--blue); border-color: var(--blue) }
+.nb-blue:hover { background: var(--blue); box-shadow: 0 0 24px var(--glow) }
 
 .user-chip {
   display: flex; align-items: center; gap: 8px;
-  padding: 4px 12px 4px 4px;
-  background: var(--bg2); border: 1px solid var(--br);
-  border-radius: 100px; cursor: pointer;
-  transition: border-color .18s;
+  padding: 5px 14px 5px 5px;
+  background: var(--bg3); border: 1px solid var(--br2);
+  border-radius: 3px; cursor: pointer;
+  transition: all .2s;
 }
-.user-chip:hover { border-color: var(--br2) }
+.user-chip:hover { border-color: var(--cyan); box-shadow: 0 0 10px var(--cglow) }
 .ava {
-  width: 26px; height: 26px; border-radius: 50%;
-  background: var(--blue2);
+  width: 28px; height: 28px; border-radius: 3px;
+  background: linear-gradient(135deg, var(--blue2), var(--blue));
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--head); font-size: 11px; font-weight: 700;
-  color: #fff;
+  font-family: var(--head); font-size: 10px; font-weight: 700; color: #fff;
 }
-.uname { font-size: 12px; font-weight: 500; color: var(--t2) }
+.uname { font-size: 12px; font-weight: 600; color: var(--t2); font-family: var(--head); letter-spacing: .04em }
 
-/* ─────────────────────────────────────
+/* ═══════════════════════════════════
    HERO
-───────────────────────────────────── */
+═══════════════════════════════════ */
 .hero {
-  position: relative; z-index: 1;
-  padding: 56px 28px 52px;
+  position: relative; z-index: 2;
+  padding: 64px 32px 60px;
   border-bottom: 1px solid var(--br);
   overflow: hidden;
 }
-/* subtle radial glow behind hero */
+/* animated grid */
+.hero-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(30,111,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,111,255,0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: grid-move 20s linear infinite;
+}
+@keyframes grid-move { 0%{background-position:0 0} 100%{background-position:60px 60px} }
+
+/* corner decorations */
 .hero::before {
   content: '';
-  position: absolute;
-  top: -80px; left: 50%; transform: translateX(-50%);
-  width: 700px; height: 400px;
-  background: radial-gradient(ellipse, rgba(37,99,235,.12) 0%, transparent 70%);
+  position: absolute; top: 0; left: 0;
+  width: 300px; height: 300px;
+  background: radial-gradient(ellipse at top left, rgba(30,111,255,0.15) 0%, transparent 70%);
   pointer-events: none;
 }
 .hero::after {
   content: '';
   position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--blue), transparent);
-  opacity: .3;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--blue), transparent);
+  opacity: .5;
 }
+
 .hero-inner {
-  max-width: 1060px; margin: 0 auto;
+  max-width: 1080px; margin: 0 auto;
   display: flex; align-items: center; justify-content: space-between;
-  gap: 48px; position: relative; z-index: 1;
+  gap: 60px; position: relative; z-index: 1;
 }
 .hero-left { flex: 1; min-width: 0 }
 
-.hero-tag {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--head);
-  font-size: 11px; font-weight: 600; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--blue3);
-  margin-bottom: 16px;
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--head); font-size: 10px; font-weight: 600;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--cyan);
+  margin-bottom: 20px;
 }
-.hero-tag::before {
-  content: '';
-  width: 24px; height: 1px;
-  background: var(--blue); opacity: .7;
+.hero-eyebrow::before {
+  content: ''; width: 30px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan));
+}
+.hero-eyebrow::after {
+  content: ''; width: 30px; height: 1px;
+  background: linear-gradient(90deg, var(--cyan), transparent);
 }
 
 .hero-h1 {
   font-family: var(--head);
-  font-size: clamp(36px, 4.5vw, 58px);
-  font-weight: 700; letter-spacing: .04em;
-  line-height: 1.05; margin-bottom: 14px;
-  text-transform: uppercase;
+  font-size: clamp(38px, 5vw, 66px);
+  font-weight: 900;
+  line-height: 1; letter-spacing: .06em;
+  text-transform: uppercase; margin-bottom: 6px;
+  /* glitch-ready text */
+  position: relative;
 }
-.hero-h1 span { color: var(--blue3) }
+.hero-h1 .line1 { display: block; color: var(--t1) }
+.hero-h1 .line2 {
+  display: block;
+  font-size: 65%;
+  font-weight: 600;
+  color: var(--cyan);
+  letter-spacing: .18em;
+  text-shadow: 0 0 18px rgba(0,212,255,0.4);
+  opacity: .85;
+}
+@keyframes flicker {
+  0%,90%,92%,94%,100% { opacity: 1 }
+  91%,93% { opacity: .7 }
+}
 
 .hero-sub {
   font-size: 14px; color: var(--t2);
-  line-height: 1.7; max-width: 420px;
+  line-height: 1.7; max-width: 440px;
+  margin-top: 18px;
 }
 
 /* hero stats */
 .hero-right { flex-shrink: 0 }
-.hero-stats { display: flex; gap: 10px }
+.hero-stats { display: flex; gap: 3px }
 .hstat {
-  text-align: center; padding: 18px 24px;
+  text-align: center; padding: 20px 26px;
   background: var(--bg2);
   border: 1px solid var(--br);
-  border-radius: var(--r2);
-  min-width: 90px;
-  transition: border-color .2s;
+  position: relative; overflow: hidden;
+  transition: border-color .25s;
 }
 .hstat:hover { border-color: var(--br2) }
+.hstat::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  opacity: 0; transition: opacity .25s;
+}
+.hstat:hover::before { opacity: 1 }
 .hstat-n {
   font-family: var(--head);
-  font-size: 36px; font-weight: 700;
-  color: var(--blue3); line-height: 1;
-  letter-spacing: .02em;
+  font-size: 38px; font-weight: 900;
+  color: var(--cyan); line-height: 1;
+  text-shadow: 0 0 20px var(--cglow);
 }
 .hstat-l {
-  font-size: 10px; font-weight: 600;
-  letter-spacing: .1em; text-transform: uppercase;
-  color: var(--t3); margin-top: 5px;
+  font-family: var(--head);
+  font-size: 9px; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--t3); margin-top: 6px;
 }
 
-/* ─────────────────────────────────────
+/* ═══════════════════════════════════
    CONTENT
-───────────────────────────────────── */
+═══════════════════════════════════ */
 .wrap {
-  max-width: 1060px; margin: 0 auto;
-  padding: 32px 28px 80px;
-  position: relative; z-index: 1;
+  max-width: 1080px; margin: 0 auto;
+  padding: 36px 32px 80px;
+  position: relative; z-index: 2;
 }
-.panel { display: none; animation: fadein .22s ease }
+.panel { display: none; animation: fadein .2s ease }
 .panel.on { display: block }
-@keyframes fadein { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadein { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
 .sh {
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 20px; gap: 12px;
+  margin-bottom: 22px; gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--br);
 }
 .sh-title {
   font-family: var(--head);
-  font-size: 11px; font-weight: 600; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--t3);
+  font-size: 12px; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--cyan);
+  display: flex; align-items: center; gap: 10px;
+}
+.sh-title::before {
+  content: ''; width: 3px; height: 14px;
+  background: var(--cyan); border-radius: 2px;
+  box-shadow: 0 0 8px var(--cyan);
 }
 .sh-badge {
-  font-size: 11px; font-weight: 500; letter-spacing: .04em;
-  padding: 3px 10px; border-radius: var(--r);
-  background: rgba(79,139,255,.08);
-  color: var(--blue3); border: 1px solid rgba(79,139,255,.2);
-  font-family: var(--head);
+  font-family: var(--head); font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; padding: 4px 12px; border-radius: 2px;
+  background: rgba(0,212,255,0.06);
+  color: var(--cyan); border: 1px solid rgba(0,212,255,0.2);
 }
 
-/* ─────────────────────────────────────
+/* ═══════════════════════════════════
    BRACKET
-───────────────────────────────────── */
-.bracket-scroll { overflow-x: auto; padding-bottom: 14px }
+═══════════════════════════════════ */
+.bracket-scroll { overflow-x: auto; padding-bottom: 16px }
 .bracket-scroll::-webkit-scrollbar { height: 3px }
 .bracket-body { display: flex; align-items: stretch; min-width: max-content }
 
-.r-col { display: flex; flex-direction: column; min-width: 185px }
+.r-col { display: flex; flex-direction: column; min-width: 190px }
 .r-label {
-  font-family: var(--head);
-  font-size: 10px; font-weight: 600; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--t3);
-  text-align: center; padding: 0 8px 14px;
+  font-family: var(--head); font-size: 9px; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--t3); text-align: center; padding: 0 8px 14px;
 }
 .r-matches { display: flex; flex-direction: column; flex: 1; justify-content: space-around }
-.m-slot { padding: 5px 8px }
+.m-slot { padding: 6px 8px }
 
 .m-card {
   background: var(--bg2); border: 1px solid var(--br);
-  border-radius: var(--r2); overflow: hidden;
-  transition: border-color .2s, box-shadow .2s;
-  position: relative;
+  border-radius: 3px; overflow: hidden;
+  transition: all .22s; position: relative;
 }
-.m-card:hover { border-color: var(--br2) }
-.m-card.live {
-  border-color: rgba(240,79,106,.35);
-  box-shadow: 0 0 12px rgba(240,79,106,.08);
+.m-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: var(--blue); opacity: 0; transition: opacity .22s;
 }
-.m-live-bar { height: 2px; background: linear-gradient(90deg, var(--red), #ff8fa0) }
+.m-card:hover { border-color: var(--br2); background: var(--bg3) }
+.m-card:hover::before { opacity: 1 }
+.m-card.live { border-color: rgba(255,51,85,.35) }
+.m-card.live::before { background: var(--red); opacity: 1; box-shadow: 0 0 8px var(--red) }
 
-.m-team {
-  display: flex; align-items: center; gap: 8px;
-  padding: 9px 11px;
+.m-live-bar {
+  height: 2px;
+  background: linear-gradient(90deg, var(--red), #ff8fa0, var(--red));
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
 }
-.m-team + .m-team { border-top: 1px solid var(--br) }
-.m-team.won { background: rgba(34,208,122,.05) }
-.m-team.lost { opacity: .35 }
+@keyframes shimmer { 0%{background-position:100% 0} 100%{background-position:-100% 0} }
+
+.m-team { display: flex; align-items: center; gap: 8px; padding: 9px 11px }
+.m-team + .m-team { border-top: 1px solid rgba(30,111,255,0.08) }
+.m-team.won { background: rgba(0,255,136,0.04) }
+.m-team.lost { opacity: .3 }
 
 .m-logo {
-  width: 24px; height: 24px; border-radius: 4px;
-  background: var(--bg3); border: 1px solid var(--br);
+  width: 24px; height: 24px; border-radius: 3px;
+  background: var(--bg4); border: 1px solid var(--br);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--head); font-size: 9px; font-weight: 600;
+  font-family: var(--head); font-size: 8px; font-weight: 700;
   color: var(--t3); flex-shrink: 0; overflow: hidden;
 }
 .m-logo img { width: 100%; height: 100%; object-fit: cover }
-
 .m-tname {
-  font-size: 12px; font-weight: 500; flex: 1;
+  font-size: 12px; font-weight: 600; flex: 1;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  color: var(--t1);
+  font-family: var(--head); letter-spacing: .04em;
 }
-.m-tname.tbd { color: var(--t3); font-style: italic; font-weight: 400 }
+.m-tname.tbd { color: var(--t3); font-weight: 400; letter-spacing: 0 }
 .m-score {
-  font-family: var(--head); font-size: 14px; font-weight: 600;
+  font-family: var(--head); font-size: 14px; font-weight: 700;
   color: var(--t3); min-width: 16px; text-align: right;
 }
-.m-score.w { color: var(--green) }
+.m-score.w { color: var(--green); text-shadow: 0 0 8px var(--green) }
 
 .b-sep {
-  width: 20px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  padding-top: 32px;
+  width: 24px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; padding-top: 36px;
 }
-.b-line { width: 100%; height: 1px; background: var(--br2); opacity: .5 }
+.b-line { width: 100%; height: 1px; background: var(--br2); opacity: .6 }
 
-.b-winner {
-  display: flex; align-items: center; justify-content: center;
-  padding: 0 14px; min-width: 120px;
-}
+.b-winner { display: flex; align-items: center; justify-content: center; padding: 0 16px; min-width: 130px }
 .winner-card {
-  background: linear-gradient(145deg, rgba(79,139,255,.12), rgba(79,139,255,.04));
-  border: 1px solid rgba(79,139,255,.3);
-  border-radius: var(--r2); padding: 20px 16px; text-align: center;
-  box-shadow: 0 0 20px rgba(79,139,255,.08);
+  background: linear-gradient(145deg, rgba(0,212,255,0.1), rgba(30,111,255,0.06));
+  border: 1px solid rgba(0,212,255,0.3);
+  border-radius: 4px; padding: 22px 18px; text-align: center;
+  box-shadow: 0 0 30px rgba(0,212,255,0.1), inset 0 0 30px rgba(0,212,255,0.03);
 }
-.winner-crown { font-size: 24px; margin-bottom: 8px; display: block }
+.winner-crown { font-size: 28px; margin-bottom: 10px; display: block }
 .winner-lbl {
-  font-family: var(--head); font-size: 9px; font-weight: 600;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: var(--blue3); margin-bottom: 6px;
+  font-family: var(--head); font-size: 9px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--cyan);
+  margin-bottom: 8px; text-shadow: 0 0 10px var(--cyan);
 }
-.winner-name { font-size: 13px; font-weight: 600; color: var(--t1) }
+.winner-name {
+  font-family: var(--head); font-size: 14px; font-weight: 700;
+  color: var(--t1); letter-spacing: .06em;
+}
 
-/* ─────────────────────────────────────
+/* ═══════════════════════════════════
    MY ZONE
-───────────────────────────────────── */
+═══════════════════════════════════ */
 .my-zone {
   background: var(--bg2); border: 1px solid var(--br);
-  border-radius: var(--r3); padding: 20px; margin-bottom: 24px;
+  border-radius: 4px; padding: 22px; margin-bottom: 28px;
+  position: relative; overflow: hidden;
 }
-.my-zone.has { border-color: rgba(79,139,255,.25) }
+.my-zone::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+}
+.my-zone.has::before { background: linear-gradient(90deg, transparent, var(--cyan), var(--blue), transparent) }
+.my-zone.has { border-color: rgba(0,212,255,0.2) }
+
 .mz-head {
   display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 12px; margin-bottom: 16px;
+  flex-wrap: wrap; gap: 12px; margin-bottom: 18px;
 }
 .mz-title {
-  font-family: var(--head);
-  font-size: 11px; font-weight: 600; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--t3);
+  font-family: var(--head); font-size: 11px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--t3);
 }
 .mz-title span {
-  color: var(--blue3); margin-left: 8px;
-  font-size: 14px; letter-spacing: 0; text-transform: none;
-  font-weight: 600;
+  color: var(--cyan); margin-left: 10px; font-size: 15px;
+  letter-spacing: .06em; font-weight: 800;
+  text-shadow: 0 0 16px var(--cglow);
 }
 .mz-btns { display: flex; gap: 8px; flex-wrap: wrap }
-.mz-stats { display: flex; gap: 8px; flex-wrap: wrap }
+.mz-stats { display: flex; gap: 3px; flex-wrap: wrap }
 .mz-s {
   flex: 1; min-width: 100px;
   background: var(--bg3); border: 1px solid var(--br);
-  border-radius: var(--r); padding: 11px 14px;
+  border-radius: 3px; padding: 12px 16px;
+  position: relative; overflow: hidden;
 }
 .mz-s-n {
-  font-family: var(--head); font-size: 22px; font-weight: 700;
+  font-family: var(--head); font-size: 24px; font-weight: 800;
   color: var(--t1); line-height: 1;
 }
 .mz-s-l {
-  font-size: 9px; font-weight: 600; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--t3); margin-top: 3px;
+  font-family: var(--head); font-size: 9px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--t3); margin-top: 4px;
 }
 .enrolled-tag {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 6px 13px; border-radius: var(--r);
-  background: rgba(34,208,122,.08); border: 1px solid rgba(34,208,122,.22);
-  font-size: 12px; font-weight: 600; color: var(--green);
+  padding: 7px 14px; border-radius: 3px;
+  background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.25);
+  font-family: var(--head); font-size: 11px; font-weight: 700;
+  letter-spacing: .08em; color: var(--green);
+  text-shadow: 0 0 10px var(--green);
 }
 
-/* ─────────────────────────────────────
+/* ═══════════════════════════════════
    TEAMS GRID
-───────────────────────────────────── */
+═══════════════════════════════════ */
 .teams-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 3px;
 }
 .t-card {
   background: var(--bg2); border: 1px solid var(--br);
-  border-radius: var(--r3); overflow: hidden;
-  transition: border-color .2s, transform .2s;
+  border-radius: 3px; overflow: hidden;
+  transition: all .25s; position: relative;
 }
-.t-card:hover { border-color: var(--br2); transform: translateY(-2px) }
-.t-card.mine { border-color: rgba(79,139,255,.35) }
+.t-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(30,111,255,0.04) 0%, transparent 60%);
+  opacity: 0; transition: opacity .25s; pointer-events: none;
+}
+.t-card:hover { border-color: var(--br2); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(30,111,255,0.15) }
+.t-card:hover::after { opacity: 1 }
+.t-card.mine { border-color: rgba(0,212,255,0.3); box-shadow: 0 0 20px rgba(0,212,255,0.08) }
 
 .t-banner {
-  height: 54px; background: var(--bg3);
+  height: 58px; background: var(--bg3);
   display: flex; align-items: center; justify-content: center; overflow: hidden;
+  position: relative;
+}
+.t-banner::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent); opacity: .4;
 }
 .t-banner img { width: 100%; height: 100%; object-fit: cover }
 .t-banner-ph {
-  font-family: var(--head); font-size: 34px; font-weight: 700;
-  color: rgba(79,139,255,.08); user-select: none; letter-spacing: .04em;
+  font-family: var(--head); font-size: 36px; font-weight: 900;
+  color: rgba(30,111,255,0.07); user-select: none; letter-spacing: .1em;
 }
 
-.t-body { padding: 10px 13px }
-.t-ident { display: flex; align-items: center; gap: 10px; margin-bottom: 10px }
+.t-body { padding: 12px 14px }
+.t-ident { display: flex; align-items: center; gap: 10px; margin-bottom: 12px }
 .t-logo {
-  width: 36px; height: 36px; border-radius: var(--r);
-  background: var(--bg3); border: 2px solid var(--bg1);
+  width: 38px; height: 38px; border-radius: 4px;
+  background: var(--bg4); border: 2px solid var(--bg0);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--head); font-size: 12px; font-weight: 700;
-  color: var(--blue3); overflow: hidden; flex-shrink: 0;
-  margin-top: -20px; position: relative; z-index: 1;
+  font-family: var(--head); font-size: 12px; font-weight: 800;
+  color: var(--cyan); overflow: hidden; flex-shrink: 0;
+  margin-top: -22px; position: relative; z-index: 1;
+  box-shadow: 0 0 14px rgba(0,212,255,0.2);
 }
 .t-logo img { width: 100%; height: 100%; object-fit: cover }
-.t-name { font-size: 13px; font-weight: 600; color: var(--t1) }
-.t-tag { font-size: 11px; color: var(--t3); font-family: var(--head); letter-spacing: .04em }
-.t-mine-tag {
-  display: inline-block; font-family: var(--head); font-size: 9px;
-  font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
-  padding: 2px 7px; border-radius: 3px;
-  background: rgba(79,139,255,.1); color: var(--blue3);
-  border: 1px solid rgba(79,139,255,.25); margin-top: 3px;
+.t-name {
+  font-family: var(--head); font-size: 13px; font-weight: 700;
+  letter-spacing: .06em; color: var(--t1);
 }
-.t-row { display: flex; border-top: 1px solid var(--br); padding-top: 9px }
+.t-tag {
+  font-family: var(--head); font-size: 10px; font-weight: 600;
+  letter-spacing: .1em; color: var(--t3); text-transform: uppercase;
+}
+.t-mine-tag {
+  display: inline-block; font-family: var(--head); font-size: 8px;
+  font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 2px;
+  background: rgba(0,212,255,0.08); color: var(--cyan);
+  border: 1px solid rgba(0,212,255,0.3); margin-top: 3px;
+  text-shadow: 0 0 8px var(--cyan);
+}
+.t-row { display: flex; border-top: 1px solid var(--br); padding-top: 10px; gap: 0 }
 .t-st { flex: 1; text-align: center }
 .t-st + .t-st { border-left: 1px solid var(--br) }
-.t-st-n { font-family: var(--head); font-size: 18px; font-weight: 600; color: var(--t1) }
-.t-st-l { font-size: 9px; color: var(--t3); letter-spacing: .06em; text-transform: uppercase }
+.t-st-n { font-family: var(--head); font-size: 18px; font-weight: 800; color: var(--t1) }
+.t-st-l { font-family: var(--head); font-size: 8px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--t3) }
 
-/* ─────────────────────────────────────
+/* ═══════════════════════════════════
    MATCHES
-───────────────────────────────────── */
-.round-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px }
+═══════════════════════════════════ */
+.round-filter { display: flex; gap: 0; flex-wrap: wrap; margin-bottom: 18px; border: 1px solid var(--br); border-radius: 3px; overflow: hidden; width: fit-content }
 .rfbtn {
-  padding: 5px 14px; border-radius: var(--r);
-  font-size: 12px; font-weight: 500; letter-spacing: .03em;
-  border: 1px solid var(--br); background: transparent;
-  color: var(--t3); cursor: pointer; transition: all .15s;
+  padding: 7px 18px; font-family: var(--head);
+  font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  border: none; border-right: 1px solid var(--br);
+  background: transparent; color: var(--t3); cursor: pointer; transition: all .18s;
 }
-.rfbtn:hover, .rfbtn.on {
-  border-color: var(--blue); color: var(--blue3);
-  background: rgba(79,139,255,.07);
-}
+.rfbtn:last-child { border-right: none }
+.rfbtn:hover { color: var(--t2); background: var(--bg3) }
+.rfbtn.on { color: var(--cyan); background: rgba(0,212,255,0.07); box-shadow: inset 0 2px 0 var(--cyan) }
 
-.matches-list { display: flex; flex-direction: column; gap: 8px }
+.matches-list { display: flex; flex-direction: column; gap: 3px }
 .mr {
   background: var(--bg2); border: 1px solid var(--br);
-  border-radius: var(--r2); padding: 14px 18px;
+  border-radius: 3px; padding: 16px 20px;
   display: grid; grid-template-columns: 1fr auto 1fr;
-  align-items: center; gap: 14px;
-  transition: border-color .2s;
-  position: relative; overflow: hidden;
+  align-items: center; gap: 16px;
+  transition: all .22s; position: relative; overflow: hidden;
 }
 .mr::before {
   content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--br2);
 }
-.mr.live::before { background: var(--red) }
-.mr.done::before { background: var(--green) }
-.mr:not(.live):not(.done)::before { background: var(--br2) }
-.mr:hover { border-color: var(--br2) }
+.mr.live::before { background: var(--red); box-shadow: 0 0 10px var(--red) }
+.mr.done::before { background: var(--green); box-shadow: 0 0 10px var(--green) }
+.mr:hover { border-color: var(--br2); background: var(--bg3) }
 
 .mr-side { display: flex; align-items: center; gap: 10px }
 .mr-side.right { flex-direction: row-reverse; text-align: right }
 .mr-logo {
-  width: 32px; height: 32px; border-radius: var(--r);
-  background: var(--bg3); border: 1px solid var(--br);
+  width: 34px; height: 34px; border-radius: 3px;
+  background: var(--bg4); border: 1px solid var(--br);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--head); font-size: 11px; font-weight: 600;
+  font-family: var(--head); font-size: 11px; font-weight: 800;
   color: var(--t3); flex-shrink: 0; overflow: hidden;
 }
 .mr-logo img { width: 100%; height: 100%; object-fit: cover }
-.mr-tname { font-size: 13px; font-weight: 600; color: var(--t1) }
-.mr-tname.w { color: var(--green) }
+.mr-tname { font-family: var(--head); font-size: 14px; font-weight: 700; letter-spacing: .06em; color: var(--t1) }
+.mr-tname.w { color: var(--green); text-shadow: 0 0 10px var(--green) }
 .mr-tname.l { color: var(--t3); font-weight: 400 }
-.mr-meta { font-size: 10px; color: var(--t3); margin-top: 1px }
+.mr-meta { font-family: var(--head); font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-top: 2px }
 
 .mr-center { text-align: center }
 .mr-score {
-  font-family: var(--head); font-size: 24px; font-weight: 700;
-  letter-spacing: .06em; color: var(--t1);
+  font-family: var(--head); font-size: 26px; font-weight: 900;
+  letter-spacing: .08em; color: var(--t1);
 }
 .mr-status {
-  font-size: 10px; font-weight: 500; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--t3); margin-top: 2px;
-  font-family: var(--head);
+  font-family: var(--head); font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--t3); margin-top: 2px;
 }
-.mr-status.live { color: var(--red); animation: pulse 1.8s infinite }
+.mr-status.live { color: var(--red); animation: blink 1.2s step-end infinite }
 .mr-vs {
-  font-family: var(--head); font-size: 16px; font-weight: 600;
-  color: var(--t3); letter-spacing: .06em;
+  font-family: var(--head); font-size: 18px; font-weight: 800;
+  color: var(--t3); letter-spacing: .1em;
 }
 
-/* ─────────────────────────────────────
+/* ═══════════════════════════════════
    STANDINGS
-───────────────────────────────────── */
-.st-wrap {
-  background: var(--bg2); border: 1px solid var(--br); border-radius: var(--r3); overflow: hidden;
-}
+═══════════════════════════════════ */
+.st-wrap { border: 1px solid var(--br); border-radius: 3px; overflow: hidden }
 .st-table { width: 100%; border-collapse: collapse }
 .st-table th {
-  font-family: var(--head); font-size: 10px; font-weight: 600;
-  letter-spacing: .12em; text-transform: uppercase;
-  color: var(--t3); padding: 12px 14px; text-align: left;
+  font-family: var(--head); font-size: 9px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--t3); padding: 12px 16px; text-align: left;
   background: var(--bg3); border-bottom: 1px solid var(--br);
 }
 .st-table th:last-child, .st-table td:last-child { text-align: right }
-.st-tr { border-bottom: 1px solid var(--br); transition: background .12s }
+.st-tr { border-bottom: 1px solid rgba(30,111,255,0.07); transition: background .15s }
 .st-tr:last-child { border-bottom: none }
 .st-tr:hover td { background: var(--bg3) }
-.st-tr td { padding: 12px 14px }
-.st-rk { font-family: var(--head); font-size: 18px; font-weight: 700; color: var(--t3) }
+.st-tr:nth-child(1) td:first-child .st-rk { text-shadow: 0 0 16px #ffd700 }
+.st-tr td { padding: 13px 16px }
+.st-rk { font-family: var(--head); font-size: 18px; font-weight: 900; color: var(--t3) }
 .st-rk.g { color: #ffd700 }
 .st-rk.s { color: #c0c0c0 }
 .st-rk.b { color: #cd7f32 }
 .st-team { display: flex; align-items: center; gap: 10px }
 .st-logo {
-  width: 28px; height: 28px; border-radius: var(--r);
-  background: var(--bg3); border: 1px solid var(--br);
+  width: 28px; height: 28px; border-radius: 3px;
+  background: var(--bg4); border: 1px solid var(--br);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--head); font-size: 10px; font-weight: 600;
-  color: var(--t3); overflow: hidden; flex-shrink: 0;
+  font-family: var(--head); font-size: 10px; font-weight: 800;
+  color: var(--cyan); overflow: hidden; flex-shrink: 0;
 }
 .st-logo img { width: 100%; height: 100%; object-fit: cover }
-.st-tn { font-size: 13px; font-weight: 600; color: var(--t1) }
-.st-ttag { font-size: 11px; color: var(--t3); font-family: var(--head); letter-spacing: .04em }
-.st-num { font-family: var(--head); font-size: 15px; color: var(--t2) }
-.st-pts { font-family: var(--head); font-size: 17px; font-weight: 700; color: var(--blue3) }
+.st-tn { font-family: var(--head); font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--t1) }
+.st-ttag { font-family: var(--head); font-size: 9px; letter-spacing: .1em; color: var(--t3) }
+.st-num { font-family: var(--head); font-size: 14px; font-weight: 600; color: var(--t2) }
+.st-pts { font-family: var(--head); font-size: 18px; font-weight: 900; color: var(--cyan); text-shadow: 0 0 12px var(--cglow) }
 
-/* ─────────────────────────────────────
+/* ═══════════════════════════════════
    EMPTY / LOADING
-───────────────────────────────────── */
+═══════════════════════════════════ */
 .empty {
-  text-align: center; padding: 56px 24px;
-  background: var(--bg2); border: 1px dashed var(--br2);
-  border-radius: var(--r3);
+  text-align: center; padding: 60px 24px;
+  background: var(--bg2); border: 1px solid var(--br);
+  border-radius: 4px; position: relative; overflow: hidden;
 }
-.empty-ico { font-size: 30px; margin-bottom: 12px; opacity: .35 }
+.empty::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent); opacity: .4;
+}
+.empty-ico { font-size: 32px; margin-bottom: 12px; opacity: .3 }
 .empty-title {
-  font-family: var(--head); font-size: 18px; font-weight: 600;
-  color: var(--t2); letter-spacing: .04em; margin-bottom: 4px;
+  font-family: var(--head); font-size: 16px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--t2); margin-bottom: 6px;
 }
-.empty-sub { font-size: 12px; color: var(--t3) }
+.empty-sub { font-size: 13px; color: var(--t3) }
 
 .spin {
-  width: 20px; height: 20px;
-  border: 2px solid var(--br2); border-top-color: var(--blue);
-  border-radius: 50%; animation: spinr .7s linear infinite;
-  margin: 0 auto 12px;
+  width: 22px; height: 22px;
+  border: 2px solid var(--br2); border-top-color: var(--cyan);
+  border-radius: 50%; animation: spinr .7s linear infinite; margin: 0 auto 14px;
 }
 @keyframes spinr { to { transform: rotate(360deg) } }
 
 .err-bar {
-  background: rgba(240,79,106,.07); border: 1px solid rgba(240,79,106,.22);
-  border-radius: var(--r); padding: 10px 14px;
-  font-size: 12px; color: #f08898; margin-bottom: 18px; display: none;
+  background: rgba(255,51,85,.07); border: 1px solid rgba(255,51,85,.25);
+  border-radius: 3px; padding: 10px 16px;
+  font-family: var(--head); font-size: 11px; font-weight: 600;
+  letter-spacing: .06em; color: #ff7788; margin-bottom: 20px; display: none;
 }
 .err-bar.on { display: block }
 
-/* ─────────────────────────────────────
+/* ═══════════════════════════════════
    MODALS
-───────────────────────────────────── */
+═══════════════════════════════════ */
 .ov {
   position: fixed; inset: 0; z-index: 500;
-  background: rgba(6,8,15,.88); backdrop-filter: blur(12px);
+  background: rgba(2,4,8,.92); backdrop-filter: blur(16px);
   display: none; align-items: center; justify-content: center; padding: 20px;
 }
 .ov.on { display: flex }
 .modal {
   background: var(--bg2); border: 1px solid var(--br2);
-  border-radius: var(--r3); width: 100%; max-width: 420px;
+  border-radius: 4px; width: 100%; max-width: 420px;
   max-height: 90vh; overflow-y: auto;
   animation: modal-in .22s cubic-bezier(.22,.68,0,1.2);
+  box-shadow: 0 0 60px rgba(30,111,255,0.15);
+  position: relative;
 }
-@keyframes modal-in {
-  from { transform: scale(.95) translateY(12px); opacity: 0 }
-  to   { transform: scale(1)   translateY(0);    opacity: 1 }
+.modal::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--blue), transparent);
 }
+@keyframes modal-in { from{transform:scale(.95) translateY(12px);opacity:0} to{transform:scale(1) translateY(0);opacity:1} }
+
 .mhead {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 20px 22px 0;
+  padding: 22px 24px 0;
 }
 .mtitle {
-  font-family: var(--head); font-size: 18px; font-weight: 700;
-  letter-spacing: .04em; text-transform: uppercase;
+  font-family: var(--head); font-size: 16px; font-weight: 800;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--t1);
 }
 .mx {
-  width: 28px; height: 28px; border-radius: var(--r);
+  width: 28px; height: 28px; border-radius: 3px;
   border: 1px solid var(--br); background: transparent;
   color: var(--t3); cursor: pointer; font-size: 14px;
-  display: flex; align-items: center; justify-content: center;
-  transition: all .15s;
+  display: flex; align-items: center; justify-content: center; transition: all .15s;
 }
-.mx:hover { border-color: var(--br2); color: var(--t1) }
-.mbody { padding: 18px 22px 24px }
+.mx:hover { border-color: var(--red); color: var(--red) }
+.mbody { padding: 20px 24px 26px }
 
 .mtabs { display: flex; border-bottom: 1px solid var(--br); margin-bottom: 20px }
 .mtab {
-  flex: 1; padding: 9px; font-size: 13px; font-weight: 500; text-align: center;
-  cursor: pointer; border: none; background: transparent; color: var(--t3);
-  border-bottom: 2px solid transparent; margin-bottom: -1px;
-  transition: all .18s; letter-spacing: .02em;
+  flex: 1; padding: 10px; font-family: var(--head);
+  font-size: 11px; font-weight: 700; text-align: center; letter-spacing: .08em;
+  text-transform: uppercase; cursor: pointer; border: none;
+  background: transparent; color: var(--t3);
+  border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all .18s;
 }
-.mtab.on { color: var(--blue3); border-bottom-color: var(--blue) }
+.mtab.on { color: var(--cyan); border-bottom-color: var(--cyan); text-shadow: 0 0 10px var(--cyan) }
 
-/* form */
-.fg { margin-bottom: 14px }
+.fg { margin-bottom: 16px }
 .fl {
-  display: block; font-family: var(--head);
-  font-size: 10px; font-weight: 600; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--t3); margin-bottom: 6px;
+  display: block; font-family: var(--head); font-size: 9px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--t3); margin-bottom: 7px;
 }
 .fi {
   width: 100%; background: var(--bg3);
-  border: 1px solid var(--br); border-radius: var(--r);
-  padding: 10px 13px; color: var(--t1);
+  border: 1px solid var(--br); border-radius: 3px;
+  padding: 10px 14px; color: var(--t1);
   font-size: 13px; transition: border-color .2s; outline: none;
 }
-.fi:focus { border-color: rgba(79,139,255,.5) }
+.fi:focus { border-color: rgba(0,212,255,0.5); box-shadow: 0 0 12px rgba(0,212,255,0.1) }
 .fi::placeholder { color: var(--t3) }
-.fi-hint { font-size: 11px; color: var(--t3); margin-top: 4px }
+.fi-hint { font-size: 11px; color: var(--t3); margin-top: 5px; line-height: 1.5 }
 
 .ferr {
-  background: rgba(240,79,106,.07); border: 1px solid rgba(240,79,106,.22);
-  border-radius: var(--r); padding: 8px 12px;
-  font-size: 12px; color: #f08898; margin-bottom: 12px; display: none;
+  background: rgba(255,51,85,.07); border: 1px solid rgba(255,51,85,.25);
+  border-radius: 3px; padding: 9px 13px;
+  font-size: 12px; color: #ff7788; margin-bottom: 14px; display: none;
 }
 .ferr.on { display: block }
 .fok {
-  background: rgba(34,208,122,.07); border: 1px solid rgba(34,208,122,.22);
-  border-radius: var(--r); padding: 8px 12px;
-  font-size: 12px; color: #5ef0a0; margin-bottom: 12px; display: none;
+  background: rgba(0,255,136,.07); border: 1px solid rgba(0,255,136,.25);
+  border-radius: 3px; padding: 9px 13px;
+  font-size: 12px; color: #5ef0a0; margin-bottom: 14px; display: none;
 }
 .fok.on { display: block }
 
 .fsub {
-  width: 100%; background: var(--blue2); color: #fff;
-  border: none; padding: 12px; border-radius: var(--r);
-  font-family: var(--head); font-size: 15px; font-weight: 700;
-  letter-spacing: .08em; text-transform: uppercase;
+  width: 100%; background: linear-gradient(90deg, var(--blue2), var(--blue));
+  color: #fff; border: none; padding: 13px; border-radius: 3px;
+  font-family: var(--head); font-size: 13px; font-weight: 800;
+  letter-spacing: .12em; text-transform: uppercase;
   cursor: pointer; margin-top: 6px;
-  transition: background .18s;
-  box-shadow: 0 0 16px rgba(37,99,235,.3);
+  transition: all .2s;
+  box-shadow: 0 0 20px var(--glow);
 }
-.fsub:hover { background: var(--blue) }
-.fsub:disabled { opacity: .45; cursor: not-allowed }
+.fsub:hover { box-shadow: 0 0 30px var(--glow), 0 0 60px rgba(30,111,255,0.15); transform: translateY(-1px) }
+.fsub:disabled { opacity: .4; cursor: not-allowed; transform: none }
 
 .ibox {
-  background: var(--bg3); border: 1px solid var(--br);
-  border-radius: var(--r); padding: 12px 14px; margin-bottom: 12px;
+  background: var(--bg3); border: 1px solid var(--br); border-radius: 3px;
+  padding: 12px 15px; margin-bottom: 12px;
 }
 .ibox-l {
-  font-family: var(--head); font-size: 9px; font-weight: 600;
-  letter-spacing: .12em; text-transform: uppercase;
-  color: var(--t3); margin-bottom: 4px;
+  font-family: var(--head); font-size: 8px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--t3); margin-bottom: 5px;
 }
-.ibox-v { font-size: 14px; font-weight: 600; color: var(--t1) }
+.ibox-v { font-family: var(--head); font-size: 14px; font-weight: 700; color: var(--t1); letter-spacing: .04em }
 
-/* members */
-.members-list { display: flex; flex-direction: column; gap: 6px; margin-top: 10px }
+.members-list { display: flex; flex-direction: column; gap: 6px; margin-top: 12px }
 .member-row {
   display: flex; align-items: center; justify-content: space-between;
-  background: var(--bg3); border: 1px solid var(--br);
-  border-radius: var(--r); padding: 8px 12px;
+  background: var(--bg3); border: 1px solid var(--br); border-radius: 3px; padding: 9px 13px;
 }
-.member-info { display: flex; align-items: center; gap: 8px }
+.member-info { display: flex; align-items: center; gap: 10px }
 .member-ava {
-  width: 24px; height: 24px; border-radius: 50%;
+  width: 26px; height: 26px; border-radius: 3px;
   background: var(--blue2);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--head); font-size: 9px; font-weight: 700; color: #fff;
+  font-family: var(--head); font-size: 9px; font-weight: 800; color: #fff;
 }
-.member-name { font-size: 12px; font-weight: 500; color: var(--t1) }
-.member-id { font-size: 10px; color: var(--t3) }
+.member-name { font-family: var(--head); font-size: 12px; font-weight: 700; letter-spacing: .04em; color: var(--t1) }
+.member-id { font-size: 10px; color: var(--t3); margin-top: 1px }
 .role-tag {
-  font-family: var(--head); font-size: 9px; font-weight: 600;
-  padding: 2px 7px; border-radius: 3px; letter-spacing: .06em;
-  text-transform: uppercase;
-  background: rgba(79,139,255,.1); color: var(--blue3);
-  border: 1px solid rgba(79,139,255,.22);
+  font-family: var(--head); font-size: 8px; font-weight: 700; letter-spacing: .1em;
+  padding: 3px 8px; border-radius: 2px; text-transform: uppercase;
+  background: rgba(30,111,255,.1); color: var(--cyan);
+  border: 1px solid rgba(0,212,255,.25);
 }
 .role-tag.member {
-  background: rgba(34,208,122,.08); color: var(--green);
-  border-color: rgba(34,208,122,.2);
+  background: rgba(0,255,136,.08); color: var(--green); border-color: rgba(0,255,136,.2);
 }
 .remove-btn {
   background: transparent; border: none; color: var(--t3);
-  cursor: pointer; font-size: 14px; padding: 2px 6px;
-  border-radius: 4px; transition: color .15s;
+  cursor: pointer; font-size: 14px; padding: 3px 7px; border-radius: 3px; transition: color .15s;
 }
 .remove-btn:hover { color: var(--red) }
 
-/* ─────────────────────────────────────
+/* ═══════════════════════════════════
    TOAST
-───────────────────────────────────── */
+═══════════════════════════════════ */
 .toast {
-  position: fixed; bottom: 24px; left: 50%;
-  transform: translateX(-50%) translateY(14px);
+  position: fixed; bottom: 28px; left: 50%;
+  transform: translateX(-50%) translateY(16px);
   background: var(--bg3); border: 1px solid var(--br2);
-  border-radius: var(--r); padding: 9px 20px;
-  font-size: 12px; font-weight: 500; z-index: 999;
-  opacity: 0; pointer-events: none;
-  transition: all .28s cubic-bezier(.22,.68,0,1.2);
-  white-space: nowrap;
+  border-radius: 3px; padding: 10px 22px;
+  font-family: var(--head); font-size: 11px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  z-index: 999; opacity: 0; pointer-events: none;
+  transition: all .28s cubic-bezier(.22,.68,0,1.2); white-space: nowrap;
 }
 .toast.on { opacity: 1; transform: translateX(-50%) translateY(0) }
-.toast.ok { color: var(--green); border-color: rgba(34,208,122,.3) }
-.toast.err { color: var(--red); border-color: rgba(240,79,106,.3) }
+.toast.ok { color: var(--green); border-color: rgba(0,255,136,.35); box-shadow: 0 0 20px rgba(0,255,136,.1) }
+.toast.err { color: var(--red); border-color: rgba(255,51,85,.35); box-shadow: 0 0 20px rgba(255,51,85,.1) }
 
-/* ─────────────────────────────────────
+/* ═══════════════════════════════════
    RESPONSIVE
-───────────────────────────────────── */
+═══════════════════════════════════ */
 @media (max-width: 700px) {
   .hero-inner { flex-direction: column; align-items: flex-start }
   .hero-stats { display: grid; grid-template-columns: repeat(3,1fr); width: 100% }
   .nav-tabs { display: none }
-  .mr { grid-template-columns: 1fr; gap: 6px }
+  .mr { grid-template-columns: 1fr; gap: 8px }
   .mr-side.right { flex-direction: row; text-align: left }
   .wrap { padding: 24px 18px 60px }
-  .hero { padding: 36px 18px 36px }
+  .hero { padding: 40px 18px 40px }
+  .nav { padding: 0 18px }
 }
 </style>
 </head>
@@ -766,8 +842,7 @@ img { display: block }
 <!-- NAV -->
 <nav class="nav">
   <div class="logo" onclick="gotoTab('bracket')">
-    <div class="logo-icon">🏁</div>
-    MK Grand Circuit
+    <span class="logo-text">MK <span>Grand</span> Circuit</span>
   </div>
   <div class="nav-tabs">
     <button class="ntab on"  onclick="gotoTab('bracket')">Bracket</button>
@@ -780,10 +855,14 @@ img { display: block }
 
 <!-- HERO -->
 <div class="hero">
+  <div class="hero-grid"></div>
   <div class="hero-inner">
     <div class="hero-left">
-      <div class="hero-tag" id="hero-tag">Loading…</div>
-      <h1 class="hero-h1">MK Grand<br><span>Circuit</span></h1>
+      <div class="hero-eyebrow" id="hero-tag">Loading tournament…</div>
+      <h1 class="hero-h1">
+        <span class="line1">MK Grand</span>
+        <span class="line2">Circuit</span>
+      </h1>
       <p class="hero-sub" id="hero-sub">The official Mario Kart tournament platform. Follow the bracket live.</p>
     </div>
     <div class="hero-right">
@@ -800,27 +879,23 @@ img { display: block }
 <div class="wrap">
   <div class="err-bar" id="err-bar">⚠ Could not connect to server.</div>
 
-  <!-- BRACKET -->
   <div class="panel on" id="panel-bracket">
     <div class="sh"><span class="sh-title">Tournament Bracket</span><span class="sh-badge" id="bracket-badge">—</span></div>
     <div id="bracket-root"><div class="empty"><div class="spin"></div><div class="empty-title">Loading bracket…</div></div></div>
   </div>
 
-  <!-- TEAMS -->
   <div class="panel" id="panel-teams">
     <div id="myzone-root"></div>
     <div class="sh"><span class="sh-title">Participating Teams</span><span class="sh-badge" id="teams-badge">—</span></div>
     <div class="teams-grid" id="teams-root"><div class="empty" style="grid-column:1/-1"><div class="spin"></div><div class="empty-title">Loading teams…</div></div></div>
   </div>
 
-  <!-- MATCHES -->
   <div class="panel" id="panel-matches">
     <div class="sh"><span class="sh-title">Matches</span></div>
     <div class="round-filter" id="round-filter"></div>
     <div class="matches-list" id="matches-root"><div class="empty"><div class="spin"></div><div class="empty-title">Loading matches…</div></div></div>
   </div>
 
-  <!-- STANDINGS -->
   <div class="panel" id="panel-standings">
     <div class="sh"><span class="sh-title">Standings</span><span class="sh-badge" id="standings-badge">—</span></div>
     <div id="standings-root"><div class="empty"><div class="spin"></div><div class="empty-title">Loading standings…</div></div></div>
@@ -860,7 +935,7 @@ img { display: block }
     <div class="mbody">
       <div class="ferr" id="ct-err"></div><div class="fok" id="ct-ok"></div>
       <div class="fg"><label class="fl">Team Name</label><input class="fi" id="ct-name" type="text" placeholder="e.g. Skyline Racers"></div>
-      <div class="fg"><label class="fl">Tag <span style="font-weight:400;text-transform:none;letter-spacing:0;font-family:var(--body)">(max 15 chars)</span></label><input class="fi" id="ct-tag" type="text" placeholder="SKY" maxlength="15"></div>
+      <div class="fg"><label class="fl">Tag <span style="font-weight:400;letter-spacing:0;text-transform:none;font-family:var(--body)">(max 15 chars)</span></label><input class="fi" id="ct-tag" type="text" placeholder="SKY" maxlength="15"></div>
       <div class="fg"><label class="fl">Description (optional)</label><input class="fi" id="ct-desc" type="text" placeholder="Short team description"></div>
       <button class="fsub" id="btn-ct" onclick="doCreateTeam()">Create Team</button>
     </div>
@@ -875,7 +950,7 @@ img { display: block }
       <div class="ferr" id="en-err"></div><div class="fok" id="en-ok"></div>
       <div class="ibox"><div class="ibox-l">Tournament</div><div class="ibox-v" id="en-tour">—</div></div>
       <div class="ibox"><div class="ibox-l">Your Team</div><div class="ibox-v" id="en-team">—</div></div>
-      <p style="font-size:12px;color:var(--t3);margin-bottom:16px;line-height:1.7">By enrolling your team you confirm all members will be available for scheduled matches. Your registration will be reviewed by an admin.</p>
+      <p style="font-size:12px;color:var(--t3);margin-bottom:18px;line-height:1.7">By enrolling your team you confirm all members will be available for scheduled matches. Registration will be reviewed by an admin.</p>
       <button class="fsub" id="btn-en" onclick="doEnroll()">Confirm Enrollment</button>
     </div>
   </div>
@@ -891,10 +966,10 @@ img { display: block }
       <div class="fg">
         <label class="fl">Add member by User ID</label>
         <input class="fi" id="am-uid" type="text" placeholder="Paste the player's User ID" onkeydown="if(event.key==='Enter')doAddMember()">
-        <div class="fi-hint">Players can find their ID in their profile. Only the team owner can add members.</div>
+        <div class="fi-hint">Players can find their ID by clicking their username in the nav bar. Only the team owner can add members.</div>
       </div>
-      <button class="fsub" id="btn-am" onclick="doAddMember()" style="margin-bottom:16px">Add Member</button>
-      <div style="font-family:var(--head);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:8px">Current Members</div>
+      <button class="fsub" id="btn-am" onclick="doAddMember()" style="margin-bottom:18px">Add Member</button>
+      <div style="font-family:var(--head);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:10px">Current Members</div>
       <div class="members-list" id="members-list"></div>
     </div>
   </div>
@@ -907,8 +982,8 @@ img { display: block }
     <div class="mbody">
       <div class="ibox"><div class="ibox-l">Username</div><div class="ibox-v" id="prof-username">—</div></div>
       <div class="ibox">
-        <div class="ibox-l">User ID <span style="font-weight:400;letter-spacing:0;text-transform:none;font-size:10px;font-family:var(--body)">(share with your captain to join a team)</span></div>
-        <div class="ibox-v" id="prof-id" style="font-size:11px;word-break:break-all;color:var(--blue3)">—</div>
+        <div class="ibox-l">User ID <span style="font-weight:400;letter-spacing:0;text-transform:none;font-family:var(--body);font-size:10px">(share with your captain to join a team)</span></div>
+        <div class="ibox-v" id="prof-id" style="font-size:11px;word-break:break-all;color:var(--cyan);text-shadow:0 0 10px var(--cglow)">—</div>
       </div>
       <div class="ibox"><div class="ibox-l">Role</div><div class="ibox-v" id="prof-role">—</div></div>
       <button class="fsub" onclick="closeOv('ov-profile')" style="background:var(--bg4);box-shadow:none;color:var(--t2)">Close</button>
@@ -919,60 +994,65 @@ img { display: block }
 <div class="toast" id="toast"></div>
 
 <script>
-/* ─── CANVAS ─── */
+/* ── CANVAS: conexiones estilo Code Genius ── */
 (function(){
   const c=document.getElementById('bg'),ctx=c.getContext('2d');
   let W,H,pts=[];
-  function resize(){ W=c.width=innerWidth; H=c.height=innerHeight }
+  const COLORS=['rgba(30,111,255,','rgba(0,212,255,','rgba(30,111,255,'];
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
   function init(){
     pts=[];
-    const n=Math.floor(W*H/20000);
+    const n=Math.floor(W*H/14000);
     for(let i=0;i<n;i++)
-      pts.push({x:Math.random()*W,y:Math.random()*H,
-        vx:(Math.random()-.5)*.14,vy:(Math.random()-.5)*.14,
-        r:Math.random()*.9+.25,a:Math.random()*.4+.08});
+      pts.push({
+        x:Math.random()*W, y:Math.random()*H,
+        vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3,
+        r:Math.random()*1.5+.5,
+        a:Math.random()*.6+.2,
+        col:COLORS[Math.floor(Math.random()*COLORS.length)]
+      });
   }
   function draw(){
     ctx.clearRect(0,0,W,H);
+    /* connections first */
     for(let i=0;i<pts.length;i++){
-      const p=pts[i];
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(79,139,255,${p.a})`;ctx.fill();
-      p.x+=p.vx;p.y+=p.vy;
-      if(p.x<0||p.x>W)p.vx*=-1;
-      if(p.y<0||p.y>H)p.vy*=-1;
       for(let j=i+1;j<pts.length;j++){
-        const q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);
-        if(d<90){
-          ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
-          ctx.strokeStyle=`rgba(79,139,255,${.05*(1-d/90)})`;
-          ctx.lineWidth=.5;ctx.stroke();
+        const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<120){
+          const a=.08*(1-d/120);
+          ctx.beginPath();
+          ctx.moveTo(pts[i].x,pts[i].y);
+          ctx.lineTo(pts[j].x,pts[j].y);
+          ctx.strokeStyle=`rgba(30,111,255,${a})`;
+          ctx.lineWidth=.6; ctx.stroke();
         }
       }
     }
+    /* dots */
+    pts.forEach(p=>{
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.col+p.a+')'; ctx.fill();
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+    });
     requestAnimationFrame(draw);
   }
   window.addEventListener('resize',()=>{resize();init()});
   resize();init();draw();
 })();
 
-/* ─── CONFIG ─── */
+/* ════════════════════════
+   CONFIG & STATE
+════════════════════════ */
 const API='https://backend-mk-grand-circuit.vercel.app';
+const S={user:null,myTeam:null,enrolled:false,tournament:null,pubView:null,rounds:[],teams:[],matches:[],roundFilter:null};
 
-/* ─── STATE ─── */
-const S={
-  user:null, myTeam:null, enrolled:false,
-  tournament:null, pubView:null,
-  rounds:[], teams:[], matches:[],
-  roundFilter:null,
-};
-
-/* ─── SESSION ─── */
 (function(){ try{ const u=localStorage.getItem('mkgc_u'); if(u)S.user=JSON.parse(u); }catch(e){} })();
 function saveS(){ if(S.user) localStorage.setItem('mkgc_u',JSON.stringify(S.user)); }
 function killS(){ localStorage.removeItem('mkgc_u'); S.user=null; S.myTeam=null; S.enrolled=false; }
 
-/* ─── API ─── */
 async function api(path,opts={}){
   const h={'Content-Type':'application/json',...opts.headers};
   if(S.user?.token) h['Authorization']='Bearer '+S.user.token;
@@ -982,17 +1062,15 @@ async function api(path,opts={}){
   return d;
 }
 
-/* ─── HELPERS ─── */
 const ini=(n='?')=>(n||'?').split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase().slice(0,3)||'?';
 function setBtn(id,l,fb=''){ const b=document.getElementById(id); if(!b)return; b.disabled=l; if(l)b.dataset.o=b.textContent; b.textContent=l?'…':(fb||b.dataset.o); }
 function msg(id,type,text){ const el=document.getElementById(id); if(!el)return; el.textContent=text; el.className=(type==='err'?'ferr':'fok')+(text?' on':''); }
 function clr(...ids){ ids.forEach(id=>msg(id,'err','')); }
-function toast(text,type='ok'){ const el=document.getElementById('toast'); el.textContent=text; el.className='toast on '+type; setTimeout(()=>el.classList.remove('on'),3000); }
+function toast(text,type='ok'){ const el=document.getElementById('toast'); el.textContent=text; el.className='toast on '+type; setTimeout(()=>el.classList.remove('on'),3200); }
 function openOv(id){ document.getElementById(id).classList.add('on'); }
 function closeOv(id){ document.getElementById(id).classList.remove('on'); }
 function closeBg(e,id){ if(e.target===e.currentTarget)closeOv(id); }
 
-/* ─── TABS ─── */
 function gotoTab(name){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('on'));
@@ -1000,7 +1078,6 @@ function gotoTab(name){
   document.querySelectorAll('.ntab')[['bracket','teams','matches','standings'].indexOf(name)]?.classList.add('on');
 }
 
-/* ─── NAV ─── */
 function renderNav(){
   const el=document.getElementById('nav-right');
   const lb=`<div class="live-badge" id="live-badge" style="display:none"><div class="live-dot"></div>LIVE</div>`;
@@ -1011,7 +1088,7 @@ function renderNav(){
   } else {
     const isAdmin=S.user.role==='ADMIN';
     el.innerHTML=`${lb}
-      ${isAdmin?`<a href="admin.html"><button class="nb" style="color:var(--blue3);border-color:rgba(79,139,255,.35)">⚙ Admin</button></a>`:''}
+      ${isAdmin?`<a href="admin.html"><button class="nb" style="color:var(--cyan);border-color:rgba(0,212,255,.4)">⚙ Admin</button></a>`:''}
       <div class="user-chip" onclick="openProfile()">
         <div class="ava">${ini(S.user.username)}</div>
         <span class="uname">${S.user.username}</span>
@@ -1027,7 +1104,7 @@ function openProfile(){
   openOv('ov-profile');
 }
 
-/* ─── AUTH ─── */
+/* ── AUTH ── */
 function authTab(t){
   document.getElementById('f-login').style.display=t==='login'?'block':'none';
   document.getElementById('f-reg').style.display=t==='register'?'block':'none';
@@ -1049,9 +1126,8 @@ async function doLogin(){
     saveS(); closeOv('ov-auth'); renderNav();
     await loadMyTeam(); renderMyZone();
     toast('Welcome back, '+S.user.username+'!');
-  }catch(e){
-    msg('l-err','err',e.status===401?'Invalid email or password.':e.message||'Login failed.');
-  }finally{ setBtn('btn-login',false,'Sign In'); }
+  }catch(e){ msg('l-err','err',e.status===401?'Invalid email or password.':e.message||'Login failed.'); }
+  finally{ setBtn('btn-login',false,'Sign In'); }
 }
 
 async function doRegister(){
@@ -1066,14 +1142,13 @@ async function doRegister(){
     await api('/auth/register',{method:'POST',body:JSON.stringify({username,email,password})});
     msg('r-ok','ok','Account created! You can now sign in.');
     setTimeout(()=>authTab('login'),1500);
-  }catch(e){
-    msg('r-err','err',e.status===409?'Username or email already taken.':e.message||'Registration failed.');
-  }finally{ setBtn('btn-reg',false,'Create Account'); }
+  }catch(e){ msg('r-err','err',e.status===409?'Username or email already taken.':e.message||'Registration failed.'); }
+  finally{ setBtn('btn-reg',false,'Create Account'); }
 }
 
 function doLogout(){ killS(); renderNav(); renderMyZone(); toast('Signed out'); }
 
-/* ─── CREATE TEAM ─── */
+/* ── CREATE TEAM ── */
 async function doCreateTeam(){
   clr('ct-err','ct-ok');
   const name=document.getElementById('ct-name').value.trim();
@@ -1083,40 +1158,35 @@ async function doCreateTeam(){
   if(!tag)  return msg('ct-err','err','Tag is required (e.g. SKY).');
   setBtn('btn-ct',true);
   try{
-    const body={name,tag};
-    if(description) body.description=description;
+    const body={name,tag}; if(description) body.description=description;
     const d=await api('/teams',{method:'POST',body:JSON.stringify(body)});
     S.myTeam=d;
     msg('ct-ok','ok','Team "'+name+'" created!');
     setTimeout(async()=>{ closeOv('ov-cteam'); await loadMyTeam(); renderMyZone(); if(S.pubView)renderTeams(); },1200);
-  }catch(e){
-    msg('ct-err','err',e.status===409?'That team name or tag is already taken.':e.message||'Could not create team.');
-  }finally{ setBtn('btn-ct',false,'Create Team'); }
+  }catch(e){ msg('ct-err','err',e.status===409?'That team name or tag is already taken.':e.message||'Could not create team.'); }
+  finally{ setBtn('btn-ct',false,'Create Team'); }
 }
 
-/* ─── ENROLL ─── */
+/* ── ENROLL ── */
 function openEnroll(){
   if(!S.tournament||!S.myTeam) return;
   document.getElementById('en-tour').textContent=S.tournament.name;
   document.getElementById('en-team').textContent=S.myTeam.name;
   clr('en-err','en-ok'); openOv('ov-enroll');
 }
-
 async function doEnroll(){
-  clr('en-err','en-ok');
-  setBtn('btn-en',true);
+  clr('en-err','en-ok'); setBtn('btn-en',true);
   try{
     await api(`/tournaments/${S.tournament.id}/register`,{method:'POST',body:JSON.stringify({teamId:S.myTeam.id})});
     S.enrolled=true;
     msg('en-ok','ok','Enrollment submitted! Awaiting admin approval.');
     setTimeout(()=>{ closeOv('ov-enroll'); renderMyZone(); },1200);
     toast('Enrollment submitted ✓');
-  }catch(e){
-    msg('en-err','err',e.status===409?'Your team is already enrolled or the tournament is closed.':e.message||'Enrollment failed.');
-  }finally{ setBtn('btn-en',false,'Confirm Enrollment'); }
+  }catch(e){ msg('en-err','err',e.status===409?'Your team is already enrolled or the tournament is closed.':e.message||'Enrollment failed.'); }
+  finally{ setBtn('btn-en',false,'Confirm Enrollment'); }
 }
 
-/* ─── ADD MEMBER ─── */
+/* ── MEMBERS ── */
 async function doAddMember(){
   clr('am-err','am-ok');
   const userId=document.getElementById('am-uid').value.trim();
@@ -1129,10 +1199,7 @@ async function doAddMember(){
     document.getElementById('am-uid').value='';
     await loadMyTeam(); renderMembersList(); toast('Member added!');
   }catch(e){
-    const txt=e.status===409?'That player is already on a team.':
-              e.status===404?'User not found. Check the ID.':
-              e.status===403?'Only the team owner can add members.':
-              e.message||'Could not add member.';
+    const txt=e.status===409?'That player is already on a team.':e.status===404?'User not found. Check the ID.':e.status===403?'Only the team owner can add members.':e.message||'Could not add member.';
     msg('am-err','err',txt);
   }finally{ setBtn('btn-am',false,'Add Member'); }
 }
@@ -1141,23 +1208,18 @@ async function doRemoveMember(userId){
   if(!confirm('Remove this member from the team?')) return;
   try{
     await api(`/teams/${S.myTeam.id}/members/${userId}`,{method:'DELETE'});
-    toast('Member removed');
-    await loadMyTeam(); renderMembersList();
+    toast('Member removed'); await loadMyTeam(); renderMembersList();
   }catch(e){ toast(e.message||'Could not remove member.','err'); }
 }
 
 function renderMembersList(){
-  const el=document.getElementById('members-list');
-  if(!el) return;
+  const el=document.getElementById('members-list'); if(!el) return;
   if(!S.myTeam?.members?.length){ el.innerHTML=`<div style="font-size:12px;color:var(--t3)">No members yet.</div>`; return; }
   el.innerHTML=S.myTeam.members.map(m=>`
     <div class="member-row">
       <div class="member-info">
         <div class="member-ava">${ini(m.username||'?')}</div>
-        <div>
-          <div class="member-name">${m.username||'Unknown'}</div>
-          <div class="member-id">${m.id}</div>
-        </div>
+        <div><div class="member-name">${m.username||'Unknown'}</div><div class="member-id">${m.id}</div></div>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
         <span class="role-tag${m.role==='MEMBER'?' member':''}">${m.role}</span>
@@ -1169,13 +1231,11 @@ function renderMembersList(){
 function openTeamModal(){
   if(!S.myTeam) return;
   document.getElementById('tm-name').textContent=S.myTeam.name;
-  clr('am-err','am-ok');
-  document.getElementById('am-uid').value='';
-  renderMembersList();
-  openOv('ov-team');
+  clr('am-err','am-ok'); document.getElementById('am-uid').value='';
+  renderMembersList(); openOv('ov-team');
 }
 
-/* ─── LOAD MY TEAM ─── */
+/* ── LOAD ── */
 async function loadMyTeam(){
   if(!S.user) return;
   try{ S.myTeam=await api('/teams/my-team'); }
@@ -1190,7 +1250,6 @@ async function loadMyTeam(){
   }
 }
 
-/* ─── LOAD ALL ─── */
 async function loadAll(){
   try{
     const tours=await api('/tournaments');
@@ -1203,8 +1262,7 @@ async function loadAll(){
     S.rounds=pub.rounds||[];
     S.matches=[...pub.rounds.flatMap(r=>r.matches||[]),...(pub.unassignedMatches||[])];
     document.getElementById('err-bar').classList.remove('on');
-    await loadMyTeam();
-    renderAll();
+    await loadMyTeam(); renderAll();
   }catch(e){
     console.error('loadAll:',e);
     document.getElementById('err-bar').classList.add('on');
@@ -1212,17 +1270,15 @@ async function loadAll(){
 }
 
 function renderAll(){
-  renderHero(); renderBracket(); renderTeams();
-  renderMatches(); renderStandings(); renderMyZone();
+  renderHero(); renderBracket(); renderTeams(); renderMatches(); renderStandings(); renderMyZone();
 }
 
-/* ─── HERO ─── */
+/* ── HERO ── */
 function renderHero(){
   const t=S.tournament;
   const hasLive=S.matches.some(m=>m.status==='IN_PROGRESS');
-  const lb=document.getElementById('live-badge');
-  if(lb) lb.style.display=hasLive?'flex':'none';
-  const statusMap={OPEN:'Registration open',CLOSED:'Registration closed',IN_PROGRESS:'In progress',FINISHED:'Finished'};
+  const lb=document.getElementById('live-badge'); if(lb) lb.style.display=hasLive?'flex':'none';
+  const statusMap={OPEN:'Registration Open',CLOSED:'Registration Closed',IN_PROGRESS:'Tournament Live',FINISHED:'Tournament Finished'};
   document.getElementById('hero-tag').textContent=statusMap[t.status]||t.status||'Active';
   document.getElementById('hero-sub').textContent=t.description||'The official Mario Kart Grand Circuit tournament.';
   document.getElementById('st-teams').textContent=S.teams.length||'0';
@@ -1230,15 +1286,14 @@ function renderHero(){
   document.getElementById('st-matches').textContent=S.matches.length||'0';
 }
 
-/* ─── BRACKET ─── */
+/* ── BRACKET ── */
 function renderBracket(){
   if(!S.rounds.length){
-    document.getElementById('bracket-root').innerHTML=`<div class="empty"><div class="empty-ico">🏆</div><div class="empty-title">Bracket not available yet</div><div class="empty-sub">Rounds will appear here once the tournament starts</div></div>`;
+    document.getElementById('bracket-root').innerHTML=`<div class="empty"><div class="empty-ico">🏆</div><div class="empty-title">Bracket Not Available Yet</div><div class="empty-sub">Rounds will appear here once the tournament starts</div></div>`;
     return;
   }
   const sr=[...S.rounds].sort((a,b)=>(a.orderIndex||0)-(b.orderIndex||0));
   document.getElementById('bracket-badge').textContent=`${sr.length} rounds · ${S.matches.length} matches`;
-
   let h=`<div class="bracket-scroll"><div class="bracket-body">`;
   sr.forEach((r,ri)=>{
     const ms=r.matches||[];
@@ -1247,11 +1302,9 @@ function renderBracket(){
       h+=`<div class="m-slot"><div class="m-card"><div class="m-team"><span class="m-tname tbd">TBD</span></div></div></div>`;
     } else {
       ms.forEach(m=>{
-        const isLive=m.status==='IN_PROGRESS';
-        const isDone=m.status==='PLAYED';
+        const isLive=m.status==='IN_PROGRESS', isDone=m.status==='PLAYED';
         const has=m.scoreA!==null&&m.scoreB!==null&&isDone;
-        const aWin=has&&m.winnerTeamId===m.teamAId;
-        const bWin=has&&m.winnerTeamId===m.teamBId;
+        const aWin=has&&m.winnerTeamId===m.teamAId, bWin=has&&m.winnerTeamId===m.teamBId;
         h+=`<div class="m-slot"><div class="m-card${isLive?' live':''}">
           ${isLive?'<div class="m-live-bar"></div>':''}
           <div class="m-team${aWin?' won':bWin?' lost':''}">
@@ -1270,30 +1323,18 @@ function renderBracket(){
     h+=`</div></div>`;
     if(ri<sr.length-1) h+=`<div class="b-sep"><div class="b-line"></div></div>`;
   });
-
   const last=sr[sr.length-1];
   const fm=(last?.matches||[])[0];
   const champ=fm?.winnerTeamId?fm.winnerTeam||'Champion':null;
-  h+=`<div class="b-winner"><div class="winner-card">
-    <span class="winner-crown">🏆</span>
-    <div class="winner-lbl">Champion</div>
-    <div class="winner-name">${champ||'???'}</div>
-  </div></div></div></div>`;
+  h+=`<div class="b-winner"><div class="winner-card"><span class="winner-crown">🏆</span><div class="winner-lbl">Champion</div><div class="winner-name">${champ||'???'}</div></div></div></div></div>`;
   document.getElementById('bracket-root').innerHTML=h;
 }
 
-/* ─── MY ZONE ─── */
+/* ── MY ZONE ── */
 function renderMyZone(){
-  const el=document.getElementById('myzone-root');
-  if(!S.user){ el.innerHTML=''; return; }
+  const el=document.getElementById('myzone-root'); if(!S.user){ el.innerHTML=''; return; }
   if(!S.myTeam){
-    el.innerHTML=`<div class="my-zone">
-      <div class="mz-head">
-        <div class="mz-title">My Zone</div>
-        <div class="mz-btns"><button class="nb nb-blue" onclick="openOv('ov-cteam')">+ Create Team</button></div>
-      </div>
-      <p style="font-size:13px;color:var(--t3);line-height:1.7">You don't have a team yet. Create one to enroll in the tournament.</p>
-    </div>`;
+    el.innerHTML=`<div class="my-zone"><div class="mz-head"><div class="mz-title">My Zone</div><div class="mz-btns"><button class="nb nb-blue" onclick="openOv('ov-cteam')">+ Create Team</button></div></div><p style="font-size:13px;color:var(--t3);line-height:1.7">You don't have a team yet. Create one to enroll in the tournament.</p></div>`;
     return;
   }
   const t=S.myTeam;
@@ -1301,34 +1342,24 @@ function renderMyZone(){
   const wins=allM.filter(m=>m.winnerTeamId===t.id).length;
   const played=allM.filter(m=>m.status==='PLAYED').length;
   const isOwner=t.members?.some(m=>m.id===S.user.id&&m.role==='OWNER');
-  el.innerHTML=`<div class="my-zone has">
-    <div class="mz-head">
-      <div class="mz-title">My Team<span>${t.name}</span></div>
-      <div class="mz-btns">
-        ${isOwner?`<button class="nb" onclick="openTeamModal()">Manage Team</button>`:''}
-        ${isOwner&&!S.enrolled?`<button class="nb nb-blue" onclick="openEnroll()">Enroll in Tournament</button>`:''}
-        ${S.enrolled?`<div class="enrolled-tag">✓ Enrolled</div>`:''}
-      </div>
-    </div>
-    <div class="mz-stats">
-      <div class="mz-s"><div class="mz-s-n">${t.members?.length||1}</div><div class="mz-s-l">Members</div></div>
-      <div class="mz-s"><div class="mz-s-n">${played}</div><div class="mz-s-l">Played</div></div>
-      <div class="mz-s"><div class="mz-s-n" style="color:var(--green)">${wins}</div><div class="mz-s-l">Wins</div></div>
-      <div class="mz-s">
-        <div class="mz-s-n" style="font-size:13px;font-weight:600;color:${S.enrolled?'var(--green)':'var(--t3)'}">
-          ${S.enrolled?'Enrolled':'Not enrolled'}
-        </div>
-        <div class="mz-s-l">Tournament</div>
-      </div>
-    </div>
-  </div>`;
+  el.innerHTML=`<div class="my-zone has"><div class="mz-head"><div class="mz-title">My Team<span>${t.name}</span></div><div class="mz-btns">
+    ${isOwner?`<button class="nb" onclick="openTeamModal()">Manage Team</button>`:''}
+    ${isOwner&&!S.enrolled?`<button class="nb nb-blue" onclick="openEnroll()">Enroll in Tournament</button>`:''}
+    ${S.enrolled?`<div class="enrolled-tag">✓ Enrolled</div>`:''}
+  </div></div>
+  <div class="mz-stats">
+    <div class="mz-s"><div class="mz-s-n">${t.members?.length||1}</div><div class="mz-s-l">Members</div></div>
+    <div class="mz-s"><div class="mz-s-n">${played}</div><div class="mz-s-l">Played</div></div>
+    <div class="mz-s"><div class="mz-s-n" style="color:var(--green);text-shadow:0 0 10px var(--green)">${wins}</div><div class="mz-s-l">Wins</div></div>
+    <div class="mz-s"><div class="mz-s-n" style="font-size:14px;font-weight:700;font-family:var(--body);color:${S.enrolled?'var(--green)':'var(--t3)'}">${S.enrolled?'Enrolled':'Not enrolled'}</div><div class="mz-s-l">Tournament</div></div>
+  </div></div>`;
 }
 
-/* ─── TEAMS ─── */
+/* ── TEAMS ── */
 function renderTeams(){
   document.getElementById('teams-badge').textContent=`${S.teams.length} teams`;
   if(!S.teams.length){
-    document.getElementById('teams-root').innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-ico">👥</div><div class="empty-title">No approved teams yet</div></div>`;
+    document.getElementById('teams-root').innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-ico">👥</div><div class="empty-title">No Approved Teams Yet</div></div>`;
     return;
   }
   document.getElementById('teams-root').innerHTML=S.teams.map(t=>{
@@ -1337,17 +1368,13 @@ function renderTeams(){
     const wins=tMs.filter(m=>m.winnerTeamId===id).length;
     const played=tMs.filter(m=>m.status==='PLAYED').length;
     const mine=S.myTeam?.id===id;
-    const logo=t.logoUrl?`<img src="${t.logoUrl}" alt="${ini(t.name)}" loading="lazy" onerror="this.outerHTML='${ini(t.name)}'">`:`${ini(t.name)}`;
+    const logo=t.logoUrl?`<img src="${t.logoUrl}" alt="${ini(t.name)}" loading="lazy">`:`${ini(t.name)}`;
     return `<div class="t-card${mine?' mine':''}">
       <div class="t-banner"><div class="t-banner-ph">${ini(t.name)}</div></div>
       <div class="t-body">
         <div class="t-ident">
           <div class="t-logo">${logo}</div>
-          <div>
-            <div class="t-name">${t.name}</div>
-            <div class="t-tag">${t.tag||''}</div>
-            ${mine?'<div class="t-mine-tag">MY TEAM</div>':''}
-          </div>
+          <div><div class="t-name">${t.name}</div><div class="t-tag">${t.tag||''}</div>${mine?'<div class="t-mine-tag">MY TEAM</div>':''}</div>
         </div>
         <div class="t-row">
           <div class="t-st"><div class="t-st-n">${played}</div><div class="t-st-l">Played</div></div>
@@ -1359,7 +1386,7 @@ function renderTeams(){
   }).join('');
 }
 
-/* ─── MATCHES ─── */
+/* ── MATCHES ── */
 function renderMatches(){
   const sr=[...S.rounds].sort((a,b)=>(a.orderIndex||0)-(b.orderIndex||0));
   document.getElementById('round-filter').innerHTML=
@@ -1367,28 +1394,21 @@ function renderMatches(){
     sr.map(r=>`<button class="rfbtn${S.roundFilter===r.id?' on':''}" onclick="setRF('${r.id}')">${r.name}</button>`).join('');
   const vis=S.roundFilter?S.matches.filter(m=>m.roundId===S.roundFilter):S.matches;
   if(!vis.length){
-    document.getElementById('matches-root').innerHTML=`<div class="empty"><div class="empty-ico">🎮</div><div class="empty-title">No matches scheduled yet</div></div>`;
+    document.getElementById('matches-root').innerHTML=`<div class="empty"><div class="empty-ico">🎮</div><div class="empty-title">No Matches Scheduled Yet</div></div>`;
     return;
   }
   document.getElementById('matches-root').innerHTML=vis.map(m=>{
     const r=S.rounds.find(x=>x.id===m.roundId);
-    const isLive=m.status==='IN_PROGRESS';
-    const isDone=m.status==='PLAYED';
+    const isLive=m.status==='IN_PROGRESS', isDone=m.status==='PLAYED';
     const has=m.scoreA!==null&&m.scoreB!==null&&isDone;
-    const aWin=has&&m.winnerTeamId===m.teamAId;
-    const bWin=has&&m.winnerTeamId===m.teamBId;
+    const aWin=has&&m.winnerTeamId===m.teamAId, bWin=has&&m.winnerTeamId===m.teamBId;
     return `<div class="mr${isLive?' live':isDone?' done':''}">
       <div class="mr-side">
         <div class="mr-logo">${m.teamA?ini(m.teamA):'?'}</div>
-        <div>
-          <div class="mr-tname${aWin?' w':bWin?' l':''}">${m.teamA||'TBD'}</div>
-          <div class="mr-meta">${r?.name||''}</div>
-        </div>
+        <div><div class="mr-tname${aWin?' w':bWin?' l':''}">${m.teamA||'TBD'}</div><div class="mr-meta">${r?.name||''}</div></div>
       </div>
       <div class="mr-center">
-        ${has?`<div class="mr-score">${m.scoreA} — ${m.scoreB}</div>`:
-          isLive?`<div class="mr-vs" style="color:var(--red)">LIVE</div>`:
-          `<div class="mr-vs">VS</div>`}
+        ${has?`<div class="mr-score">${m.scoreA} — ${m.scoreB}</div>`:isLive?`<div class="mr-vs" style="color:var(--red)">LIVE</div>`:`<div class="mr-vs">VS</div>`}
         <div class="mr-status${isLive?' live':''}">${isLive?'live':isDone?'finished':'pending'}</div>
       </div>
       <div class="mr-side right">
@@ -1400,12 +1420,11 @@ function renderMatches(){
 }
 function setRF(id){ S.roundFilter=id; renderMatches(); }
 
-/* ─── STANDINGS ─── */
+/* ── STANDINGS ── */
 function renderStandings(){
   if(!S.teams.length){
-    document.getElementById('standings-root').innerHTML=`<div class="empty"><div class="empty-ico">📊</div><div class="empty-title">No standings yet</div></div>`;
-    document.getElementById('standings-badge').textContent='—';
-    return;
+    document.getElementById('standings-root').innerHTML=`<div class="empty"><div class="empty-ico">📊</div><div class="empty-title">No Standings Yet</div></div>`;
+    document.getElementById('standings-badge').textContent='—'; return;
   }
   const rows=S.teams.map(t=>{
     const id=t.teamId;
@@ -1415,43 +1434,30 @@ function renderStandings(){
     const ga=ms.reduce((s,m)=>s+(m.teamAId===id?(m.scoreB||0):(m.scoreA||0)),0);
     return {t,w,l:ms.length-w,p:ms.length,pts:w*3,gf,ga};
   }).sort((a,b)=>b.pts-a.pts||b.w-a.w||b.gf-a.gf);
-
   document.getElementById('standings-badge').textContent=S.tournament?.name||'—';
-  document.getElementById('standings-root').innerHTML=`<div class="st-wrap">
-    <table class="st-table">
-      <thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>L</th><th>GF</th><th>GA</th><th>Pts</th></tr></thead>
-      <tbody>${rows.map((s,i)=>{
-        const rc=i===0?'g':i===1?'s':i===2?'b':'';
-        const lg=s.t.logoUrl
-          ?`<div class="st-logo"><img src="${s.t.logoUrl}" alt=""></div>`
-          :`<div class="st-logo">${ini(s.t.name)}</div>`;
-        return `<tr class="st-tr">
-          <td><div class="st-rk${rc?' '+rc:''}">${String(i+1).padStart(2,'0')}</div></td>
-          <td><div class="st-team">${lg}<div><div class="st-tn">${s.t.name}</div><div class="st-ttag">${s.t.tag||''}</div></div></div></td>
-          <td><div class="st-num">${s.p}</div></td>
-          <td><div class="st-num">${s.w}</div></td>
-          <td><div class="st-num">${s.l}</div></td>
-          <td><div class="st-num">${s.gf}</div></td>
-          <td><div class="st-num">${s.ga}</div></td>
-          <td><div class="st-pts">${s.pts}</div></td>
-        </tr>`;
-      }).join('')}</tbody>
-    </table></div>`;
+  document.getElementById('standings-root').innerHTML=`<div class="st-wrap"><table class="st-table">
+    <thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>L</th><th>GF</th><th>GA</th><th>Pts</th></tr></thead>
+    <tbody>${rows.map((s,i)=>{
+      const rc=i===0?'g':i===1?'s':i===2?'b':'';
+      const lg=s.t.logoUrl?`<div class="st-logo"><img src="${s.t.logoUrl}" alt=""></div>`:`<div class="st-logo">${ini(s.t.name)}</div>`;
+      return `<tr class="st-tr"><td><div class="st-rk${rc?' '+rc:''}">${String(i+1).padStart(2,'0')}</div></td>
+        <td><div class="st-team">${lg}<div><div class="st-tn">${s.t.name}</div><div class="st-ttag">${s.t.tag||''}</div></div></div></td>
+        <td><div class="st-num">${s.p}</div></td><td><div class="st-num">${s.w}</div></td>
+        <td><div class="st-num">${s.l}</div></td><td><div class="st-num">${s.gf}</div></td>
+        <td><div class="st-num">${s.ga}</div></td><td><div class="st-pts">${s.pts}</div></td></tr>`;
+    }).join('')}</tbody></table></div>`;
 }
 
-function renderEmpty(msg){
-  document.getElementById('hero-tag').textContent='Coming soon';
-  document.getElementById('hero-sub').textContent=msg||'The tournament will appear here once it is created.';
+function renderEmpty(m){
+  document.getElementById('hero-tag').textContent='Coming Soon';
+  document.getElementById('hero-sub').textContent=m||'The tournament will appear here once it is created.';
   ['bracket-root','teams-root','matches-root','standings-root'].forEach(id=>{
     const el=document.getElementById(id);
-    if(el) el.innerHTML=`<div class="empty"><div class="empty-ico">🏁</div><div class="empty-title">No data yet</div><div class="empty-sub">${msg||'Check back soon'}</div></div>`;
+    if(el) el.innerHTML=`<div class="empty"><div class="empty-ico">🏁</div><div class="empty-title">No Data Yet</div><div class="empty-sub">${m||'Check back soon'}</div></div>`;
   });
 }
 
-/* ─── INIT ─── */
-renderNav();
-loadAll();
-setInterval(loadAll,30000);
+renderNav(); loadAll(); setInterval(loadAll,30000);
 </script>
 </body>
 </html>
