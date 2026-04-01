@@ -4,192 +4,261 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — MK Grand Circuit</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#0b0c10;--ink2:#111318;--ink3:#181c24;--ink4:#1f2430;
-  --line:rgba(255,255,255,.055);--line2:rgba(255,255,255,.11);
-  --gold:#e8c547;--gold2:#f5d877;--green:#34d17a;--red:#f04f6a;
-  --snow:#eef1fa;--fog:#7e879e;--fog2:#a8b0c4;
-  --mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;
-  --r:6px;--r2:10px;--r3:14px;
+  --bg0:#020408;--bg1:#05080f;--bg2:#080d1a;--bg3:#0c1220;--bg4:#111929;
+  --blue:#1e6fff;--blue2:#0a47cc;--cyan:#00d4ff;
+  --green:#00e87a;--red:#ff3355;--amber:#ffb800;
+  --t1:#f0f4ff;--t2:#8ba0cc;--t3:#3d5075;
+  --br:rgba(30,111,255,0.13);--br2:rgba(30,111,255,0.30);
+  --head:'Orbitron',monospace;--body:'Exo 2',sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased}
-body{background:var(--ink);color:var(--snow);font-family:var(--sans);font-size:13px;line-height:1.6;min-height:100vh}
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:var(--ink2)}
-::-webkit-scrollbar-thumb{background:var(--ink4);border-radius:2px}
+body{background:var(--bg0);color:var(--t1);font-family:var(--body);font-size:15px;line-height:1.6;min-height:100vh}
 a{color:inherit;text-decoration:none}
-button{font-family:inherit}
+button{font-family:inherit;cursor:pointer}
+input,select{font-family:inherit}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg1)}
+::-webkit-scrollbar-thumb{background:var(--blue2);border-radius:2px}
 
-/* ── LOGIN WALL ── */
+/* LOGIN */
 .lwall{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.lcard{background:var(--ink2);border:1px solid var(--line2);border-radius:var(--r3);width:100%;max-width:340px;padding:32px;animation:fade .3s ease}
-@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.lcard-logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:22px}
-.lcard-gem{width:16px;height:16px;background:var(--gold);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%)}
-.lcard-title{font-size:20px;font-weight:800;margin-bottom:4px}
-.lcard-sub{font-size:12px;color:var(--fog);margin-bottom:20px}
+.lcard{background:var(--bg2);border:1px solid var(--br2);border-radius:8px;width:100%;max-width:360px;padding:36px;animation:fadeup .3s ease;box-shadow:0 0 60px rgba(30,111,255,0.1)}
+@keyframes fadeup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.lcard-brand{font-family:var(--head);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:22px}
+.lcard-title{font-family:var(--head);font-size:22px;font-weight:800;letter-spacing:.06em;margin-bottom:6px}
+.lcard-sub{font-size:14px;color:var(--t3);margin-bottom:24px}
 
-/* ── NAV ── */
-.nav{display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 22px;background:var(--ink2);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
-.nav-logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
-.nav-gem{width:14px;height:14px;background:var(--gold);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%)}
-.adm-tag{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:3px;background:rgba(232,197,71,.1);color:var(--gold);border:1px solid rgba(232,197,71,.22);letter-spacing:.08em}
-.nav-r{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--fog)}
-.nb{padding:5px 13px;border-radius:var(--r);font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--fog2);transition:all .15s}
-.nb:hover{border-color:var(--line2);color:var(--snow);background:var(--ink3)}
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;height:62px;padding:0 28px;background:rgba(2,4,8,.97);border-bottom:1px solid var(--br);position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
+.nav-brand{font-family:var(--head);font-size:14px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:12px}
+.nav-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.admin-chip{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:2px;background:rgba(0,212,255,0.08);color:var(--cyan);border:1px solid rgba(0,212,255,0.3)}
+.nav-right{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t3)}
+.nav-user{font-weight:600;color:var(--t2);font-family:var(--head);font-size:12px;letter-spacing:.04em}
 
-/* ── LAYOUT ── */
-.layout{display:grid;grid-template-columns:200px 1fr;min-height:calc(100vh - 52px)}
-.sidebar{background:var(--ink2);border-right:1px solid var(--line);padding:16px 0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto}
-.sb-lbl{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--fog);padding:0 14px 8px}
-.sb-item{display:flex;align-items:center;gap:9px;padding:8px 14px;cursor:pointer;font-size:12px;font-weight:600;color:var(--fog2);border:none;background:transparent;width:100%;text-align:left;border-right:2px solid transparent;transition:all .15s;margin-bottom:2px}
-.sb-item:hover{background:rgba(255,255,255,.025);color:var(--snow)}
-.sb-item.on{background:rgba(232,197,71,.07);color:var(--gold);border-right-color:var(--gold)}
-.sb-ico{font-size:13px;width:16px;flex-shrink:0}
-.main{padding:24px;overflow-y:auto}
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:224px 1fr;min-height:calc(100vh - 62px)}
 
-/* ── PAGES ── */
-.page{display:none;animation:fade .2s ease}
+/* SIDEBAR */
+.sidebar{background:var(--bg1);border-right:1px solid var(--br);display:flex;flex-direction:column;position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto}
+.sb-section{padding:18px 0 8px}
+.sb-section+.sb-section{border-top:1px solid var(--br)}
+.sb-label{font-family:var(--head);font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--t3);padding:0 20px 10px}
+.sb-item{display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer;font-size:14px;font-weight:600;color:var(--t3);border:none;background:transparent;width:100%;text-align:left;transition:all .18s;border-left:3px solid transparent}
+.sb-item:hover{background:rgba(30,111,255,0.06);color:var(--t2);border-left-color:var(--br2)}
+.sb-item.on{background:rgba(0,212,255,0.07);color:var(--cyan);border-left-color:var(--cyan)}
+.sb-icon{width:34px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--bg3);border:1px solid var(--br);color:var(--t3);transition:all .18s}
+.sb-item.on .sb-icon{background:rgba(0,212,255,0.1);border-color:rgba(0,212,255,0.3);color:var(--cyan)}
+.sb-badge{margin-left:auto;font-family:var(--head);font-size:11px;font-weight:700;background:var(--bg3);border:1px solid var(--br);border-radius:10px;padding:1px 9px;color:var(--t3);min-width:28px;text-align:center}
+.sb-item.on .sb-badge{background:rgba(0,212,255,0.1);border-color:rgba(0,212,255,0.3);color:var(--cyan)}
+.sb-badge.alert{background:rgba(255,51,85,0.15);border-color:rgba(255,51,85,0.4);color:var(--red)}
+
+/* MAIN */
+.main{padding:28px 32px 60px;overflow-y:auto}
+
+/* PAGE */
+.pg-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap}
+.pg-title{font-family:var(--head);font-size:22px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.pg-sub{font-size:14px;color:var(--t3);margin-top:3px}
+.page{display:none;animation:fadein .2s ease}
 .page.on{display:block}
-.pg-title{font-size:18px;font-weight:800;letter-spacing:-.01em;margin-bottom:4px}
-.pg-sub{font-size:12px;color:var(--fog);margin-bottom:18px}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── STATS ── */
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
-.sc{background:var(--ink2);border:1px solid var(--line);border-radius:var(--r2);padding:14px 16px}
-.sc-n{font-family:var(--mono);font-size:26px;color:var(--gold);line-height:1}
-.sc-l{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fog);margin-top:3px}
+/* STAT ROW */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:var(--bg2);border:1px solid var(--br);border-radius:8px;padding:22px;position:relative;overflow:hidden;cursor:default;transition:border-color .2s}
+.stat-card:hover{border-color:var(--br2)}
+.stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px}
+.sc-t::after{background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.sc-r::after{background:linear-gradient(90deg,var(--cyan),var(--green))}
+.sc-m::after{background:linear-gradient(90deg,var(--amber),#ff8800)}
+.sc-g::after{background:linear-gradient(90deg,var(--red),var(--amber))}
+.stat-label{font-family:var(--head);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:10px}
+.stat-n{font-family:var(--head);font-size:44px;font-weight:800;line-height:1;color:var(--t1)}
 
-/* ── CARD ── */
-.card{background:var(--ink2);border:1px solid var(--line);border-radius:var(--r2);padding:18px;margin-bottom:14px}
-.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px}
-.card-title{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--fog)}
+/* QUICK ACTIONS */
+.qa-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+.qa{background:var(--bg2);border:1px solid var(--br);border-radius:8px;padding:18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s;text-align:left}
+.qa:hover{border-color:var(--br2);background:var(--bg3);transform:translateY(-2px);box-shadow:0 6px 24px rgba(30,111,255,0.12)}
+.qa-ico{width:42px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0}
+.qa-ico svg{width:22px;height:22px}
+.qa-ico.b{background:rgba(30,111,255,0.12);border:1px solid rgba(30,111,255,0.3)}
+.qa-ico.g{background:rgba(0,232,122,0.1);border:1px solid rgba(0,232,122,0.3)}
+.qa-ico.a{background:rgba(255,184,0,0.1);border:1px solid rgba(255,184,0,0.3)}
+.qa-t{font-size:15px;font-weight:700;color:var(--t1);margin-bottom:2px}
+.qa-s{font-size:12px;color:var(--t3)}
 
-/* ── TABLE ── */
+/* CARD */
+.card{background:var(--bg2);border:1px solid var(--br);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--br);gap:12px}
+.card-title{font-family:var(--head);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t2)}
+.card-body{padding:22px}
+
+/* TABLE */
 .tbl{width:100%;border-collapse:collapse}
-.tbl th{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--fog);padding:0 10px 10px;text-align:left}
-.tbl td{padding:9px 10px;border-top:1px solid var(--line);font-size:12px;vertical-align:middle}
-.tbl tr:hover td{background:rgba(255,255,255,.01)}
-.acts{display:flex;gap:5px;align-items:center}
-.pill{display:inline-flex;align-items:center;font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:3px}
-.pill-open{background:rgba(52,209,122,.08);color:var(--green);border:1px solid rgba(52,209,122,.2)}
-.pill-closed{background:rgba(240,79,106,.08);color:var(--red);border:1px solid rgba(240,79,106,.2)}
-.pill-prog{background:rgba(232,197,71,.08);color:var(--gold);border:1px solid rgba(232,197,71,.2)}
-.pill-fin{background:rgba(136,145,176,.1);color:var(--fog2);border:1px solid rgba(136,145,176,.15)}
-.pill-pend{background:rgba(232,197,71,.08);color:var(--gold);border:1px solid rgba(232,197,71,.2)}
-.pill-live{background:rgba(240,79,106,.08);color:var(--red);border:1px solid rgba(240,79,106,.2)}
-.pill-done{background:rgba(52,209,122,.08);color:var(--green);border:1px solid rgba(52,209,122,.2)}
-.pill-appr{background:rgba(52,209,122,.08);color:var(--green);border:1px solid rgba(52,209,122,.2)}
-.pill-rej{background:rgba(240,79,106,.08);color:var(--red);border:1px solid rgba(240,79,106,.2)}
-.pill-adm{background:rgba(232,197,71,.08);color:var(--gold);border:1px solid rgba(232,197,71,.2)}
-.pill-user{background:rgba(79,143,240,.08);color:#6ba3f5;border:1px solid rgba(79,143,240,.2)}
+.tbl th{font-family:var(--head);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);padding:13px 18px;text-align:left;background:var(--bg3);border-bottom:1px solid var(--br)}
+.tbl th:last-child,.tbl td:last-child{text-align:right}
+.tbl td{padding:14px 18px;border-bottom:1px solid rgba(30,111,255,0.06);font-size:14px;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(30,111,255,0.04)}
+.tbl-acts{display:flex;gap:6px;justify-content:flex-end;align-items:center}
 
-/* ── BUTTONS ── */
-.ab{padding:4px 10px;border-radius:var(--r);font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--fog2);transition:all .15s}
-.ab:hover{border-color:var(--line2);color:var(--snow);background:var(--ink3)}
-.ab:disabled{opacity:.4;cursor:not-allowed}
-.ab-gold{background:var(--gold);color:var(--ink);border-color:var(--gold)}
-.ab-gold:hover{background:var(--gold2)}
-.ab-green{background:rgba(52,209,122,.1);color:var(--green);border-color:rgba(52,209,122,.25)}
-.ab-green:hover{background:rgba(52,209,122,.18)}
-.ab-red{background:rgba(240,79,106,.1);color:var(--red);border-color:rgba(240,79,106,.25)}
-.ab-red:hover{background:rgba(240,79,106,.18)}
+/* PILLS */
+.pill{display:inline-flex;align-items:center;font-family:var(--head);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:3px}
+.pill-pend{background:rgba(255,184,0,.1);color:var(--amber);border:1px solid rgba(255,184,0,.3)}
+.pill-live{background:rgba(255,51,85,.1);color:var(--red);border:1px solid rgba(255,51,85,.3)}
+.pill-done,.pill-appr{background:rgba(0,232,122,.08);color:var(--green);border:1px solid rgba(0,232,122,.25)}
+.pill-rej,.pill-fin{background:rgba(100,120,160,.1);color:var(--t3);border:1px solid rgba(100,120,160,.2)}
 
-/* ── FORM ── */
-.fg{margin-bottom:12px}
-.fl{display:block;font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--fog);margin-bottom:5px}
-.fi{width:100%;background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:9px 11px;color:var(--snow);font-family:var(--sans);font-size:12px;transition:border-color .2s;outline:none}
-.fi:focus{border-color:rgba(232,197,71,.35)}
-.fi::placeholder{color:var(--fog)}
+/* BUTTONS */
+.btn{padding:8px 18px;border-radius:5px;font-size:13px;font-weight:600;border:1px solid var(--br2);background:transparent;color:var(--t2);transition:all .18s}
+.btn:hover{border-color:var(--br2);color:var(--t1);background:var(--bg3)}
+.btn-blue{background:var(--blue2);color:#fff;border-color:var(--blue);box-shadow:0 0 14px rgba(30,111,255,.25)}
+.btn-blue:hover{background:var(--blue);box-shadow:0 0 22px rgba(30,111,255,.4)}
+.btn-green{background:rgba(0,232,122,.1);color:var(--green);border-color:rgba(0,232,122,.3)}
+.btn-green:hover{background:rgba(0,232,122,.18)}
+.btn-red{background:rgba(255,51,85,.1);color:var(--red);border-color:rgba(255,51,85,.3)}
+.btn-red:hover{background:rgba(255,51,85,.18)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* STATUS SELECTOR */
+.status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.s-opt{padding:14px;border-radius:6px;border:2px solid var(--br);background:var(--bg3);cursor:pointer;transition:all .2s;text-align:center}
+.s-opt:hover{border-color:var(--br2)}
+.s-opt.sel{border-color:var(--cyan);background:rgba(0,212,255,.08)}
+.s-opt.sel-OPEN{border-color:var(--cyan);background:rgba(0,212,255,.08)}
+.s-opt.sel-CLOSED{border-color:var(--red);background:rgba(255,51,85,.08)}
+.s-opt.sel-IN_PROGRESS{border-color:var(--amber);background:rgba(255,184,0,.08)}
+.s-opt.sel-FINISHED{border-color:var(--t3)}
+.s-label{font-family:var(--head);font-size:11px;font-weight:700;letter-spacing:.08em}
+.s-desc{font-size:12px;color:var(--t3);margin-top:4px}
+
+/* FORM */
+.fg{margin-bottom:16px}
+.fl{display:block;font-family:var(--head);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:7px}
+.fi{width:100%;background:var(--bg3);border:1px solid var(--br);border-radius:5px;padding:11px 14px;color:var(--t1);font-size:14px;transition:border-color .2s;outline:none}
+.fi:focus{border-color:rgba(0,212,255,.5);box-shadow:0 0 10px rgba(0,212,255,.08)}
+.fi::placeholder{color:var(--t3)}
 select.fi{cursor:pointer}
-.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.ferr{background:rgba(240,79,106,.07);border:1px solid rgba(240,79,106,.2);border-radius:var(--r);padding:7px 11px;font-size:11px;color:#f08898;margin-bottom:10px;display:none}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ferr{background:rgba(255,51,85,.07);border:1px solid rgba(255,51,85,.25);border-radius:5px;padding:10px 14px;font-size:13px;color:#ff7788;margin-bottom:14px;display:none}
 .ferr.on{display:block}
-.fok{background:rgba(52,209,122,.07);border:1px solid rgba(52,209,122,.2);border-radius:var(--r);padding:7px 11px;font-size:11px;color:#5ef0a0;margin-bottom:10px;display:none}
+.fok{background:rgba(0,232,122,.07);border:1px solid rgba(0,232,122,.25);border-radius:5px;padding:10px 14px;font-size:13px;color:#5ef0a0;margin-bottom:14px;display:none}
 .fok.on{display:block}
-.fsub{background:var(--gold);color:var(--ink);border:none;padding:10px;border-radius:var(--r);font-family:var(--sans);font-size:12px;font-weight:800;letter-spacing:.04em;cursor:pointer;width:100%;margin-top:4px;text-transform:uppercase;transition:background .15s}
-.fsub:hover{background:var(--gold2)}
-.fsub:disabled{opacity:.45;cursor:not-allowed}
+.fsub{width:100%;background:linear-gradient(90deg,var(--blue2),var(--blue));color:#fff;border:none;padding:13px;border-radius:5px;font-family:var(--head);font-size:14px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:6px;transition:all .2s;box-shadow:0 0 18px rgba(30,111,255,.3)}
+.fsub:hover{box-shadow:0 0 28px rgba(30,111,255,.45);transform:translateY(-1px)}
+.fsub:disabled{opacity:.4;cursor:not-allowed;transform:none}
 
-/* ── MODAL ── */
-.ov{position:fixed;inset:0;background:rgba(11,12,16,.85);backdrop-filter:blur(12px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+/* ROUND FILTER */
+.round-filter{display:flex;gap:0;flex-wrap:wrap;border:1px solid var(--br);border-radius:5px;overflow:hidden;width:fit-content;margin-bottom:16px}
+.rfbtn{padding:9px 20px;font-family:var(--head);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:none;border-right:1px solid var(--br);background:transparent;color:var(--t3);cursor:pointer;transition:all .18s}
+.rfbtn:last-child{border-right:none}
+.rfbtn:hover{color:var(--t2);background:var(--bg3)}
+.rfbtn.on{color:var(--cyan);background:rgba(0,212,255,.07);box-shadow:inset 0 2px 0 var(--cyan)}
+
+/* SCORE MODAL */
+.score-vs{display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;gap:10px;margin-bottom:14px}
+.score-tn{text-align:center;font-family:var(--head);font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.score-in{width:100%;background:var(--bg3);border:1px solid var(--br);border-radius:5px;padding:12px;color:var(--t1);font-family:var(--head);font-size:30px;font-weight:800;text-align:center;outline:none;transition:border-color .2s}
+.score-in:focus{border-color:rgba(0,212,255,.5)}
+.score-sep{text-align:center;font-family:var(--head);font-size:18px;color:var(--t3)}
+
+/* MODAL */
+.ov{position:fixed;inset:0;background:rgba(2,4,8,.9);backdrop-filter:blur(16px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
 .ov.on{display:flex}
-.modal{background:var(--ink2);border:1px solid var(--line2);border-radius:var(--r3);width:100%;max-width:380px;max-height:90vh;overflow-y:auto;animation:mIn .2s cubic-bezier(.22,.68,0,1.2)}
-@keyframes mIn{from{transform:scale(.96) translateY(8px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
-.mh{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 0}
-.mt{font-size:15px;font-weight:800}
-.mx{width:26px;height:26px;border-radius:var(--r);border:1px solid var(--line);background:transparent;color:var(--fog);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .15s}
-.mx:hover{border-color:var(--line2);color:var(--snow)}
-.mb{padding:16px 20px 20px}
-.score-grid{display:grid;grid-template-columns:1fr 32px 1fr;align-items:center;gap:8px;margin-bottom:12px}
-.score-tn{text-align:center;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.score-in{width:100%;background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:10px;color:var(--snow);font-family:var(--mono);font-size:22px;text-align:center;outline:none;transition:border-color .2s}
-.score-in:focus{border-color:rgba(232,197,71,.35)}
-.score-vs{text-align:center;font-family:var(--mono);font-size:13px;color:var(--fog)}
-.ibox{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:11px 13px;margin-bottom:12px}
-.ibox-l{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--fog);margin-bottom:3px}
-.ibox-v{font-size:13px;font-weight:700}
+.modal{background:var(--bg2);border:1px solid var(--br2);border-radius:10px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto;animation:mIn .22s cubic-bezier(.22,.68,0,1.2);box-shadow:0 0 60px rgba(30,111,255,.15);position:relative}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--blue),transparent)}
+@keyframes mIn{from{transform:scale(.95) translateY(12px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.mhead{display:flex;align-items:center;justify-content:space-between;padding:22px 24px 0}
+.mtitle{font-family:var(--head);font-size:18px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.mx{width:30px;height:30px;border-radius:5px;border:1px solid var(--br);background:transparent;color:var(--t3);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.mx:hover{border-color:var(--red);color:var(--red)}
+.mbody{padding:20px 24px 26px}
 
-/* ── TOAST ── */
-.toast{position:fixed;bottom:20px;right:20px;background:var(--ink3);border:1px solid var(--line2);border-radius:var(--r);padding:8px 16px;font-size:11px;font-weight:600;z-index:999;opacity:0;pointer-events:none;transition:all .28s;transform:translateY(6px)}
+/* IBOX */
+.ibox{background:var(--bg3);border:1px solid var(--br);border-radius:5px;padding:13px 16px;margin-bottom:14px}
+.ibox-l{font-family:var(--head);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:5px}
+.ibox-v{font-size:15px;font-weight:700}
+
+/* EMPTY */
+.empty-row{padding:36px;text-align:center;color:var(--t3);font-size:14px}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:28px;background:var(--bg3);border:1px solid var(--br2);border-radius:5px;padding:11px 22px;font-size:13px;font-weight:600;z-index:999;opacity:0;pointer-events:none;transition:all .28s;transform:translateY(8px)}
 .toast.on{opacity:1;transform:translateY(0)}
-.toast.ok{color:var(--green);border-color:rgba(52,209,122,.3)}
-.toast.err{color:var(--red);border-color:rgba(240,79,106,.3)}
-.empty-row{text-align:center;padding:32px;color:var(--fog);font-size:12px}
-.spin{width:18px;height:18px;border:2px solid var(--line2);border-top-color:var(--gold);border-radius:50%;animation:spinr .7s linear infinite;display:inline-block}
-@keyframes spinr{to{transform:rotate(360deg)}}
+.toast.ok{color:var(--green);border-color:rgba(0,232,122,.35);box-shadow:0 0 20px rgba(0,232,122,.1)}
+.toast.err{color:var(--red);border-color:rgba(255,51,85,.35);box-shadow:0 0 20px rgba(255,51,85,.1)}
 </style>
 </head>
 <body>
 
-<!-- LOGIN WALL -->
+<!-- LOGIN -->
 <div class="lwall" id="lwall">
   <div class="lcard">
-    <div class="lcard-logo"><div class="lcard-gem"></div>MK Grand Circuit</div>
+    <div class="lcard-brand">MK Grand Circuit</div>
     <div class="lcard-title">Admin Panel</div>
-    <div class="lcard-sub">Restricted access — admins only</div>
+    <div class="lcard-sub">Restricted to administrators</div>
     <div class="ferr" id="ladm-err"></div>
     <div class="fg"><label class="fl">Email</label><input class="fi" id="ladm-email" type="email" placeholder="admin@email.com"></div>
     <div class="fg"><label class="fl">Password</label><input class="fi" id="ladm-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()"></div>
     <button class="fsub" id="btn-ladm" onclick="adminLogin()">Sign In</button>
-    <div style="margin-top:14px;text-align:center"><a href="index.html" style="font-size:11px;color:var(--fog)">← Back to tournament</a></div>
+    <div style="margin-top:16px;text-align:center"><a href="index.html" style="font-size:13px;color:var(--t3)">← Back to tournament</a></div>
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
+<!-- PANEL -->
 <div id="adm-panel" style="display:none">
   <nav class="nav">
-    <div style="display:flex;align-items:center;gap:10px">
-      <div class="nav-logo"><div class="nav-gem"></div>MK Grand Circuit</div>
-      <span class="adm-tag">ADMIN</span>
+    <div class="nav-brand">
+      <div class="nav-dot"></div>
+      MK Grand Circuit
+      <span class="admin-chip">ADMIN</span>
     </div>
-    <div class="nav-r">
-      <span id="adm-uname"></span>
-      <a href="index.html"><button class="nb">View public site</button></a>
-      <button class="nb" onclick="adminLogout()">Sign Out</button>
+    <div class="nav-right">
+      <span>Signed in as</span>
+      <span class="nav-user" id="adm-uname">—</span>
+      <a href="index.html"><button class="btn" style="font-size:12px;padding:6px 14px">View site</button></a>
+      <button class="btn btn-red" style="font-size:12px;padding:6px 14px" onclick="adminLogout()">Sign Out</button>
     </div>
   </nav>
 
   <div class="layout">
     <aside class="sidebar">
-      <div style="margin-bottom:6px">
-        <div class="sb-lbl">Overview</div>
-        <button class="sb-item on" onclick="goto('dashboard')"><span class="sb-ico">📊</span>Dashboard</button>
-        <button class="sb-item" onclick="goto('tournament')"><span class="sb-ico">🏆</span>Tournament</button>
+      <div class="sb-section">
+        <div class="sb-label">Overview</div>
+        <button class="sb-item on" onclick="goto('dashboard')">
+          Dashboard
+          <span class="sb-badge alert" id="sb-alert" style="display:none">!</span>
+        </button>
+        <button class="sb-item" onclick="goto('tournament')">
+          Tournament
+        </button>
       </div>
-      <div style="margin-bottom:6px">
-        <div class="sb-lbl">Competition</div>
-        <button class="sb-item" onclick="goto('rounds')"><span class="sb-ico">🔄</span>Rounds</button>
-        <button class="sb-item" onclick="goto('matches')"><span class="sb-ico">🎮</span>Matches</button>
-        <button class="sb-item" onclick="goto('registrations')"><span class="sb-ico">📋</span>Registrations</button>
+      <div class="sb-section">
+        <div class="sb-label">Competition</div>
+        <button class="sb-item" onclick="goto('registrations')">
+          Registrations
+          <span class="sb-badge" id="sb-regs">0</span>
+        </button>
+        <button class="sb-item" onclick="goto('rounds')">
+          Rounds
+          <span class="sb-badge" id="sb-rounds">0</span>
+        </button>
+        <button class="sb-item" onclick="goto('matches')">
+          Matches
+          <span class="sb-badge" id="sb-matches">0</span>
+        </button>
       </div>
-      <div>
-        <div class="sb-lbl">Entities</div>
-        <button class="sb-item" onclick="goto('teams')"><span class="sb-ico">👥</span>Teams</button>
+      <div class="sb-section">
+        <div class="sb-label">Entities</div>
+        <button class="sb-item" onclick="goto('teams')">
+          Teams
+          <span class="sb-badge" id="sb-teams">0</span>
+        </button>
       </div>
     </aside>
 
@@ -197,103 +266,110 @@ select.fi{cursor:pointer}
 
       <!-- DASHBOARD -->
       <div class="page on" id="pg-dashboard">
-        <div class="pg-title">Dashboard</div>
-        <div class="pg-sub">Tournament overview</div>
-        <div class="stat-grid">
-          <div class="sc"><div class="sc-n" id="d-teams">—</div><div class="sc-l">Teams</div></div>
-          <div class="sc"><div class="sc-n" id="d-rounds">—</div><div class="sc-l">Rounds</div></div>
-          <div class="sc"><div class="sc-n" id="d-matches">—</div><div class="sc-l">Matches</div></div>
-          <div class="sc"><div class="sc-n" id="d-regs">—</div><div class="sc-l">Registrations</div></div>
+        <div class="pg-head">
+          <div><div class="pg-title">Dashboard</div><div class="pg-sub">Tournament overview</div></div>
+          <button class="btn btn-blue" onclick="loadAll()">Refresh data</button>
+        </div>
+        <div class="stat-row">
+          <div class="stat-card sc-t"><div class="stat-label">Teams enrolled</div><div class="stat-n" id="d-teams">—</div></div>
+          <div class="stat-card sc-r"><div class="stat-label">Rounds</div><div class="stat-n" id="d-rounds">—</div></div>
+          <div class="stat-card sc-m"><div class="stat-label">Matches</div><div class="stat-n" id="d-matches">—</div></div>
+          <div class="stat-card sc-g"><div class="stat-label">Registrations</div><div class="stat-n" id="d-regs">—</div></div>
+        </div>
+        <div class="qa-grid">
+          <button class="qa" onclick="goto('registrations')">
+            <div class="qa-ico b"><svg fill="none" stroke="#1e6fff" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+            <div><div class="qa-t">Registrations</div><div class="qa-s" id="qa-regs-sub">Review pending teams</div></div>
+          </button>
+          <button class="qa" onclick="goto('matches');openNewMatch(null)">
+            <div class="qa-ico g"><svg fill="none" stroke="#00e87a" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+            <div><div class="qa-t">New Match</div><div class="qa-s">Schedule a match</div></div>
+          </button>
+          <button class="qa" onclick="goto('rounds');openOv('ov-round')">
+            <div class="qa-ico a"><svg fill="none" stroke="#ffb800" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+            <div><div class="qa-t">New Round</div><div class="qa-s">Add bracket round</div></div>
+          </button>
         </div>
         <div class="card">
-          <div class="card-head"><span class="card-title">Live matches</span></div>
-          <div id="d-live"></div>
+          <div class="card-head"><div class="card-title">Pending registrations</div><button class="btn" onclick="goto('registrations')" style="font-size:12px;padding:6px 14px">View all</button></div>
+          <div id="d-pendregs"></div>
         </div>
         <div class="card">
-          <div class="card-head"><span class="card-title">Pending results</span><button class="ab ab-gold" onclick="goto('matches')">View all</button></div>
+          <div class="card-head"><div class="card-title">Matches awaiting result</div><button class="btn" onclick="goto('matches')" style="font-size:12px;padding:6px 14px">View all</button></div>
           <div id="d-pend"></div>
         </div>
         <div class="card">
-          <div class="card-head"><span class="card-title">Pending registrations</span><button class="ab ab-gold" onclick="goto('registrations')">View all</button></div>
-          <div id="d-pendregs"></div>
+          <div class="card-head"><div class="card-title">Live matches</div></div>
+          <div id="d-live"></div>
         </div>
       </div>
 
       <!-- TOURNAMENT -->
       <div class="page" id="pg-tournament">
-        <div class="pg-title">Tournament</div>
-        <div class="pg-sub">Create or edit the tournament</div>
-
-        <!-- CREATE (shown when no tournament exists) -->
+        <div class="pg-head"><div><div class="pg-title">Tournament</div><div class="pg-sub">Create or configure the tournament</div></div></div>
         <div class="card" id="card-create-tour">
-          <div class="card-head"><span class="card-title">Create tournament</span></div>
-          <div class="ferr" id="tc-err"></div><div class="fok" id="tc-ok"></div>
-          <div class="fg"><label class="fl">Name *</label><input class="fi" id="tc-name" type="text" placeholder="MK Grand Circuit"></div>
-          <div class="fg"><label class="fl">Description</label><input class="fi" id="tc-desc" type="text" placeholder="The official Mario Kart tournament"></div>
-          <div class="fg"><label class="fl">Max teams * <span style="font-weight:400;text-transform:none;letter-spacing:0">(minimum 2)</span></label><input class="fi" id="tc-max" type="number" placeholder="16" min="2"></div>
-          <button class="ab ab-gold" id="btn-tc" onclick="createTournament()" style="width:auto;padding:8px 18px">Create Tournament</button>
-        </div>
-
-        <!-- EDIT (shown when tournament exists) -->
-        <div class="card" id="card-edit-tour" style="display:none">
-          <div class="card-head"><span class="card-title">Edit tournament</span></div>
-          <div class="ferr" id="te-err"></div><div class="fok" id="te-ok"></div>
-          <div class="fg"><label class="fl">Name</label><input class="fi" id="t-name" type="text"></div>
-          <div class="fg"><label class="fl">Description</label><input class="fi" id="t-desc" type="text"></div>
-          <div class="fg"><label class="fl">Status</label>
-            <select class="fi" id="t-status">
-              <option value="OPEN">OPEN — Registration open</option>
-              <option value="CLOSED">CLOSED — Registration closed</option>
-              <option value="IN_PROGRESS">IN_PROGRESS — Tournament running</option>
-              <option value="FINISHED">FINISHED</option>
-            </select>
+          <div class="card-head"><div class="card-title">Create tournament</div></div>
+          <div class="card-body">
+            <div class="ferr" id="tc-err"></div><div class="fok" id="tc-ok"></div>
+            <div class="fg"><label class="fl">Name *</label><input class="fi" id="tc-name" type="text" placeholder="MK Grand Circuit"></div>
+            <div class="fg"><label class="fl">Description</label><input class="fi" id="tc-desc" type="text" placeholder="The official Mario Kart tournament"></div>
+            <div class="fg"><label class="fl">Max teams * <span style="font-weight:400;text-transform:none;letter-spacing:0;font-family:var(--body)">(minimum 2)</span></label><input class="fi" id="tc-max" type="number" placeholder="16" min="2" style="max-width:180px"></div>
+            <button class="btn btn-blue" id="btn-tc" onclick="createTournament()" style="width:auto;padding:10px 28px">Create Tournament</button>
           </div>
-          <button class="ab ab-gold" id="btn-ts" onclick="saveStatus()" style="width:auto;padding:8px 18px;margin-right:8px">Update Status</button>
-          <button class="ab" id="btn-te" onclick="saveTournament()" style="width:auto;padding:8px 18px">Save Changes</button>
         </div>
-      </div>
-
-      <!-- ROUNDS -->
-      <!-- POST /tournaments/:tournamentId/rounds  body: { name, orderIndex? }
-           PATCH /rounds/:id  body: { name?, orderIndex? }
-           DELETE /rounds/:id -->
-      <div class="page" id="pg-rounds">
-        <div class="pg-title">Rounds</div>
-        <div class="pg-sub">Bracket structure</div>
-        <div class="card">
-          <div class="card-head"><span class="card-title">Rounds</span><button class="ab ab-gold" onclick="openOv('ov-round')">+ New Round</button></div>
-          <div id="rounds-body"></div>
+        <div class="card" id="card-edit-tour" style="display:none">
+          <div class="card-head"><div class="card-title">Edit tournament info</div></div>
+          <div class="card-body">
+            <div class="ferr" id="te-err"></div><div class="fok" id="te-ok"></div>
+            <div class="fg"><label class="fl">Name</label><input class="fi" id="t-name" type="text"></div>
+            <div class="fg"><label class="fl">Description</label><input class="fi" id="t-desc" type="text"></div>
+            <button class="btn btn-blue" id="btn-te" onclick="saveTournament()" style="width:auto;padding:10px 28px">Save Changes</button>
+          </div>
         </div>
-      </div>
-
-      <!-- MATCHES -->
-      <!-- POST /matches  body: { tournamentId, teamAId, teamBId }
-           PATCH /matches/:id  body: { ... }
-           PATCH /matches/:id/result  body: { scoreA, scoreB }
-           GET /tournaments/:id/matches -->
-      <div class="page" id="pg-matches">
-        <div class="pg-title">Matches</div>
-        <div class="pg-sub">Create matches and update results</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px" id="m-filter"></div>
-        <div class="card" style="padding:0;overflow:hidden"><div id="matches-body"></div></div>
+        <div class="card" id="card-status-tour" style="display:none">
+          <div class="card-head"><div class="card-title">Tournament status</div></div>
+          <div class="card-body">
+            <div class="ferr" id="ts-err"></div><div class="fok" id="ts-ok"></div>
+            <div class="status-row">
+              <div class="s-opt" onclick="selectStatus('OPEN')"><div class="s-label" style="color:var(--cyan)">OPEN</div><div class="s-desc">Registration open</div></div>
+              <div class="s-opt" onclick="selectStatus('CLOSED')"><div class="s-label" style="color:var(--red)">CLOSED</div><div class="s-desc">No new registrations</div></div>
+              <div class="s-opt" onclick="selectStatus('IN_PROGRESS')"><div class="s-label" style="color:var(--amber)">IN PROGRESS</div><div class="s-desc">Tournament underway</div></div>
+              <div class="s-opt" onclick="selectStatus('FINISHED')"><div class="s-label" style="color:var(--t3)">FINISHED</div><div class="s-desc">Tournament complete</div></div>
+            </div>
+            <button class="btn btn-blue" id="btn-ts" onclick="saveStatus()" style="width:auto;padding:10px 28px">Update Status</button>
+          </div>
+        </div>
       </div>
 
       <!-- REGISTRATIONS -->
-      <!-- GET /tournaments/:id/registrations
-           PATCH /registrations/:id/approve
-           PATCH /registrations/:id/reject -->
       <div class="page" id="pg-registrations">
-        <div class="pg-title">Registrations</div>
-        <div class="pg-sub">Approve or reject team enrollments</div>
-        <div class="card" style="padding:0;overflow:hidden"><div id="regs-body"></div></div>
+        <div class="pg-head"><div><div class="pg-title">Registrations</div><div class="pg-sub">Approve or reject team enrollments</div></div></div>
+        <div class="card" style="overflow:hidden"><div id="regs-body"></div></div>
+      </div>
+
+      <!-- ROUNDS -->
+      <div class="page" id="pg-rounds">
+        <div class="pg-head">
+          <div><div class="pg-title">Rounds</div><div class="pg-sub">Bracket structure and order</div></div>
+          <button class="btn btn-blue" onclick="openOv('ov-round')">+ New Round</button>
+        </div>
+        <div class="card" style="overflow:hidden"><div id="rounds-body"></div></div>
+      </div>
+
+      <!-- MATCHES -->
+      <div class="page" id="pg-matches">
+        <div class="pg-head">
+          <div><div class="pg-title">Matches</div><div class="pg-sub">Schedule matches and record results</div></div>
+          <button class="btn btn-blue" onclick="openNewMatch(null)">+ New Match</button>
+        </div>
+        <div class="round-filter" id="m-filter"></div>
+        <div class="card" style="overflow:hidden"><div id="matches-body"></div></div>
       </div>
 
       <!-- TEAMS -->
-      <!-- GET /teams/:id  (no GET /teams endpoint exists — use registered teams from public view) -->
       <div class="page" id="pg-teams">
-        <div class="pg-title">Teams</div>
-        <div class="pg-sub">Teams enrolled in the tournament</div>
-        <div class="card" style="padding:0;overflow:hidden"><div id="teams-body"></div></div>
+        <div class="pg-head"><div><div class="pg-title">Teams</div><div class="pg-sub">Approved teams in the tournament</div></div></div>
+        <div class="card" style="overflow:hidden"><div id="teams-body"></div></div>
       </div>
 
     </main>
@@ -303,66 +379,55 @@ select.fi{cursor:pointer}
 <!-- MODAL: NEW ROUND -->
 <div class="ov" id="ov-round" onclick="closeBg(event,'ov-round')">
   <div class="modal">
-    <div class="mh"><div class="mt">New Round</div><button class="mx" onclick="closeOv('ov-round')">✕</button></div>
-    <div class="mb">
+    <div class="mhead"><div class="mtitle">New Round</div><button class="mx" onclick="closeOv('ov-round')">✕</button></div>
+    <div class="mbody">
       <div class="ferr" id="r-err"></div><div class="fok" id="r-ok"></div>
       <div class="fg"><label class="fl">Round Name</label><input class="fi" id="r-name" type="text" placeholder="e.g. Quarter Finals"></div>
-      <div class="fg"><label class="fl">Order (1 = first)</label><input class="fi" id="r-order" type="number" placeholder="1" min="1"></div>
+      <div class="fg"><label class="fl">Order <span style="font-weight:400;text-transform:none;letter-spacing:0;font-family:var(--body)">(1 = plays first)</span></label><input class="fi" id="r-order" type="number" placeholder="1" min="1" style="max-width:140px"></div>
       <button class="fsub" id="btn-r" onclick="createRound()">Create Round</button>
     </div>
   </div>
 </div>
 
 <!-- MODAL: NEW MATCH -->
-<!-- body: { tournamentId, teamAId, teamBId }  (roundId optional via PATCH) -->
 <div class="ov" id="ov-match" onclick="closeBg(event,'ov-match')">
   <div class="modal">
-    <div class="mh"><div class="mt">New Match</div><button class="mx" onclick="closeOv('ov-match')">✕</button></div>
-    <div class="mb">
+    <div class="mhead"><div class="mtitle">New Match</div><button class="mx" onclick="closeOv('ov-match')">✕</button></div>
+    <div class="mbody">
       <div class="ferr" id="nm-err"></div><div class="fok" id="nm-ok"></div>
       <div class="fg"><label class="fl">Round (optional)</label><select class="fi" id="nm-round"><option value="">— No round —</option></select></div>
       <div class="frow">
         <div class="fg"><label class="fl">Team A</label><select class="fi" id="nm-ta"></select></div>
         <div class="fg"><label class="fl">Team B</label><select class="fi" id="nm-tb"></select></div>
       </div>
-      <p style="font-size:11px;color:var(--fog);margin-bottom:12px">Both teams must be APPROVED in this tournament.</p>
+      <p style="font-size:13px;color:var(--t3);margin-bottom:16px;line-height:1.6">Both teams must be approved in the tournament to appear here.</p>
       <button class="fsub" id="btn-nm" onclick="createMatch()">Create Match</button>
     </div>
   </div>
 </div>
 
 <!-- MODAL: RESULT -->
-<!-- PATCH /matches/:id/result  body: { scoreA, scoreB } -->
 <div class="ov" id="ov-score" onclick="closeBg(event,'ov-score')">
   <div class="modal">
-    <div class="mh"><div class="mt">Match Result</div><button class="mx" onclick="closeOv('ov-score')">✕</button></div>
-    <div class="mb">
+    <div class="mhead"><div class="mtitle">Match Result</div><button class="mx" onclick="closeOv('ov-score')">✕</button></div>
+    <div class="mbody">
       <div class="ferr" id="sc-err"></div><div class="fok" id="sc-ok"></div>
-      <div class="score-grid">
-        <div class="score-tn" id="sc-ta">—</div>
-        <div class="score-vs">vs</div>
-        <div class="score-tn" id="sc-tb">—</div>
-      </div>
-      <div class="score-grid">
-        <input class="score-in" id="sc-sa" type="number" min="0" placeholder="0">
-        <div class="score-vs">—</div>
-        <input class="score-in" id="sc-sb" type="number" min="0" placeholder="0">
-      </div>
-      <p style="font-size:11px;color:var(--fog);margin-bottom:12px">The winner is determined automatically by the higher score.</p>
+      <div class="score-vs"><div class="score-tn" id="sc-ta">—</div><div class="score-sep">vs</div><div class="score-tn" id="sc-tb">—</div></div>
+      <div class="score-vs"><input class="score-in" id="sc-sa" type="number" min="0" placeholder="0"><div class="score-sep">—</div><input class="score-in" id="sc-sb" type="number" min="0" placeholder="0"></div>
+      <p style="font-size:13px;color:var(--t3);margin:14px 0;line-height:1.6">Winner is determined automatically by the higher score.</p>
       <button class="fsub" id="btn-sc" onclick="saveResult()">Save Result</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL: ASSIGN ROUND to match -->
-<!-- PATCH /rounds/:id/matches/:matchId -->
+<!-- MODAL: ASSIGN ROUND -->
 <div class="ov" id="ov-assign" onclick="closeBg(event,'ov-assign')">
   <div class="modal">
-    <div class="mh"><div class="mt">Assign to Round</div><button class="mx" onclick="closeOv('ov-assign')">✕</button></div>
-    <div class="mb">
+    <div class="mhead"><div class="mtitle">Assign to Round</div><button class="mx" onclick="closeOv('ov-assign')">✕</button></div>
+    <div class="mbody">
       <div class="ferr" id="as-err"></div><div class="fok" id="as-ok"></div>
       <div class="fg"><label class="fl">Round</label><select class="fi" id="as-round"></select></div>
-      <button class="fsub" id="btn-as" onclick="doAssign()">Assign</button>
+      <button class="fsub" id="btn-as" onclick="doAssign()">Assign Match</button>
     </div>
   </div>
 </div>
@@ -371,48 +436,33 @@ select.fi{cursor:pointer}
 
 <script>
 const API='https://backend-mk-grand-circuit.vercel.app';
-const A={
-  user:null,
-  tournament:null,
-  pubView:null,
-  rounds:[],
-  teams:[],    /* from pubView.teams — APPROVED registrations */
-  matches:[],  /* from pubView flattened */
-  registrations:[],
-  editMatchId:null,
-  assignMatchId:null,
-  mFilter:null,
-};
+const A={user:null,tournament:null,pubView:null,rounds:[],teams:[],matches:[],registrations:[],editMatchId:null,assignMatchId:null,mFilter:null,selectedStatus:null};
 
-/* ── session ── */
 (function(){ try{ const u=localStorage.getItem('mkgc_adm'); if(u)A.user=JSON.parse(u); }catch(e){} })();
 function saveAdm(){ if(A.user) localStorage.setItem('mkgc_adm',JSON.stringify(A.user)); }
 function killAdm(){ localStorage.removeItem('mkgc_adm'); A.user=null; }
 
-/* ── api ── */
 async function api(path,opts={}){
   const h={'Content-Type':'application/json',...opts.headers};
   if(A.user?.token) h['Authorization']='Bearer '+A.user.token;
   const r=await fetch(API+path,{...opts,headers:h});
   const d=await r.json().catch(()=>({}));
-  if(!r.ok) throw Object.assign(new Error(d.error||d.message||'HTTP '+r.status),{status:r.status,data:d});
+  if(!r.ok) throw Object.assign(new Error(d.error||d.message||'HTTP '+r.status),{status:r.status});
   return d;
 }
 
 function setBtn(id,l,fb=''){ const b=document.getElementById(id); if(!b)return; b.disabled=l; if(l)b.dataset.o=b.textContent; b.textContent=l?'…':(fb||b.dataset.o); }
 function msg(id,type,text){ const el=document.getElementById(id); if(!el)return; el.textContent=text; el.className=(type==='err'?'ferr':'fok')+(text?' on':''); }
 function clr(...ids){ ids.forEach(id=>msg(id,'err','')); }
-function toast(text,type='ok'){ const el=document.getElementById('toast'); el.textContent=text; el.className='toast on '+type; setTimeout(()=>el.classList.remove('on'),3000); }
+function toast(text,type='ok'){ const el=document.getElementById('toast'); el.textContent=text; el.className='toast on '+type; setTimeout(()=>el.classList.remove('on'),3200); }
 function openOv(id){ document.getElementById(id).classList.add('on'); }
 function closeOv(id){ document.getElementById(id).classList.remove('on'); }
 function closeBg(e,id){ if(e.target===e.currentTarget)closeOv(id); }
 const ini=(n='?')=>(n||'?').split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase().slice(0,3)||'?';
 
-/* ── init ── */
 if(A.user&&A.user.role==='ADMIN'){ showPanel(); loadAll(); }
 else document.getElementById('lwall').style.display='flex';
 
-/* ── login ── */
 async function adminLogin(){
   clr('ladm-err');
   const email=document.getElementById('ladm-email').value.trim();
@@ -427,6 +477,7 @@ async function adminLogin(){
   }catch(e){ msg('ladm-err','err',e.message||'Login failed.'); }
   finally{ setBtn('btn-ladm',false,'Sign In'); }
 }
+
 function showPanel(){
   document.getElementById('lwall').style.display='none';
   document.getElementById('adm-panel').style.display='block';
@@ -434,95 +485,105 @@ function showPanel(){
 }
 function adminLogout(){ killAdm(); location.reload(); }
 
-/* ── sidebar ── */
 function goto(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('on'));
   document.getElementById('pg-'+name).classList.add('on');
-  const order=['dashboard','tournament','rounds','matches','registrations','teams'];
+  const order=['dashboard','tournament','registrations','rounds','matches','teams'];
   document.querySelectorAll('.sb-item')[order.indexOf(name)]?.classList.add('on');
   if(name==='matches') renderMatchesTable();
 }
 
-/* ── load all ── */
 async function loadAll(){
   try{
     const tours=await api('/tournaments');
     const list=Array.isArray(tours)?tours:[];
-    if(!list.length){ toast('No tournament found','err'); return; }
-    A.tournament=list[0];
-
-    /* Use public view as primary data source */
-    const pub=await api(`/tournaments/${A.tournament.id}/public`);
-    A.pubView=pub;
-    A.rounds=pub.rounds||[];
-    A.teams=pub.teams||[];
-    A.matches=[...pub.rounds.flatMap(r=>r.matches),...(pub.unassignedMatches||[])];
-
-    /* Registrations (all statuses) */
-    const regs=await api(`/tournaments/${A.tournament.id}/registrations`).catch(()=>[]);
-    A.registrations=Array.isArray(regs)?regs:[];
-
+    A.tournament=list[0]||null;
+    if(A.tournament){
+      const pub=await api(`/tournaments/${A.tournament.id}/public`);
+      A.pubView=pub;
+      A.rounds=pub.rounds||[];
+      A.teams=pub.teams||[];
+      A.matches=[...pub.rounds.flatMap(r=>r.matches||[]),...(pub.unassignedMatches||[])];
+      const regs=await api(`/tournaments/${A.tournament.id}/registrations`).catch(()=>[]);
+      A.registrations=Array.isArray(regs)?regs:[];
+    }
     renderAll();
-  }catch(e){ toast('Error loading data: '+e.message,'err'); }
+  }catch(e){ toast('Error loading: '+e.message,'err'); }
 }
 
 function renderAll(){
-  renderDashboard();
-  renderTournamentForm();
-  renderRounds();
-  renderMatchesTable();
-  renderRegistrations();
-  renderTeamsTable();
+  renderSidebar(); renderDashboard(); renderTournamentForm();
+  renderRounds(); renderMatchesTable(); renderRegistrations(); renderTeamsTable();
 }
 
-/* ── dashboard ── */
+function renderSidebar(){
+  document.getElementById('sb-teams').textContent=A.teams.length;
+  document.getElementById('sb-rounds').textContent=A.rounds.length;
+  document.getElementById('sb-matches').textContent=A.matches.length;
+  document.getElementById('sb-regs').textContent=A.registrations.length;
+  const pend=A.registrations.filter(r=>r.status==='PENDING').length;
+  const alert=document.getElementById('sb-alert');
+  if(pend>0){ alert.textContent=pend; alert.style.display='inline'; }
+  else alert.style.display='none';
+  document.getElementById('qa-regs-sub').textContent=pend>0?pend+' pending approval':'All up to date';
+}
+
 function renderDashboard(){
   document.getElementById('d-teams').textContent=A.teams.length;
   document.getElementById('d-rounds').textContent=A.rounds.length;
   document.getElementById('d-matches').textContent=A.matches.length;
   document.getElementById('d-regs').textContent=A.registrations.length;
-
   const live=A.matches.filter(m=>m.status==='IN_PROGRESS');
   const pend=A.matches.filter(m=>m.status==='PENDING');
   const pendRegs=A.registrations.filter(r=>r.status==='PENDING');
-
-  document.getElementById('d-live').innerHTML=live.length?miniMatchTable(live):`<div class="empty-row">No live matches</div>`;
-  document.getElementById('d-pend').innerHTML=pend.length?miniMatchTable(pend.slice(0,5)):`<div class="empty-row">No pending matches</div>`;
-  document.getElementById('d-pendregs').innerHTML=pendRegs.length?`
-    <table class="tbl"><thead><tr><th style="padding:10px">Team</th><th>Status</th><th></th></tr></thead><tbody>${
-    pendRegs.map(r=>`<tr><td style="font-weight:600">${r.team||r.teamId}</td>
-      <td><span class="pill pill-pend">${r.status}</span></td>
-      <td class="acts">
-        <button class="ab ab-green" onclick="approveReg('${r.id}')">Approve</button>
-        <button class="ab ab-red" onclick="rejectReg('${r.id}')">Reject</button>
-      </td></tr>`).join('')
-    }</tbody></table>`:`<div class="empty-row">No pending registrations</div>`;
+  document.getElementById('d-live').innerHTML=live.length?miniTbl(live):`<div class="empty-row">No live matches right now</div>`;
+  document.getElementById('d-pend').innerHTML=pend.length?miniTbl(pend.slice(0,6)):`<div class="empty-row">All matches have results</div>`;
+  document.getElementById('d-pendregs').innerHTML=pendRegs.length
+    ?`<table class="tbl"><thead><tr><th style="padding:14px 18px">Team</th><th>Status</th><th></th></tr></thead><tbody>${
+      pendRegs.map(r=>`<tr><td style="font-weight:700;font-size:15px">${r.team||r.teamId}</td>
+        <td><span class="pill pill-pend">${r.status}</span></td>
+        <td class="tbl-acts">
+          <button class="btn btn-green" onclick="approveReg('${r.id}')">Approve</button>
+          <button class="btn btn-red" onclick="rejectReg('${r.id}')">Reject</button>
+        </td></tr>`).join('')
+    }</tbody></table>`
+    :`<div class="empty-row">No pending registrations</div>`;
 }
 
-function miniMatchTable(ms){
-  return `<table class="tbl"><thead><tr><th style="padding:10px">Team A</th><th>Team B</th><th>Round</th><th></th></tr></thead><tbody>${
+function miniTbl(ms){
+  return `<table class="tbl"><thead><tr><th style="padding:14px 18px">Team A</th><th>Team B</th><th>Round</th><th></th></tr></thead><tbody>${
     ms.map(m=>{
       const r=A.rounds.find(x=>x.id===m.roundId);
-      return `<tr><td>${m.teamA||'TBD'}</td><td>${m.teamB||'TBD'}</td>
-        <td style="color:var(--fog)">${r?.name||'—'}</td>
-        <td><button class="ab ab-green" onclick="openScore('${m.id}')">Result</button></td></tr>`;
+      return `<tr><td style="font-weight:700;font-size:15px">${m.teamA||'TBD'}</td>
+        <td style="font-weight:700;font-size:15px">${m.teamB||'TBD'}</td>
+        <td style="color:var(--t3)">${r?.name||'—'}</td>
+        <td class="tbl-acts"><button class="btn btn-green" onclick="openScore('${m.id}')">Enter Result</button></td></tr>`;
     }).join('')
   }</tbody></table>`;
 }
 
-/* ── tournament ── */
+/* TOURNAMENT */
 function renderTournamentForm(){
-  const create=document.getElementById('card-create-tour');
-  const edit=document.getElementById('card-edit-tour');
-  if(!A.tournament){
-    create.style.display='block'; edit.style.display='none';
-  } else {
-    create.style.display='none'; edit.style.display='block';
+  const cr=document.getElementById('card-create-tour');
+  const ed=document.getElementById('card-edit-tour');
+  const st=document.getElementById('card-status-tour');
+  if(!A.tournament){ cr.style.display='block'; ed.style.display='none'; st.style.display='none'; }
+  else{
+    cr.style.display='none'; ed.style.display='block'; st.style.display='block';
     document.getElementById('t-name').value=A.tournament.name||'';
     document.getElementById('t-desc').value=A.tournament.description||'';
-    document.getElementById('t-status').value=A.tournament.status||'OPEN';
+    selectStatus(A.tournament.status||'OPEN');
   }
+}
+
+let _selStatus=null;
+function selectStatus(val){
+  _selStatus=val;
+  document.querySelectorAll('.s-opt').forEach(el=>{ el.className='s-opt'; });
+  const opts=['OPEN','CLOSED','IN_PROGRESS','FINISHED'];
+  const idx=opts.indexOf(val);
+  if(idx>=0) document.querySelectorAll('.s-opt')[idx]?.classList.add('sel-'+val);
 }
 
 async function createTournament(){
@@ -534,27 +595,22 @@ async function createTournament(){
   if(!max_teams||max_teams<2) return msg('tc-err','err','Max teams must be at least 2.');
   setBtn('btn-tc',true);
   try{
-    /* POST /tournaments  body: { name, description, max_teams } */
     const t=await api('/tournaments',{method:'POST',body:JSON.stringify({name,description:description||undefined,max_teams})});
-    A.tournament=t;
-    msg('tc-ok','ok','Tournament "'+name+'" created!');
-    toast('Tournament created!');
+    A.tournament=t; msg('tc-ok','ok','Tournament "'+name+'" created!'); toast('Tournament created!');
     setTimeout(()=>{ renderTournamentForm(); loadAll(); },1200);
   }catch(e){ msg('tc-err','err',e.message||'Could not create tournament.'); }
   finally{ setBtn('btn-tc',false,'Create Tournament'); }
 }
 
 async function saveStatus(){
-  clr('te-err','te-ok');
-  const status=document.getElementById('t-status').value;
+  clr('ts-err','ts-ok');
+  const status=_selStatus||A.tournament?.status; if(!status) return;
   setBtn('btn-ts',true);
   try{
-    /* PATCH /tournaments/:id/status  body: { status } */
     await api(`/tournaments/${A.tournament.id}/status`,{method:'PATCH',body:JSON.stringify({status})});
     A.tournament={...A.tournament,status};
-    msg('te-ok','ok','Status updated to '+status);
-    toast('Status updated');
-  }catch(e){ msg('te-err','err',e.message||'Could not update status.'); }
+    msg('ts-ok','ok','Status updated to '+status+'.'); toast('Status updated');
+  }catch(e){ msg('ts-err','err',e.message||'Could not update status.'); }
   finally{ setBtn('btn-ts',false,'Update Status'); }
 }
 
@@ -565,30 +621,28 @@ async function saveTournament(){
   if(!name) return msg('te-err','err','Name is required.');
   setBtn('btn-te',true);
   try{
-    /* PATCH /tournaments/:id  body: { name, description, ... } */
     await api(`/tournaments/${A.tournament.id}`,{method:'PATCH',body:JSON.stringify({name,description:description||undefined})});
     A.tournament={...A.tournament,name,description};
-    msg('te-ok','ok','Changes saved.');
-    toast('Tournament updated');
-  }catch(e){ msg('te-err','err',e.message||'Could not save changes.'); }
+    msg('te-ok','ok','Changes saved.'); toast('Tournament updated');
+  }catch(e){ msg('te-err','err',e.message||'Could not save.'); }
   finally{ setBtn('btn-te',false,'Save Changes'); }
 }
 
-/* ── rounds ── */
+/* ROUNDS */
 function renderRounds(){
   const sr=[...A.rounds].sort((a,b)=>(a.orderIndex||0)-(b.orderIndex||0));
   document.getElementById('rounds-body').innerHTML=sr.length
-    ?`<table class="tbl"><thead><tr><th style="padding:10px">#</th><th>Name</th><th>Matches</th><th></th></tr></thead><tbody>${
+    ?`<table class="tbl"><thead><tr><th style="padding:14px 18px">#</th><th>Round Name</th><th>Matches</th><th></th></tr></thead><tbody>${
       sr.map(r=>`<tr>
-        <td style="font-family:var(--mono);color:var(--fog)">${r.orderIndex??'—'}</td>
-        <td style="font-weight:600">${r.name}</td>
-        <td style="color:var(--fog)">${(r.matches||[]).length}</td>
-        <td class="acts">
-          <button class="ab" onclick="openNewMatch('${r.id}')">+ Match</button>
-          <button class="ab ab-red" onclick="deleteRound('${r.id}')">Delete</button>
+        <td style="font-family:var(--head);color:var(--t3);font-size:14px">${r.orderIndex??'—'}</td>
+        <td style="font-weight:700;font-size:15px">${r.name}</td>
+        <td style="color:var(--t3)">${(r.matches||[]).length}</td>
+        <td class="tbl-acts">
+          <button class="btn" onclick="openNewMatch('${r.id}')">+ Match</button>
+          <button class="btn btn-red" onclick="deleteRound('${r.id}')">Delete</button>
         </td></tr>`).join('')
     }</tbody></table>`
-    :`<div class="empty-row">No rounds yet. Create the first one.</div>`;
+    :`<div class="empty-row">No rounds yet — create the first one</div>`;
 }
 
 async function createRound(){
@@ -599,7 +653,6 @@ async function createRound(){
   if(!name) return msg('r-err','err','Round name is required.');
   setBtn('btn-r',true);
   try{
-    /* POST /tournaments/:tournamentId/rounds  body: { name, orderIndex } */
     await api(`/tournaments/${A.tournament.id}/rounds`,{method:'POST',body:JSON.stringify({name,orderIndex})});
     msg('r-ok','ok','Round created.'); toast('Round created');
     document.getElementById('r-name').value=''; document.getElementById('r-order').value='';
@@ -610,54 +663,45 @@ async function createRound(){
 
 async function deleteRound(id){
   if(!confirm('Delete this round and all its matches?')) return;
-  try{
-    /* DELETE /rounds/:id */
-    await api('/rounds/'+id,{method:'DELETE'}); toast('Round deleted'); await loadAll();
-  }catch(e){ toast('Error: '+e.message,'err'); }
+  try{ await api('/rounds/'+id,{method:'DELETE'}); toast('Round deleted'); await loadAll(); }
+  catch(e){ toast('Error: '+e.message,'err'); }
 }
 
-/* ── matches table ── */
+/* MATCHES */
 function renderMatchesTable(){
   const sr=[...A.rounds].sort((a,b)=>(a.orderIndex||0)-(b.orderIndex||0));
   document.getElementById('m-filter').innerHTML=
-    `<button class="ab${A.mFilter===null?' ab-gold':''}" onclick="setMF(null)">All</button>`+
-    sr.map(r=>`<button class="ab${A.mFilter===r.id?' ab-gold':''}" onclick="setMF('${r.id}')">${r.name}</button>`).join('')+
-    `<button class="ab" onclick="openNewMatch(null)" style="margin-left:auto">+ New Match</button>`;
-
+    `<button class="rfbtn${A.mFilter===null?' on':''}" onclick="setMF(null)">All</button>`+
+    sr.map(r=>`<button class="rfbtn${A.mFilter===r.id?' on':''}" onclick="setMF('${r.id}')">${r.name}</button>`).join('');
   const vis=A.mFilter?A.matches.filter(m=>m.roundId===A.mFilter):A.matches;
   const stCls={PENDING:'pill-pend',IN_PROGRESS:'pill-live',PLAYED:'pill-done',CANCELLED:'pill-fin'};
-
   document.getElementById('matches-body').innerHTML=vis.length
     ?`<table class="tbl"><thead><tr>
-        <th style="padding:12px 10px">Team A</th><th>Team B</th><th>Score</th><th>Round</th><th>Status</th><th></th>
+        <th style="padding:14px 18px">Team A</th><th>Team B</th><th>Score</th><th>Round</th><th>Status</th><th></th>
       </tr></thead><tbody>${
       vis.map(m=>{
         const r=A.rounds.find(x=>x.id===m.roundId);
         const sc=m.scoreA!==null&&m.scoreB!==null&&m.status==='PLAYED'?`${m.scoreA} — ${m.scoreB}`:'—';
         return `<tr>
-          <td style="font-weight:600">${m.teamA||'TBD'}</td>
-          <td style="font-weight:600">${m.teamB||'TBD'}</td>
-          <td style="font-family:var(--mono)">${sc}</td>
-          <td style="color:var(--fog)">${r?.name||'—'}</td>
+          <td style="font-weight:700;font-size:15px">${m.teamA||'TBD'}</td>
+          <td style="font-weight:700;font-size:15px">${m.teamB||'TBD'}</td>
+          <td style="font-family:var(--head);font-size:16px;font-weight:700">${sc}</td>
+          <td style="color:var(--t3)">${r?.name||'—'}</td>
           <td><span class="pill ${stCls[m.status]||'pill-pend'}">${m.status||'PENDING'}</span></td>
-          <td class="acts">
-            <button class="ab ab-green" onclick="openScore('${m.id}')">Result</button>
-            <button class="ab" onclick="openAssign('${m.id}')">Assign</button>
+          <td class="tbl-acts">
+            <button class="btn btn-green" onclick="openScore('${m.id}')">Result</button>
+            <button class="btn" onclick="openAssign('${m.id}')">Assign</button>
           </td></tr>`;
       }).join('')
     }</tbody></table>`
-    :`<div class="empty-row">No matches${A.mFilter?' in this round':''}.</div>`;
+    :`<div class="empty-row">No matches${A.mFilter?' in this round':''}</div>`;
 }
 function setMF(id){ A.mFilter=id; renderMatchesTable(); }
 
-/* ── new match ── */
 function openNewMatch(roundId){
   clr('nm-err','nm-ok');
   const sr=[...A.rounds].sort((a,b)=>(a.orderIndex||0)-(b.orderIndex||0));
-  document.getElementById('nm-round').innerHTML=
-    `<option value="">— No round —</option>`+
-    sr.map(r=>`<option value="${r.id}" ${r.id===roundId?'selected':''}>${r.name}</option>`).join('');
-  /* Only APPROVED teams can be in matches */
+  document.getElementById('nm-round').innerHTML=`<option value="">— No round —</option>`+sr.map(r=>`<option value="${r.id}" ${r.id===roundId?'selected':''}>${r.name}</option>`).join('');
   const opts=A.teams.map(t=>`<option value="${t.teamId}">${t.name}${t.tag?' ['+t.tag+']':''}</option>`).join('');
   if(!opts){ toast('No approved teams yet — approve registrations first.','err'); return; }
   document.getElementById('nm-ta').innerHTML=opts;
@@ -674,19 +718,14 @@ async function createMatch(){
   if(teamAId===teamBId) return msg('nm-err','err','Teams must be different.');
   setBtn('btn-nm',true);
   try{
-    /* POST /matches  body: { tournamentId, teamAId, teamBId } */
     const match=await api('/matches',{method:'POST',body:JSON.stringify({tournamentId:A.tournament.id,teamAId,teamBId})});
-    /* If a round was selected, assign it: PATCH /rounds/:roundId/matches/:matchId */
-    if(roundId&&match.id){
-      await api(`/rounds/${roundId}/matches/${match.id}`,{method:'PATCH'}).catch(e=>console.warn('assign round:',e.message));
-    }
+    if(roundId&&match.id) await api(`/rounds/${roundId}/matches/${match.id}`,{method:'PATCH'}).catch(()=>{});
     msg('nm-ok','ok','Match created.'); toast('Match created');
     await loadAll(); setTimeout(()=>closeOv('ov-match'),1000);
   }catch(e){ msg('nm-err','err',e.message||'Could not create match.'); }
   finally{ setBtn('btn-nm',false,'Create Match'); }
 }
 
-/* ── result ── */
 function openScore(matchId){
   const m=A.matches.find(x=>x.id==matchId); if(!m) return;
   A.editMatchId=matchId;
@@ -704,7 +743,6 @@ async function saveResult(){
   if(isNaN(scoreA)||isNaN(scoreB)) return msg('sc-err','err','Enter both scores.');
   setBtn('btn-sc',true);
   try{
-    /* PATCH /matches/:id/result  body: { scoreA, scoreB } */
     await api(`/matches/${A.editMatchId}/result`,{method:'PATCH',body:JSON.stringify({scoreA,scoreB})});
     msg('sc-ok','ok','Result saved.'); toast('Result updated');
     await loadAll(); setTimeout(()=>closeOv('ov-score'),1000);
@@ -712,7 +750,6 @@ async function saveResult(){
   finally{ setBtn('btn-sc',false,'Save Result'); }
 }
 
-/* ── assign round ── */
 function openAssign(matchId){
   A.assignMatchId=matchId;
   const sr=[...A.rounds].sort((a,b)=>(a.orderIndex||0)-(b.orderIndex||0));
@@ -725,58 +762,61 @@ async function doAssign(){
   const roundId=document.getElementById('as-round').value;
   setBtn('btn-as',true);
   try{
-    /* PATCH /rounds/:id/matches/:matchId */
     await api(`/rounds/${roundId}/matches/${A.assignMatchId}`,{method:'PATCH'});
-    msg('as-ok','ok','Match assigned to round.'); toast('Match assigned');
+    msg('as-ok','ok','Match assigned.'); toast('Match assigned');
     await loadAll(); setTimeout(()=>closeOv('ov-assign'),1000);
-  }catch(e){ msg('as-err','err',e.message||'Could not assign match.'); }
-  finally{ setBtn('btn-as',false,'Assign'); }
+  }catch(e){ msg('as-err','err',e.message||'Could not assign.'); }
+  finally{ setBtn('btn-as',false,'Assign Match'); }
 }
 
-/* ── registrations ── */
+/* REGISTRATIONS */
 function renderRegistrations(){
   const stCls={PENDING:'pill-pend',APPROVED:'pill-appr',REJECTED:'pill-rej'};
   document.getElementById('regs-body').innerHTML=A.registrations.length
-    ?`<table class="tbl"><thead><tr><th style="padding:12px 10px">Team</th><th>Status</th><th></th></tr></thead><tbody>${
+    ?`<table class="tbl"><thead><tr><th style="padding:14px 18px">Team</th><th>Status</th><th></th></tr></thead><tbody>${
       A.registrations.map(r=>`<tr>
-        <td style="font-weight:600">${r.team||r.teamId}</td>
+        <td style="font-weight:700;font-size:15px">${r.team||r.teamId}</td>
         <td><span class="pill ${stCls[r.status]||'pill-pend'}">${r.status}</span></td>
-        <td class="acts">
-          ${r.status!=='APPROVED'?`<button class="ab ab-green" onclick="approveReg('${r.id}')">Approve</button>`:''}
-          ${r.status!=='REJECTED'?`<button class="ab ab-red" onclick="rejectReg('${r.id}')">Reject</button>`:''}
+        <td class="tbl-acts">
+          ${r.status!=='APPROVED'?`<button class="btn btn-green" onclick="approveReg('${r.id}')">Approve</button>`:''}
+          ${r.status!=='REJECTED'?`<button class="btn btn-red" onclick="rejectReg('${r.id}')">Reject</button>`:''}
         </td></tr>`).join('')
     }</tbody></table>`
-    :`<div class="empty-row">No registrations yet.</div>`;
+    :`<div class="empty-row">No registrations yet</div>`;
 }
 
 async function approveReg(id){
-  try{
-    /* PATCH /registrations/:id/approve */
-    await api(`/registrations/${id}/approve`,{method:'PATCH'}); toast('Registration approved'); await loadAll();
-  }catch(e){ toast('Error: '+e.message,'err'); }
+  try{ await api(`/registrations/${id}/approve`,{method:'PATCH'}); toast('Registration approved'); await loadAll(); }
+  catch(e){ toast('Error: '+e.message,'err'); }
 }
 async function rejectReg(id){
   if(!confirm('Reject this registration?')) return;
-  try{
-    /* PATCH /registrations/:id/reject */
-    await api(`/registrations/${id}/reject`,{method:'PATCH'}); toast('Registration rejected'); await loadAll();
-  }catch(e){ toast('Error: '+e.message,'err'); }
+  try{ await api(`/registrations/${id}/reject`,{method:'PATCH'}); toast('Registration rejected'); await loadAll(); }
+  catch(e){ toast('Error: '+e.message,'err'); }
 }
 
-/* ── teams ── */
+/* TEAMS */
 function renderTeamsTable(){
   document.getElementById('teams-body').innerHTML=A.teams.length
-    ?`<table class="tbl"><thead><tr><th style="padding:12px 10px">Team</th><th>Tag</th></tr></thead><tbody>${
-      A.teams.map(t=>`<tr>
-        <td><div style="display:flex;align-items:center;gap:8px">
-          ${t.logoUrl?`<img src="${t.logoUrl}" style="width:24px;height:24px;border-radius:4px;object-fit:cover" alt="">`:
-            `<div style="width:24px;height:24px;border-radius:4px;background:var(--ink3);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;color:var(--fog)">${ini(t.name)}</div>`}
-          <span style="font-weight:600">${t.name}</span>
-        </div></td>
-        <td style="font-family:var(--mono);color:var(--fog)">${t.tag||'—'}</td>
-      </tr>`).join('')
+    ?`<table class="tbl"><thead><tr><th style="padding:14px 18px">Team</th><th>Tag</th><th>Played</th><th>Wins</th></tr></thead><tbody>${
+      A.teams.map(t=>{
+        const id=t.teamId;
+        const ms=A.matches.filter(m=>m.teamAId===id||m.teamBId===id);
+        const played=ms.filter(m=>m.status==='PLAYED').length;
+        const wins=ms.filter(m=>m.winnerTeamId===id).length;
+        return `<tr>
+          <td><div style="display:flex;align-items:center;gap:10px">
+            ${t.logoUrl?`<img src="${t.logoUrl}" style="width:28px;height:28px;border-radius:4px;object-fit:cover" alt="">`:
+              `<div style="width:28px;height:28px;border-radius:4px;background:var(--bg3);border:1px solid var(--br);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-size:10px;font-weight:700;color:var(--cyan)">${ini(t.name)}</div>`}
+            <span style="font-weight:700;font-size:15px">${t.name}</span>
+          </div></td>
+          <td style="font-family:var(--head);color:var(--t3);letter-spacing:.06em;font-size:13px">${t.tag||'—'}</td>
+          <td style="color:var(--t2);font-size:15px">${played}</td>
+          <td style="color:var(--green);font-weight:700;font-size:15px">${wins}</td>
+        </tr>`;
+      }).join('')
     }</tbody></table>`
-    :`<div class="empty-row">No approved teams yet.</div>`;
+    :`<div class="empty-row">No approved teams yet — approve registrations first</div>`;
 }
 </script>
 </body>
