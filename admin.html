@@ -222,23 +222,33 @@ select.fi{cursor:pointer}
       <!-- TOURNAMENT -->
       <div class="page" id="pg-tournament">
         <div class="pg-title">Tournament</div>
-        <div class="pg-sub">Edit the active tournament</div>
-        <div class="card">
+        <div class="pg-sub">Create or edit the tournament</div>
+
+        <!-- CREATE (shown when no tournament exists) -->
+        <div class="card" id="card-create-tour">
+          <div class="card-head"><span class="card-title">Create tournament</span></div>
+          <div class="ferr" id="tc-err"></div><div class="fok" id="tc-ok"></div>
+          <div class="fg"><label class="fl">Name *</label><input class="fi" id="tc-name" type="text" placeholder="MK Grand Circuit"></div>
+          <div class="fg"><label class="fl">Description</label><input class="fi" id="tc-desc" type="text" placeholder="The official Mario Kart tournament"></div>
+          <div class="fg"><label class="fl">Max teams * <span style="font-weight:400;text-transform:none;letter-spacing:0">(minimum 2)</span></label><input class="fi" id="tc-max" type="number" placeholder="16" min="2"></div>
+          <button class="ab ab-gold" id="btn-tc" onclick="createTournament()" style="width:auto;padding:8px 18px">Create Tournament</button>
+        </div>
+
+        <!-- EDIT (shown when tournament exists) -->
+        <div class="card" id="card-edit-tour" style="display:none">
           <div class="card-head"><span class="card-title">Edit tournament</span></div>
           <div class="ferr" id="te-err"></div><div class="fok" id="te-ok"></div>
           <div class="fg"><label class="fl">Name</label><input class="fi" id="t-name" type="text"></div>
           <div class="fg"><label class="fl">Description</label><input class="fi" id="t-desc" type="text"></div>
           <div class="fg"><label class="fl">Status</label>
             <select class="fi" id="t-status">
-              <option value="OPEN">OPEN (registration open)</option>
-              <option value="CLOSED">CLOSED (registration closed)</option>
-              <option value="IN_PROGRESS">IN_PROGRESS</option>
+              <option value="OPEN">OPEN — Registration open</option>
+              <option value="CLOSED">CLOSED — Registration closed</option>
+              <option value="IN_PROGRESS">IN_PROGRESS — Tournament running</option>
               <option value="FINISHED">FINISHED</option>
             </select>
           </div>
-          <!-- PATCH /tournaments/:id/status uses body { status } -->
           <button class="ab ab-gold" id="btn-ts" onclick="saveStatus()" style="width:auto;padding:8px 18px;margin-right:8px">Update Status</button>
-          <!-- PATCH /tournaments/:id uses body { name, description, ... } -->
           <button class="ab" id="btn-te" onclick="saveTournament()" style="width:auto;padding:8px 18px">Save Changes</button>
         </div>
       </div>
@@ -503,10 +513,35 @@ function miniMatchTable(ms){
 
 /* ── tournament ── */
 function renderTournamentForm(){
-  if(!A.tournament) return;
-  document.getElementById('t-name').value=A.tournament.name||'';
-  document.getElementById('t-desc').value=A.tournament.description||'';
-  document.getElementById('t-status').value=A.tournament.status||'OPEN';
+  const create=document.getElementById('card-create-tour');
+  const edit=document.getElementById('card-edit-tour');
+  if(!A.tournament){
+    create.style.display='block'; edit.style.display='none';
+  } else {
+    create.style.display='none'; edit.style.display='block';
+    document.getElementById('t-name').value=A.tournament.name||'';
+    document.getElementById('t-desc').value=A.tournament.description||'';
+    document.getElementById('t-status').value=A.tournament.status||'OPEN';
+  }
+}
+
+async function createTournament(){
+  clr('tc-err','tc-ok');
+  const name=document.getElementById('tc-name').value.trim();
+  const description=document.getElementById('tc-desc').value.trim();
+  const max_teams=parseInt(document.getElementById('tc-max').value);
+  if(!name) return msg('tc-err','err','Name is required.');
+  if(!max_teams||max_teams<2) return msg('tc-err','err','Max teams must be at least 2.');
+  setBtn('btn-tc',true);
+  try{
+    /* POST /tournaments  body: { name, description, max_teams } */
+    const t=await api('/tournaments',{method:'POST',body:JSON.stringify({name,description:description||undefined,max_teams})});
+    A.tournament=t;
+    msg('tc-ok','ok','Tournament "'+name+'" created!');
+    toast('Tournament created!');
+    setTimeout(()=>{ renderTournamentForm(); loadAll(); },1200);
+  }catch(e){ msg('tc-err','err',e.message||'Could not create tournament.'); }
+  finally{ setBtn('btn-tc',false,'Create Tournament'); }
 }
 
 async function saveStatus(){
