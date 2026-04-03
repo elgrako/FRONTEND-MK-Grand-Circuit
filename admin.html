@@ -231,24 +231,39 @@ select.fi{cursor:pointer}
       <div class="sb-section">
         <div class="sb-label">Overview</div>
         <button class="sb-item on" onclick="goto('dashboard')">
+          <div class="sb-icon">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          </div>
           Dashboard
           <span class="sb-badge alert" id="sb-alert" style="display:none">!</span>
         </button>
         <button class="sb-item" onclick="goto('tournament')">
+          <div class="sb-icon">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M5 3h14l-1 9a6 6 0 01-12 0L5 3z"/></svg>
+          </div>
           Tournament
         </button>
       </div>
       <div class="sb-section">
         <div class="sb-label">Competition</div>
         <button class="sb-item" onclick="goto('registrations')">
+          <div class="sb-icon">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          </div>
           Registrations
           <span class="sb-badge" id="sb-regs">0</span>
         </button>
         <button class="sb-item" onclick="goto('rounds')">
+          <div class="sb-icon">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+          </div>
           Rounds
           <span class="sb-badge" id="sb-rounds">0</span>
         </button>
         <button class="sb-item" onclick="goto('matches')">
+          <div class="sb-icon">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          </div>
           Matches
           <span class="sb-badge" id="sb-matches">0</span>
         </button>
@@ -256,6 +271,9 @@ select.fi{cursor:pointer}
       <div class="sb-section">
         <div class="sb-label">Entities</div>
         <button class="sb-item" onclick="goto('teams')">
+          <div class="sb-icon">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
           Teams
           <span class="sb-badge" id="sb-teams">0</span>
         </button>
@@ -311,8 +329,8 @@ select.fi{cursor:pointer}
           <div class="card-head"><div class="card-title">Create tournament</div></div>
           <div class="card-body">
             <div class="ferr" id="tc-err"></div><div class="fok" id="tc-ok"></div>
-            <div class="fg"><label class="fl">Name *</label><input class="fi" id="tc-name" type="text" placeholder="MK Grand Circuit"></div>
-            <div class="fg"><label class="fl">Description</label><input class="fi" id="tc-desc" type="text" placeholder="The official Mario Kart tournament"></div>
+            <div class="fg"><label class="fl">Name *</label><input class="fi" id="tc-name" type="text" placeholder="Grand Circuit"></div>
+            <div class="fg"><label class="fl">Description</label><input class="fi" id="tc-desc" type="text" placeholder="The official Grand Circuit tournament"></div>
             <div class="fg"><label class="fl">Max teams * <span style="font-weight:400;text-transform:none;letter-spacing:0;font-family:var(--body)">(minimum 2)</span></label><input class="fi" id="tc-max" type="number" placeholder="16" min="2" style="max-width:180px"></div>
             <button class="btn btn-blue" id="btn-tc" onclick="createTournament()" style="width:auto;padding:10px 28px">Create Tournament</button>
           </div>

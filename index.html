@@ -912,7 +912,7 @@ body::before {
             <div style="width:36px;height:36px;border-radius:6px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--head);font-size:16px;font-weight:800;color:var(--cyan)">02</div>
             <div style="font-family:var(--head);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t1)">Create your team</div>
           </div>
-          <p style="font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:12px">Go to the <strong style="color:var(--t1)">Teams</strong> tab and click <strong style="color:var(--t1)">+ Create Team</strong>. Pick a name and a short tag (e.g. <span style="font-family:var(--head);color:var(--cyan);font-size:13px">SKY</span>). You become the team captain.</p>
+          <p style="font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:12px">Go to the <strong style="color:var(--t1)">Teams</strong> tab and click <strong style="color:var(--t1)">+ Create Team</strong>. Pick a name and a short tag (e.g. <span style="font-family:var(--head);color:var(--cyan);font-size:13px">CG</span>). You become the team captain.</p>
           <div style="background:var(--bg3);border:1px solid var(--br);border-radius:5px;padding:10px 14px">
             <div style="font-family:var(--head);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:4px">One team per player</div>
             <div style="font-size:13px;color:var(--t2)">Each account can only belong to one team at a time.</div>
@@ -951,12 +951,6 @@ body::before {
       </div>
     </div>
 
-    <div style="background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.15);border-radius:8px;padding:16px 20px;display:flex;align-items:flex-start;gap:14px">
-      <div style="width:6px;height:6px;border-radius:50%;background:var(--cyan);flex-shrink:0;margin-top:7px;box-shadow:0 0 8px var(--cyan)"></div>
-      <div style="font-size:14px;color:var(--t2);line-height:1.75">
-        The <strong style="color:var(--t1)">Bracket</strong>, <strong style="color:var(--t1)">Matches</strong> and <strong style="color:var(--t1)">Standings</strong> tabs are fully public — no account needed. Results update automatically every 30 seconds.
-      </div>
-    </div>
   </div>
 
   <!-- BRACKET -->
@@ -1015,8 +1009,8 @@ body::before {
     <div class="mhead"><div class="mtitle">Create Team</div><button class="mx" onclick="closeOv('ov-cteam')">✕</button></div>
     <div class="mbody">
       <div class="ferr" id="ct-err"></div><div class="fok" id="ct-ok"></div>
-      <div class="fg"><label class="fl">Team Name</label><input class="fi" id="ct-name" type="text" placeholder="e.g. Skyline Racers"></div>
-      <div class="fg"><label class="fl">Tag <span style="font-weight:400;letter-spacing:0;text-transform:none;font-family:var(--body)">(max 15 chars)</span></label><input class="fi" id="ct-tag" type="text" placeholder="SKY" maxlength="15"></div>
+      <div class="fg"><label class="fl">Team Name</label><input class="fi" id="ct-name" type="text" placeholder="e.g. Code Genius"></div>
+      <div class="fg"><label class="fl">Tag <span style="font-weight:400;letter-spacing:0;text-transform:none;font-family:var(--body)">(max 15 chars)</span></label><input class="fi" id="ct-tag" type="text" placeholder="CG" maxlength="15"></div>
       <div class="fg"><label class="fl">Description (optional)</label><input class="fi" id="ct-desc" type="text" placeholder="Short team description"></div>
       <button class="fsub" id="btn-ct" onclick="doCreateTeam()">Create Team</button>
     </div>
@@ -1236,7 +1230,7 @@ async function doCreateTeam(){
   const tag=document.getElementById('ct-tag').value.trim();
   const description=document.getElementById('ct-desc').value.trim();
   if(!name) return msg('ct-err','err','Team name is required.');
-  if(!tag)  return msg('ct-err','err','Tag is required (e.g. SKY).');
+  if(!tag)  return msg('ct-err','err','Tag is required (e.g. CG).');
   setBtn('btn-ct',true);
   try{
     const body={name,tag}; if(description) body.description=description;
