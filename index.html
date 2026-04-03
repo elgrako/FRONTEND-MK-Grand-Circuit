@@ -847,35 +847,36 @@ body::before {
     <span class="logo-text"><span>Grand</span> Circuit</span>
   </div>
   <div class="nav-tabs">
-    <button class="ntab on"  onclick="gotoTab('info')">Info</button>
-    <button class="ntab"     onclick="gotoTab('bracket')">Bracket</button>
-    <button class="ntab"     onclick="gotoTab('teams')">Teams</button>
-    <button class="ntab"     onclick="gotoTab('matches')">Matches</button>
-    <button class="ntab"     onclick="gotoTab('standings')">Standings</button>
+    <button class="ntab on"  onclick="gotoTab('info')"      data-i18n="tab_info">Info</button>
+    <button class="ntab"     onclick="gotoTab('bracket')"   data-i18n="tab_bracket">Bracket</button>
+    <button class="ntab"     onclick="gotoTab('teams')"     data-i18n="tab_teams">Teams</button>
+    <button class="ntab"     onclick="gotoTab('matches')"   data-i18n="tab_matches">Matches</button>
+    <button class="ntab"     onclick="gotoTab('standings')" data-i18n="tab_standings">Standings</button>
   </div>
   <div class="nav-right" id="nav-right"></div>
 </nav>
+<!-- lang toggle rendered inside nav-right by JS -->
 
 <!-- HERO -->
 <div class="hero">
   <div class="hero-grid"></div>
   <div class="hero-inner">
     <div class="hero-left">
-      <div class="hero-eyebrow" id="hero-tag">Loading tournament…</div>
-      <h1 class="hero-h1">
-        <span class="line1" style="display:flex;align-items:center;gap:16px">
-          <img src="gclogo.png" alt="GC" style="height:clamp(48px,6vw,72px);width:auto;filter:drop-shadow(0 0 16px rgba(0,212,255,0.5))">
+      <div class="hero-eyebrow" id="hero-tag">Loading…</div>
+      <h1 class="hero-h1" style="display:flex;flex-direction:column;align-items:center;text-align:center">
+        <span class="line1" style="display:flex;align-items:center;justify-content:center;gap:20px">
+          <img src="gclogo.png" alt="GC" style="height:clamp(80px,10vw,120px);width:auto;filter:drop-shadow(0 0 22px rgba(0,212,255,0.55))">
           Grand
         </span>
-        <span class="line2">Circuit</span>
+        <span class="line2" style="text-align:center">Circuit</span>
       </h1>
       <p class="hero-sub" id="hero-sub" style="display:none"></p>
     </div>
     <div class="hero-right">
       <div class="hero-stats">
-        <div class="hstat"><div class="hstat-n" id="st-teams">—</div><div class="hstat-l">Teams</div></div>
-        <div class="hstat"><div class="hstat-n" id="st-rounds">—</div><div class="hstat-l">Rounds</div></div>
-        <div class="hstat"><div class="hstat-n" id="st-matches">—</div><div class="hstat-l">Matches</div></div>
+        <div class="hstat"><div class="hstat-n" id="st-teams">—</div><div class="hstat-l" data-i18n="stat_teams">Teams</div></div>
+        <div class="hstat"><div class="hstat-n" id="st-rounds">—</div><div class="hstat-l" data-i18n="stat_rounds">Rounds</div></div>
+        <div class="hstat"><div class="hstat-n" id="st-matches">—</div><div class="hstat-l" data-i18n="stat_matches">Matches</div></div>
       </div>
     </div>
   </div>
@@ -883,11 +884,10 @@ body::before {
 
 <!-- CONTENT -->
 <div class="wrap">
-  <div class="err-bar" id="err-bar">⚠ Could not connect to server.</div>
+  <div class="err-bar" id="err-bar" data-i18n="err_conn">⚠ Could not connect to server.</div>
 
-  <!-- INFO -->
   <div class="panel on" id="panel-info">
-    <div class="sh"><span class="sh-title">How it works</span><span class="sh-badge">Getting started</span></div>
+    <div class="sh"><span class="sh-title" data-i18n="info_title">How it works</span><span class="sh-badge" data-i18n="info_badge">Getting started</span></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
 
       <div style="background:var(--bg2);border:1px solid var(--br);border-radius:8px;overflow:hidden">
@@ -895,12 +895,12 @@ body::before {
         <div style="padding:22px">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
             <div style="width:36px;height:36px;border-radius:6px;background:rgba(30,111,255,0.12);border:1px solid rgba(30,111,255,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--head);font-size:16px;font-weight:800;color:var(--cyan)">01</div>
-            <div style="font-family:var(--head);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t1)">Create your account</div>
+            <div style="font-family:var(--head);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t1)" data-i18n="s1_title">Create your account</div>
           </div>
-          <p style="font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:12px">Click <strong style="color:var(--t1)">Register</strong> in the top right corner. Choose a username, enter your email and a password of at least 6 characters.</p>
+          <p style="font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:12px" data-i18n="s1_body">Click <strong style="color:var(--t1)">Register</strong> in the top right corner. Choose a username, enter your email and a password of at least 6 characters.</p>
           <div style="background:var(--bg3);border:1px solid var(--br);border-radius:5px;padding:10px 14px">
-            <div style="font-family:var(--head);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:4px">Your User ID</div>
-            <div style="font-size:13px;color:var(--t2)">Once logged in, click your username (top right) to see your <strong style="color:var(--cyan)">User ID</strong>. Share it with your captain so they can add you to the team.</div>
+            <div style="font-family:var(--head);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:4px" data-i18n="s1_note_title">Your User ID</div>
+            <div style="font-size:13px;color:var(--t2)" data-i18n="s1_note_body">Once logged in, click your username (top right) to see your <strong style="color:var(--cyan)">User ID</strong>. Share it with your captain so they can add you to the team.</div>
           </div>
         </div>
       </div>
@@ -910,12 +910,12 @@ body::before {
         <div style="padding:22px">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
             <div style="width:36px;height:36px;border-radius:6px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--head);font-size:16px;font-weight:800;color:var(--cyan)">02</div>
-            <div style="font-family:var(--head);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t1)">Create your team</div>
+            <div style="font-family:var(--head);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t1)" data-i18n="s2_title">Create your team</div>
           </div>
-          <p style="font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:12px">Go to the <strong style="color:var(--t1)">Teams</strong> tab and click <strong style="color:var(--t1)">+ Create Team</strong>. Pick a name and a short tag (e.g. <span style="font-family:var(--head);color:var(--cyan);font-size:13px">CG</span>). You become the team captain.</p>
+          <p style="font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:12px" data-i18n="s2_body">Go to the <strong style="color:var(--t1)">Teams</strong> tab and click <strong style="color:var(--t1)">+ Create Team</strong>. Pick a name and a short tag (e.g. <span style="font-family:var(--head);color:var(--cyan);font-size:13px">CG</span>). You become the team captain.</p>
           <div style="background:var(--bg3);border:1px solid var(--br);border-radius:5px;padding:10px 14px">
-            <div style="font-family:var(--head);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:4px">One team per player</div>
-            <div style="font-size:13px;color:var(--t2)">Each account can only belong to one team at a time.</div>
+            <div style="font-family:var(--head);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:4px" data-i18n="s2_note_title">One team per player</div>
+            <div style="font-size:13px;color:var(--t2)" data-i18n="s2_note_body">Each account can only belong to one team at a time.</div>
           </div>
         </div>
       </div>
@@ -925,12 +925,12 @@ body::before {
         <div style="padding:22px">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
             <div style="width:36px;height:36px;border-radius:6px;background:rgba(0,232,122,0.08);border:1px solid rgba(0,232,122,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--head);font-size:16px;font-weight:800;color:var(--green)">03</div>
-            <div style="font-family:var(--head);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t1)">Add your players</div>
+            <div style="font-family:var(--head);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t1)" data-i18n="s3_title">Add your players</div>
           </div>
-          <p style="font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:12px">Each teammate must create their own account first and share their User ID with you. As captain, click <strong style="color:var(--t1)">Manage Team</strong> in the Teams tab and paste each player's User ID.</p>
+          <p style="font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:12px" data-i18n="s3_body">Each teammate must create their own account first and share their User ID with you. As captain, click <strong style="color:var(--t1)">Manage Team</strong> in the Teams tab and paste each player's User ID.</p>
           <div style="background:var(--bg3);border:1px solid var(--br);border-radius:5px;padding:10px 14px">
-            <div style="font-family:var(--head);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:4px">Captain only</div>
-            <div style="font-size:13px;color:var(--t2)">Only the team Owner can add or remove players.</div>
+            <div style="font-family:var(--head);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:4px" data-i18n="s3_note_title">Captain only</div>
+            <div style="font-size:13px;color:var(--t2)" data-i18n="s3_note_body">Only the team Owner can add or remove players.</div>
           </div>
         </div>
       </div>
@@ -940,12 +940,12 @@ body::before {
         <div style="padding:22px">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
             <div style="width:36px;height:36px;border-radius:6px;background:rgba(255,184,0,0.08);border:1px solid rgba(255,184,0,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--head);font-size:16px;font-weight:800;color:var(--amber)">04</div>
-            <div style="font-family:var(--head);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t1)">Enroll in the tournament</div>
+            <div style="font-family:var(--head);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t1)" data-i18n="s4_title">Enroll in the tournament</div>
           </div>
-          <p style="font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:12px">Once your team is ready, click <strong style="color:var(--t1)">Enroll in Tournament</strong> in the Teams tab. The admin will review and approve your request. Once approved you'll appear in the bracket.</p>
+          <p style="font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:12px" data-i18n="s4_body">Once your team is ready, click <strong style="color:var(--t1)">Enroll in Tournament</strong> in the Teams tab. The admin will review and approve your request. Once approved you'll appear in the bracket.</p>
           <div style="background:var(--bg3);border:1px solid var(--br);border-radius:5px;padding:10px 14px">
-            <div style="font-family:var(--head);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:4px">Registration must be open</div>
-            <div style="font-size:13px;color:var(--t2)">Enrollment only works when the tournament status is <span style="font-family:var(--head);color:var(--cyan);font-size:12px">OPEN</span>.</div>
+            <div style="font-family:var(--head);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:4px" data-i18n="s4_note_title">Registration must be open</div>
+            <div style="font-size:13px;color:var(--t2)" data-i18n="s4_note_body">Enrollment only works when the tournament status is <span style="font-family:var(--head);color:var(--cyan);font-size:12px">OPEN</span>.</div>
           </div>
         </div>
       </div>
@@ -955,49 +955,49 @@ body::before {
 
   <!-- BRACKET -->
   <div class="panel" id="panel-bracket">
-    <div class="sh"><span class="sh-title">Tournament Bracket</span><span class="sh-badge" id="bracket-badge">—</span></div>
-    <div id="bracket-root"><div class="empty"><div class="spin"></div><div class="empty-title">Loading bracket…</div></div></div>
+    <div class="sh"><span class="sh-title" data-i18n="tab_bracket">Tournament Bracket</span><span class="sh-badge" id="bracket-badge">—</span></div>
+    <div id="bracket-root"><div class="empty"><div class="spin"></div><div class="empty-title" data-i18n="loading">Loading…</div></div></div>
   </div>
 
   <div class="panel" id="panel-teams">
     <div id="myzone-root"></div>
-    <div class="sh"><span class="sh-title">Participating Teams</span><span class="sh-badge" id="teams-badge">—</span></div>
-    <div class="teams-grid" id="teams-root"><div class="empty" style="grid-column:1/-1"><div class="spin"></div><div class="empty-title">Loading teams…</div></div></div>
+    <div class="sh"><span class="sh-title" data-i18n="teams_title">Participating Teams</span><span class="sh-badge" id="teams-badge">—</span></div>
+    <div class="teams-grid" id="teams-root"><div class="empty" style="grid-column:1/-1"><div class="spin"></div><div class="empty-title" data-i18n="loading">Loading…</div></div></div>
   </div>
 
   <div class="panel" id="panel-matches">
-    <div class="sh"><span class="sh-title">Matches</span></div>
+    <div class="sh"><span class="sh-title" data-i18n="tab_matches">Matches</span></div>
     <div class="round-filter" id="round-filter"></div>
-    <div class="matches-list" id="matches-root"><div class="empty"><div class="spin"></div><div class="empty-title">Loading matches…</div></div></div>
+    <div class="matches-list" id="matches-root"><div class="empty"><div class="spin"></div><div class="empty-title" data-i18n="loading">Loading…</div></div></div>
   </div>
 
   <div class="panel" id="panel-standings">
-    <div class="sh"><span class="sh-title">Standings</span><span class="sh-badge" id="standings-badge">—</span></div>
-    <div id="standings-root"><div class="empty"><div class="spin"></div><div class="empty-title">Loading standings…</div></div></div>
+    <div class="sh"><span class="sh-title" data-i18n="tab_standings">Standings</span><span class="sh-badge" id="standings-badge">—</span></div>
+    <div id="standings-root"><div class="empty"><div class="spin"></div><div class="empty-title" data-i18n="loading">Loading…</div></div></div>
   </div>
 </div>
 
 <!-- MODAL: AUTH -->
 <div class="ov" id="ov-auth" onclick="closeBg(event,'ov-auth')">
   <div class="modal">
-    <div class="mhead"><div class="mtitle" id="auth-title">Sign In</div><button class="mx" onclick="closeOv('ov-auth')">✕</button></div>
+    <div class="mhead"><div class="mtitle" id="auth-title" data-i18n="signin">Sign In</div><button class="mx" onclick="closeOv('ov-auth')">✕</button></div>
     <div class="mbody">
       <div class="mtabs">
-        <button class="mtab on" id="mt-login" onclick="authTab('login')">Sign In</button>
-        <button class="mtab"    id="mt-reg"   onclick="authTab('register')">Create Account</button>
+        <button class="mtab on" id="mt-login" onclick="authTab('login')" data-i18n="signin">Sign In</button>
+        <button class="mtab"    id="mt-reg"   onclick="authTab('register')" data-i18n="register">Create Account</button>
       </div>
       <div id="f-login">
         <div class="ferr" id="l-err"></div><div class="fok" id="l-ok"></div>
-        <div class="fg"><label class="fl">Email</label><input class="fi" id="l-email" type="email" placeholder="you@email.com"></div>
-        <div class="fg"><label class="fl">Password</label><input class="fi" id="l-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-        <button class="fsub" id="btn-login" onclick="doLogin()">Sign In</button>
+        <div class="fg"><label class="fl" data-i18n="email">Email</label><input class="fi" id="l-email" type="email" placeholder="you@email.com"></div>
+        <div class="fg"><label class="fl" data-i18n="password">Password</label><input class="fi" id="l-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+        <button class="fsub" id="btn-login" onclick="doLogin()" data-i18n="signin">Sign In</button>
       </div>
       <div id="f-reg" style="display:none">
         <div class="ferr" id="r-err"></div><div class="fok" id="r-ok"></div>
-        <div class="fg"><label class="fl">Username</label><input class="fi" id="r-user" type="text" placeholder="YourUsername"></div>
-        <div class="fg"><label class="fl">Email</label><input class="fi" id="r-email" type="email" placeholder="you@email.com"></div>
-        <div class="fg"><label class="fl">Password</label><input class="fi" id="r-pass" type="password" placeholder="At least 6 characters" onkeydown="if(event.key==='Enter')doRegister()"></div>
-        <button class="fsub" id="btn-reg" onclick="doRegister()">Create Account</button>
+        <div class="fg"><label class="fl" data-i18n="username">Username</label><input class="fi" id="r-user" type="text" placeholder="YourUsername"></div>
+        <div class="fg"><label class="fl" data-i18n="email">Email</label><input class="fi" id="r-email" type="email" placeholder="you@email.com"></div>
+        <div class="fg"><label class="fl" data-i18n="password">Password</label><input class="fi" id="r-pass" type="password" placeholder="At least 6 characters" onkeydown="if(event.key==='Enter')doRegister()"></div>
+        <button class="fsub" id="btn-reg" onclick="doRegister()" data-i18n="register">Create Account</button>
       </div>
     </div>
   </div>
@@ -1006,13 +1006,13 @@ body::before {
 <!-- MODAL: CREATE TEAM -->
 <div class="ov" id="ov-cteam" onclick="closeBg(event,'ov-cteam')">
   <div class="modal">
-    <div class="mhead"><div class="mtitle">Create Team</div><button class="mx" onclick="closeOv('ov-cteam')">✕</button></div>
+    <div class="mhead"><div class="mtitle" data-i18n="create_team">Create Team</div><button class="mx" onclick="closeOv('ov-cteam')">✕</button></div>
     <div class="mbody">
       <div class="ferr" id="ct-err"></div><div class="fok" id="ct-ok"></div>
-      <div class="fg"><label class="fl">Team Name</label><input class="fi" id="ct-name" type="text" placeholder="e.g. Code Genius"></div>
-      <div class="fg"><label class="fl">Tag <span style="font-weight:400;letter-spacing:0;text-transform:none;font-family:var(--body)">(max 15 chars)</span></label><input class="fi" id="ct-tag" type="text" placeholder="CG" maxlength="15"></div>
-      <div class="fg"><label class="fl">Description (optional)</label><input class="fi" id="ct-desc" type="text" placeholder="Short team description"></div>
-      <button class="fsub" id="btn-ct" onclick="doCreateTeam()">Create Team</button>
+      <div class="fg"><label class="fl" data-i18n="team_name">Team Name</label><input class="fi" id="ct-name" type="text" placeholder="e.g. Code Genius"></div>
+      <div class="fg"><label class="fl">Tag <span style="font-weight:400;letter-spacing:0;text-transform:none;font-family:var(--body)" data-i18n="tag_hint">(max 15 chars)</span></label><input class="fi" id="ct-tag" type="text" placeholder="CG" maxlength="15"></div>
+      <div class="fg"><label class="fl" data-i18n="description_opt">Description (optional)</label><input class="fi" id="ct-desc" type="text" placeholder="Short team description"></div>
+      <button class="fsub" id="btn-ct" onclick="doCreateTeam()" data-i18n="create_team">Create Team</button>
     </div>
   </div>
 </div>
@@ -1020,13 +1020,13 @@ body::before {
 <!-- MODAL: ENROLL -->
 <div class="ov" id="ov-enroll" onclick="closeBg(event,'ov-enroll')">
   <div class="modal">
-    <div class="mhead"><div class="mtitle">Enroll in Tournament</div><button class="mx" onclick="closeOv('ov-enroll')">✕</button></div>
+    <div class="mhead"><div class="mtitle" data-i18n="enroll_title">Enroll in Tournament</div><button class="mx" onclick="closeOv('ov-enroll')">✕</button></div>
     <div class="mbody">
       <div class="ferr" id="en-err"></div><div class="fok" id="en-ok"></div>
-      <div class="ibox"><div class="ibox-l">Tournament</div><div class="ibox-v" id="en-tour">—</div></div>
-      <div class="ibox"><div class="ibox-l">Your Team</div><div class="ibox-v" id="en-team">—</div></div>
-      <p style="font-size:12px;color:var(--t3);margin-bottom:18px;line-height:1.7">By enrolling your team you confirm all members will be available for scheduled matches. Registration will be reviewed by an admin.</p>
-      <button class="fsub" id="btn-en" onclick="doEnroll()">Confirm Enrollment</button>
+      <div class="ibox"><div class="ibox-l" data-i18n="tournament">Tournament</div><div class="ibox-v" id="en-tour">—</div></div>
+      <div class="ibox"><div class="ibox-l" data-i18n="your_team">Your Team</div><div class="ibox-v" id="en-team">—</div></div>
+      <p style="font-size:12px;color:var(--t3);margin-bottom:18px;line-height:1.7" data-i18n="enroll_note">By enrolling your team you confirm all members will be available for scheduled matches. Registration will be reviewed by an admin.</p>
+      <button class="fsub" id="btn-en" onclick="doEnroll()" data-i18n="confirm_enroll">Confirm Enrollment</button>
     </div>
   </div>
 </div>
@@ -1034,17 +1034,17 @@ body::before {
 <!-- MODAL: MANAGE TEAM -->
 <div class="ov" id="ov-team" onclick="closeBg(event,'ov-team')">
   <div class="modal">
-    <div class="mhead"><div class="mtitle">Manage Team</div><button class="mx" onclick="closeOv('ov-team')">✕</button></div>
+    <div class="mhead"><div class="mtitle" data-i18n="manage_team">Manage Team</div><button class="mx" onclick="closeOv('ov-team')">✕</button></div>
     <div class="mbody">
-      <div class="ibox"><div class="ibox-l">Team</div><div class="ibox-v" id="tm-name">—</div></div>
+      <div class="ibox"><div class="ibox-l" data-i18n="team_lbl">Team</div><div class="ibox-v" id="tm-name">—</div></div>
       <div class="ferr" id="am-err"></div><div class="fok" id="am-ok"></div>
       <div class="fg">
-        <label class="fl">Add member by User ID</label>
+        <label class="fl" data-i18n="add_member_lbl">Add member by User ID</label>
         <input class="fi" id="am-uid" type="text" placeholder="Paste the player's User ID" onkeydown="if(event.key==='Enter')doAddMember()">
-        <div class="fi-hint">Players can find their ID by clicking their username in the nav bar. Only the team owner can add members.</div>
+        <div class="fi-hint" data-i18n="add_member_hint">Players can find their ID by clicking their username in the nav bar. Only the team owner can add members.</div>
       </div>
-      <button class="fsub" id="btn-am" onclick="doAddMember()" style="margin-bottom:18px">Add Member</button>
-      <div style="font-family:var(--head);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:10px">Current Members</div>
+      <button class="fsub" id="btn-am" onclick="doAddMember()" style="margin-bottom:18px" data-i18n="add_member_btn">Add Member</button>
+      <div style="font-family:var(--head);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:10px" data-i18n="current_members">Current Members</div>
       <div class="members-list" id="members-list"></div>
     </div>
   </div>
@@ -1053,15 +1053,15 @@ body::before {
 <!-- MODAL: PROFILE -->
 <div class="ov" id="ov-profile" onclick="closeBg(event,'ov-profile')">
   <div class="modal">
-    <div class="mhead"><div class="mtitle">My Profile</div><button class="mx" onclick="closeOv('ov-profile')">✕</button></div>
+    <div class="mhead"><div class="mtitle" data-i18n="my_profile">My Profile</div><button class="mx" onclick="closeOv('ov-profile')">✕</button></div>
     <div class="mbody">
-      <div class="ibox"><div class="ibox-l">Username</div><div class="ibox-v" id="prof-username">—</div></div>
+      <div class="ibox"><div class="ibox-l" data-i18n="username">Username</div><div class="ibox-v" id="prof-username">—</div></div>
       <div class="ibox">
-        <div class="ibox-l">User ID <span style="font-weight:400;letter-spacing:0;text-transform:none;font-family:var(--body);font-size:10px">(share with your captain to join a team)</span></div>
+        <div class="ibox-l">User ID <span style="font-weight:400;letter-spacing:0;text-transform:none;font-family:var(--body);font-size:10px" data-i18n="uid_hint">(share with your captain to join a team)</span></div>
         <div class="ibox-v" id="prof-id" style="font-size:11px;word-break:break-all;color:var(--cyan);text-shadow:0 0 10px var(--cglow)">—</div>
       </div>
-      <div class="ibox"><div class="ibox-l">Role</div><div class="ibox-v" id="prof-role">—</div></div>
-      <button class="fsub" onclick="closeOv('ov-profile')" style="background:var(--bg4);box-shadow:none;color:var(--t2)">Close</button>
+      <div class="ibox"><div class="ibox-l" data-i18n="role">Role</div><div class="ibox-v" id="prof-role">—</div></div>
+      <button class="fsub" onclick="closeOv('ov-profile')" style="background:var(--bg4);box-shadow:none;color:var(--t2)" data-i18n="close">Close</button>
     </div>
   </div>
 </div>
@@ -1069,6 +1069,144 @@ body::before {
 <div class="toast" id="toast"></div>
 
 <script>
+/* ═══════════════════════════════════
+   i18n — EN / ES
+═══════════════════════════════════ */
+const T={
+  en:{
+    tab_info:'Info', tab_bracket:'Bracket', tab_teams:'Teams',
+    tab_matches:'Matches', tab_standings:'Standings',
+    stat_teams:'Teams', stat_rounds:'Rounds', stat_matches:'Matches',
+    loading:'Loading…', err_conn:'⚠ Could not connect to server.',
+    info_title:'How it works', info_badge:'Getting started',
+    s1_title:'Create your account',
+    s1_body:'Click <strong style="color:var(--t1)">Register</strong> in the top right corner. Choose a username, enter your email and a password of at least 6 characters.',
+    s1_note_title:'Your User ID',
+    s1_note_body:'Once logged in, click your username (top right) to see your <strong style="color:var(--cyan)">User ID</strong>. Share it with your captain so they can add you to the team.',
+    s2_title:'Create your team',
+    s2_body:'Go to the <strong style="color:var(--t1)">Teams</strong> tab and click <strong style="color:var(--t1)">+ Create Team</strong>. Pick a name and a short tag (e.g. <span style="font-family:var(--head);color:var(--cyan);font-size:13px">CG</span>). You become the team captain.',
+    s2_note_title:'One team per player',
+    s2_note_body:'Each account can only belong to one team at a time.',
+    s3_title:'Add your players',
+    s3_body:'Each teammate must create their own account first and share their User ID with you. As captain, click <strong style="color:var(--t1)">Manage Team</strong> in the Teams tab and paste each player\'s User ID.',
+    s3_note_title:'Captain only',
+    s3_note_body:'Only the team Owner can add or remove players.',
+    s4_title:'Enroll in the tournament',
+    s4_body:'Once your team is ready, click <strong style="color:var(--t1)">Enroll in Tournament</strong> in the Teams tab. The admin will review and approve your request. Once approved you\'ll appear in the bracket.',
+    s4_note_title:'Registration must be open',
+    s4_note_body:'Enrollment only works when the tournament status is <span style="font-family:var(--head);color:var(--cyan);font-size:12px">OPEN</span>.',
+    teams_title:'Participating Teams',
+    signin:'Sign In', register:'Create Account',
+    email:'Email', password:'Password', username:'Username',
+    create_team:'Create Team', team_name:'Team Name',
+    tag_hint:'(max 15 chars)', description_opt:'Description (optional)',
+    enroll_title:'Enroll in Tournament', tournament:'Tournament',
+    your_team:'Your Team',
+    enroll_note:'By enrolling your team you confirm all members will be available for scheduled matches. Registration will be reviewed by an admin.',
+    confirm_enroll:'Confirm Enrollment',
+    manage_team:'Manage Team', team_lbl:'Team',
+    add_member_lbl:'Add member by User ID',
+    add_member_hint:'Players can find their ID by clicking their username in the nav bar. Only the team owner can add members.',
+    add_member_btn:'Add Member', current_members:'Current Members',
+    my_profile:'My Profile', uid_hint:'(share with your captain to join a team)',
+    role:'Role', close:'Close',
+    nav_signin:'Sign In', nav_register:'Register', nav_signout:'Sign Out',
+    nav_admin:'Admin',
+    mz_no_team:'You don\'t have a team yet. Create one to enroll in the tournament.',
+    mz_create:'+ Create Team', mz_manage:'Manage Team',
+    mz_enroll:'Enroll in Tournament', mz_enrolled:'✓ Enrolled',
+    mz_members:'Members', mz_played:'Played', mz_wins:'Wins',
+    st_played:'Played', st_wins:'Wins', st_wr:'WR',
+    mr_live:'live', mr_finished:'finished', mr_pending:'pending',
+    bracket_tbd:'TBD', bracket_champion:'Champion',
+    empty_bracket:'Bracket Not Available Yet',
+    empty_bracket_sub:'Rounds will appear here once the tournament starts',
+    empty_teams:'No Approved Teams Yet',
+    empty_matches:'No Matches Scheduled Yet',
+    empty_standings:'No Standings Yet',
+    status_open:'Registration Open', status_closed:'Registration Closed',
+    status_progress:'Tournament Live', status_finished:'Tournament Finished',
+  },
+  es:{
+    tab_info:'Info', tab_bracket:'Bracket', tab_teams:'Equipos',
+    tab_matches:'Partidos', tab_standings:'Clasificación',
+    stat_teams:'Equipos', stat_rounds:'Rondas', stat_matches:'Partidos',
+    loading:'Cargando…', err_conn:'⚠ No se pudo conectar al servidor.',
+    info_title:'Cómo funciona', info_badge:'Primeros pasos',
+    s1_title:'Crea tu cuenta',
+    s1_body:'Haz clic en <strong style="color:var(--t1)">Registrarse</strong> en la esquina superior derecha. Elige un nombre de usuario, introduce tu email y una contraseña de al menos 6 caracteres.',
+    s1_note_title:'Tu User ID',
+    s1_note_body:'Una vez conectado, haz clic en tu nombre (arriba a la derecha) para ver tu <strong style="color:var(--cyan)">User ID</strong>. Compártelo con tu capitán para que te añada al equipo.',
+    s2_title:'Crea tu equipo',
+    s2_body:'Ve a la pestaña <strong style="color:var(--t1)">Equipos</strong> y haz clic en <strong style="color:var(--t1)">+ Crear Equipo</strong>. Elige un nombre y un tag corto (p.ej. <span style="font-family:var(--head);color:var(--cyan);font-size:13px">CG</span>). Pasas a ser el capitán.',
+    s2_note_title:'Un equipo por jugador',
+    s2_note_body:'Cada cuenta solo puede pertenecer a un equipo a la vez.',
+    s3_title:'Añade a tus jugadores',
+    s3_body:'Cada compañero debe crear su propia cuenta primero y compartir su User ID contigo. Como capitán, haz clic en <strong style="color:var(--t1)">Gestionar Equipo</strong> en la pestaña Equipos y pega el User ID de cada jugador.',
+    s3_note_title:'Solo el capitán',
+    s3_note_body:'Solo el Owner del equipo puede añadir o eliminar jugadores.',
+    s4_title:'Inscríbete al torneo',
+    s4_body:'Cuando tu equipo esté listo, haz clic en <strong style="color:var(--t1)">Inscribir al Torneo</strong> en la pestaña Equipos. El admin revisará y aprobará tu solicitud. Una vez aprobado apareceréis en el bracket.',
+    s4_note_title:'El registro debe estar abierto',
+    s4_note_body:'La inscripción solo funciona cuando el estado del torneo es <span style="font-family:var(--head);color:var(--cyan);font-size:12px">OPEN</span>.',
+    teams_title:'Equipos Participantes',
+    signin:'Iniciar Sesión', register:'Crear Cuenta',
+    email:'Email', password:'Contraseña', username:'Nombre de usuario',
+    create_team:'Crear Equipo', team_name:'Nombre del Equipo',
+    tag_hint:'(máx 15 caracteres)', description_opt:'Descripción (opcional)',
+    enroll_title:'Inscribirse al Torneo', tournament:'Torneo',
+    your_team:'Tu Equipo',
+    enroll_note:'Al inscribir tu equipo confirmas que todos los miembros estarán disponibles para los partidos programados. La inscripción será revisada por un admin.',
+    confirm_enroll:'Confirmar Inscripción',
+    manage_team:'Gestionar Equipo', team_lbl:'Equipo',
+    add_member_lbl:'Añadir miembro por User ID',
+    add_member_hint:'Los jugadores encuentran su ID haciendo clic en su nombre en la barra de navegación. Solo el capitán puede añadir miembros.',
+    add_member_btn:'Añadir Miembro', current_members:'Miembros Actuales',
+    my_profile:'Mi Perfil', uid_hint:'(compártelo con tu capitán para unirte a un equipo)',
+    role:'Rol', close:'Cerrar',
+    nav_signin:'Iniciar Sesión', nav_register:'Registrarse', nav_signout:'Cerrar Sesión',
+    nav_admin:'Admin',
+    mz_no_team:'Aún no tienes equipo. Crea uno para inscribirte al torneo.',
+    mz_create:'+ Crear Equipo', mz_manage:'Gestionar Equipo',
+    mz_enroll:'Inscribir al Torneo', mz_enrolled:'✓ Inscrito',
+    mz_members:'Miembros', mz_played:'Jugados', mz_wins:'Victorias',
+    st_played:'Jugados', st_wins:'V', st_wr:'%V',
+    mr_live:'en directo', mr_finished:'finalizado', mr_pending:'pendiente',
+    bracket_tbd:'Por definir', bracket_champion:'Campeón',
+    empty_bracket:'Bracket No Disponible',
+    empty_bracket_sub:'Las rondas aparecerán aquí cuando empiece el torneo',
+    empty_teams:'Aún no hay equipos aprobados',
+    empty_matches:'No hay partidos programados',
+    empty_standings:'Sin clasificación aún',
+    status_open:'Inscripciones abiertas', status_closed:'Inscripciones cerradas',
+    status_progress:'Torneo en curso', status_finished:'Torneo finalizado',
+  }
+};
+
+let LANG = localStorage.getItem('gc_lang')||'en';
+
+function t(k){ return (T[LANG]||T.en)[k]||T.en[k]||k; }
+
+function applyLang(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    el.innerHTML=t(k);
+  });
+  document.documentElement.lang=LANG;
+  const btn=document.getElementById('lang-btn');
+  if(btn) btn.textContent=LANG==='es'?'EN':'ES';
+}
+
+function toggleLang(){
+  LANG=LANG==='es'?'en':'es';
+  localStorage.setItem('gc_lang',LANG);
+  applyLang();
+  renderNav();
+  renderMyZone();
+  if(S.pubView) renderAll();
+}
+
+/* lang button style injected into nav-right by renderNav */
 /* ── CANVAS: conexiones estilo Code Genius ── */
 (function(){
   const c=document.getElementById('bg'),ctx=c.getContext('2d');
@@ -1155,20 +1293,21 @@ function gotoTab(name){
 
 function renderNav(){
   const el=document.getElementById('nav-right');
+  const langBtn=`<button id="lang-btn" onclick="toggleLang()" style="padding:5px 12px;border-radius:3px;font-family:var(--head);font-size:10px;font-weight:700;letter-spacing:.1em;border:1px solid var(--br2);background:transparent;color:var(--cyan);cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='var(--br2)'">${LANG==='es'?'EN':'ES'}</button>`;
   const lb=`<div class="live-badge" id="live-badge" style="display:none"><div class="live-dot"></div>LIVE</div>`;
   if(!S.user){
-    el.innerHTML=`${lb}
-      <button class="nb" onclick="openOv('ov-auth');authTab('login')">Sign In</button>
-      <button class="nb nb-blue" onclick="openOv('ov-auth');authTab('register')">Register</button>`;
+    el.innerHTML=`${lb}${langBtn}
+      <button class="nb" onclick="openOv('ov-auth');authTab('login')">${t('nav_signin')}</button>
+      <button class="nb nb-blue" onclick="openOv('ov-auth');authTab('register')">${t('nav_register')}</button>`;
   } else {
     const isAdmin=S.user.role==='ADMIN';
-    el.innerHTML=`${lb}
-      ${isAdmin?`<a href="admin.html"><button class="nb" style="color:var(--cyan);border-color:rgba(0,212,255,.4)">⚙ Admin</button></a>`:''}
+    el.innerHTML=`${lb}${langBtn}
+      ${isAdmin?`<a href="admin.html"><button class="nb" style="color:var(--cyan);border-color:rgba(0,212,255,.4)">⚙ ${t('nav_admin')}</button></a>`:''}
       <div class="user-chip" onclick="openProfile()">
         <div class="ava">${ini(S.user.username)}</div>
         <span class="uname">${S.user.username}</span>
       </div>
-      <button class="nb" onclick="doLogout()">Sign Out</button>`;
+      <button class="nb" onclick="doLogout()">${t('nav_signout')}</button>`;
   }
 }
 
@@ -1350,12 +1489,11 @@ function renderAll(){
 
 /* ── HERO ── */
 function renderHero(){
-  const t=S.tournament;
+  const t_=S.tournament;
   const hasLive=S.matches.some(m=>m.status==='IN_PROGRESS');
   const lb=document.getElementById('live-badge'); if(lb) lb.style.display=hasLive?'flex':'none';
-  const statusMap={OPEN:'Registration Open',CLOSED:'Registration Closed',IN_PROGRESS:'Tournament Live',FINISHED:'Tournament Finished'};
-  document.getElementById('hero-tag').textContent=statusMap[t.status]||t.status||'Active';
-  document.getElementById('hero-sub').textContent=t.description||'The official Mario Kart Grand Circuit tournament.';
+  const statusMap={OPEN:t('status_open'),CLOSED:t('status_closed'),IN_PROGRESS:t('status_progress'),FINISHED:t('status_finished')};
+  document.getElementById('hero-tag').textContent=statusMap[t_.status]||t_.status||'Active';
   document.getElementById('st-teams').textContent=S.teams.length||'0';
   document.getElementById('st-rounds').textContent=S.rounds.length||'0';
   document.getElementById('st-matches').textContent=S.matches.length||'0';
@@ -1364,7 +1502,7 @@ function renderHero(){
 /* ── BRACKET ── */
 function renderBracket(){
   if(!S.rounds.length){
-    document.getElementById('bracket-root').innerHTML=`<div class="empty"><div class="empty-ico">🏆</div><div class="empty-title">Bracket Not Available Yet</div><div class="empty-sub">Rounds will appear here once the tournament starts</div></div>`;
+    document.getElementById('bracket-root').innerHTML=`<div class="empty"><div class="empty-ico">🏆</div><div class="empty-title">${t('empty_bracket')}</div><div class="empty-sub">${t('empty_bracket_sub')}</div></div>`;
     return;
   }
   const sr=[...S.rounds].sort((a,b)=>(a.orderIndex||0)-(b.orderIndex||0));
@@ -1374,7 +1512,7 @@ function renderBracket(){
     const ms=r.matches||[];
     h+=`<div class="r-col"><div class="r-label">${r.name}</div><div class="r-matches">`;
     if(!ms.length){
-      h+=`<div class="m-slot"><div class="m-card"><div class="m-team"><span class="m-tname tbd">TBD</span></div></div></div>`;
+      h+=`<div class="m-slot"><div class="m-card"><div class="m-team"><span class="m-tname tbd">${t('bracket_tbd')}</span></div></div></div>`;
     } else {
       ms.forEach(m=>{
         const isLive=m.status==='IN_PROGRESS', isDone=m.status==='PLAYED';
@@ -1384,12 +1522,12 @@ function renderBracket(){
           ${isLive?'<div class="m-live-bar"></div>':''}
           <div class="m-team${aWin?' won':bWin?' lost':''}">
             <div class="m-logo">${m.teamA?ini(m.teamA):'?'}</div>
-            <span class="m-tname${!m.teamAId?' tbd':''}">${m.teamA||'TBD'}</span>
+            <span class="m-tname${!m.teamAId?' tbd':''}">${m.teamA||t('bracket_tbd')}</span>
             ${has?`<span class="m-score${aWin?' w':''}">${m.scoreA}</span>`:''}
           </div>
           <div class="m-team${bWin?' won':aWin?' lost':''}">
             <div class="m-logo">${m.teamB?ini(m.teamB):'?'}</div>
-            <span class="m-tname${!m.teamBId?' tbd':''}">${m.teamB||'TBD'}</span>
+            <span class="m-tname${!m.teamBId?' tbd':''}">${m.teamB||t('bracket_tbd')}</span>
             ${has?`<span class="m-score${bWin?' w':''}">${m.scoreB}</span>`:''}
           </div>
         </div></div>`;
@@ -1400,8 +1538,8 @@ function renderBracket(){
   });
   const last=sr[sr.length-1];
   const fm=(last?.matches||[])[0];
-  const champ=fm?.winnerTeamId?fm.winnerTeam||'Champion':null;
-  h+=`<div class="b-winner"><div class="winner-card"><span class="winner-crown">🏆</span><div class="winner-lbl">Champion</div><div class="winner-name">${champ||'???'}</div></div></div></div></div>`;
+  const champ=fm?.winnerTeamId?fm.winnerTeam||t('bracket_champion'):null;
+  h+=`<div class="b-winner"><div class="winner-card"><span class="winner-crown">🏆</span><div class="winner-lbl">${t('bracket_champion')}</div><div class="winner-name">${champ||'???'}</div></div></div></div></div>`;
   document.getElementById('bracket-root').innerHTML=h;
 }
 
@@ -1434,7 +1572,7 @@ function renderMyZone(){
 function renderTeams(){
   document.getElementById('teams-badge').textContent=`${S.teams.length} teams`;
   if(!S.teams.length){
-    document.getElementById('teams-root').innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-ico">👥</div><div class="empty-title">No Approved Teams Yet</div></div>`;
+    document.getElementById('teams-root').innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-ico">👥</div><div class="empty-title">${t('empty_teams')}</div></div>`;
     return;
   }
   document.getElementById('teams-root').innerHTML=S.teams.map(t=>{
@@ -1469,7 +1607,7 @@ function renderMatches(){
     sr.map(r=>`<button class="rfbtn${S.roundFilter===r.id?' on':''}" onclick="setRF('${r.id}')">${r.name}</button>`).join('');
   const vis=S.roundFilter?S.matches.filter(m=>m.roundId===S.roundFilter):S.matches;
   if(!vis.length){
-    document.getElementById('matches-root').innerHTML=`<div class="empty"><div class="empty-ico">🎮</div><div class="empty-title">No Matches Scheduled Yet</div></div>`;
+    document.getElementById('matches-root').innerHTML=`<div class="empty"><div class="empty-ico">🎮</div><div class="empty-title">${t('empty_matches')}</div></div>`;
     return;
   }
   document.getElementById('matches-root').innerHTML=vis.map(m=>{
@@ -1533,7 +1671,7 @@ function renderEmpty(m){
   });
 }
 
-renderNav(); loadAll(); setInterval(loadAll,30000);
+renderNav(); applyLang(); loadAll(); setInterval(loadAll,30000);
 </script>
 </body>
 </html>
