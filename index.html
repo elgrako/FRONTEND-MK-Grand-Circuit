@@ -863,12 +863,12 @@ body::before {
   <div class="hero-inner">
     <div class="hero-left">
       <div class="hero-eyebrow" id="hero-tag">Loading…</div>
-      <h1 class="hero-h1" style="display:flex;flex-direction:column;align-items:flex-start;text-align:left">
-        <span class="line1" style="display:flex;align-items:center;justify-content:flex-start;gap:20px">
+      <h1 class="hero-h1" style="display:flex;flex-direction:column;align-items:center;text-align:center">
+        <span class="line1" style="display:flex;align-items:center;justify-content:center;gap:20px">
           <img src="gclogo.png" alt="GC" style="height:clamp(80px,10vw,120px);width:auto;filter:drop-shadow(0 0 22px rgba(0,212,255,0.55))">
           Grand
         </span>
-        <span class="line2" style="text-align:left">Circuit</span>
+        <span class="line2" style="text-align:center">Circuit</span>
       </h1>
       <p class="hero-sub" id="hero-sub" style="display:none"></p>
     </div>
@@ -1069,6 +1069,12 @@ body::before {
 <div class="toast" id="toast"></div>
 
 <script>
+/* ── LAUNCH GATE — redirect to coming-soon if before May 8 2025 00:00 ── */
+(function(){
+  const LAUNCH = new Date('2025-05-08T00:00:00');
+  if(new Date() < LAUNCH) window.location.replace('coming-soon.html');
+})();
+
 /* ═══════════════════════════════════
    i18n — EN / ES
 ═══════════════════════════════════ */

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grand Circuit — Coming Soon</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg0:  #020408;
+  --bg1:  #05080f;
+  --bg2:  #080d1a;
+  --bg3:  #0c1220;
+  --blue:  #1e6fff;
+  --blue2: #0a47cc;
+  --cyan:  #00d4ff;
+  --green: #00e87a;
+  --red:   #ff3355;
+  --t1: #f0f4ff;
+  --t2: #8ba0cc;
+  --t3: #3d5075;
+  --br: rgba(30,111,255,0.13);
+  --br2: rgba(30,111,255,0.30);
+  --head: 'Orbitron', monospace;
+  --body: 'Exo 2', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+html { -webkit-font-smoothing: antialiased }
+body { background: var(--bg0); color: var(--t1); font-family: var(--body); min-height: 100vh; overflow: hidden }
+
+/* ── CANVAS ── */
+#bg { position: fixed; inset: 0; z-index: 0; pointer-events: none }
+
+/* ── BLURRED FAKE SITE ── */
+.fake-site {
+  position: fixed; inset: 0; z-index: 1;
+  pointer-events: none;
+  filter: blur(10px) brightness(0.28) saturate(0.5);
+  overflow: hidden;
+  user-select: none;
+}
+
+/* fake nav */
+.fn {
+  height: 62px; background: rgba(5,8,15,.97);
+  border-bottom: 1px solid rgba(30,111,255,0.13);
+  display: flex; align-items: center; justify-content: space-between; padding: 0 28px;
+}
+.fn-logo { display: flex; align-items: center; gap: 12px }
+.fn-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan) }
+.fn-title { font-family: var(--head); font-size: 14px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--t1) }
+.fn-tabs { display: flex; gap: 0; border: 1px solid var(--br); border-radius: 4px; overflow: hidden }
+.fn-tab { padding: 8px 20px; font-family: var(--head); font-size: 11px; font-weight: 600; letter-spacing: .1em; color: var(--t3); background: transparent; border-right: 1px solid var(--br) }
+.fn-tab:last-child { border-right: none }
+.fn-tab.on { color: var(--cyan); background: rgba(0,212,255,0.07) }
+.fn-btns { display: flex; gap: 8px }
+.fn-btn { padding: 7px 16px; border-radius: 5px; font-family: var(--head); font-size: 10px; font-weight: 700; letter-spacing: .08em; border: 1px solid var(--br2); background: transparent; color: var(--t2) }
+.fn-btn.p { background: var(--blue2); color: #fff; border-color: var(--blue) }
+
+/* fake hero */
+.fh {
+  padding: 56px 28px 52px; border-bottom: 1px solid var(--br);
+  background: linear-gradient(180deg, rgba(30,111,255,0.04) 0%, transparent 100%);
+  position: relative; overflow: hidden;
+}
+.fh-grid {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(30,111,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(30,111,255,0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.fh-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 60px; position: relative; z-index: 1 }
+.fh-tag { font-family: var(--head); font-size: 10px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--cyan); margin-bottom: 20px }
+.fh-h1 { font-family: var(--head); font-size: 66px; font-weight: 900; line-height: 1; letter-spacing: .06em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center }
+.fh-h1 .l2 { font-size: 65%; font-weight: 600; color: var(--cyan); letter-spacing: .18em }
+.fh-stats { display: flex; gap: 3px }
+.fh-stat { text-align: center; padding: 20px 26px; background: var(--bg2); border: 1px solid var(--br) }
+.fh-stat-n { font-family: var(--head); font-size: 38px; font-weight: 900; color: var(--cyan) }
+.fh-stat-l { font-family: var(--head); font-size: 9px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--t3); margin-top: 6px }
+
+/* fake content */
+.fc { max-width: 1080px; margin: 0 auto; padding: 36px 28px }
+.fc-tabs { display: flex; align-items: center; gap: 16px; margin-bottom: 22px; padding-bottom: 14px; border-bottom: 1px solid var(--br) }
+.fc-tab-title { font-family: var(--head); font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--cyan) }
+.fc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px }
+.fc-card { background: var(--bg2); border: 1px solid var(--br); border-radius: 8px; overflow: hidden }
+.fc-card-top { height: 3px }
+.fc-card-body { padding: 22px }
+.fc-card-num { width: 36px; height: 36px; border-radius: 6px; background: rgba(30,111,255,0.12); border: 1px solid rgba(30,111,255,0.3); font-family: var(--head); font-size: 16px; font-weight: 800; color: var(--cyan); display: flex; align-items: center; justify-content: center }
+.fc-card-title { font-family: var(--head); font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--t1); margin-top: 12px; margin-bottom: 10px }
+.fc-bar { height: 10px; border-radius: 4px; background: var(--bg3); margin-bottom: 8px }
+.fc-bar.short { width: 60% }
+.fc-bar.med { width: 80% }
+.fc-bar.full { width: 100% }
+
+/* ── OVERLAY ── */
+.overlay {
+  position: fixed; inset: 0; z-index: 10;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 20px;
+}
+
+/* subtle vignette to focus on center */
+.overlay::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(2,4,8,0.7) 100%);
+  pointer-events: none;
+}
+
+.card {
+  position: relative; z-index: 1;
+  background: rgba(8,13,26,0.92);
+  border: 1px solid var(--br2);
+  border-radius: 12px;
+  padding: 48px 52px;
+  text-align: center;
+  max-width: 580px; width: 100%;
+  box-shadow: 0 0 80px rgba(0,212,255,0.08), 0 0 0 1px rgba(0,212,255,0.05);
+  backdrop-filter: blur(4px);
+  animation: cardin .6s cubic-bezier(.22,.68,0,1.2) both;
+}
+@keyframes cardin { from{opacity:0;transform:scale(.94) translateY(20px)} to{opacity:1;transform:scale(1) translateY(0)} }
+
+/* top glow line */
+.card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--blue), transparent);
+  border-radius: 12px 12px 0 0;
+}
+
+/* logo */
+.logo-wrap { margin-bottom: 28px; animation: floatY 4s ease-in-out infinite }
+@keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+.logo-wrap img { height: 72px; width: auto; filter: drop-shadow(0 0 20px rgba(0,212,255,0.55)) }
+
+/* title */
+.cs-title {
+  font-family: var(--head);
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 900; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--t1); margin-bottom: 4px; line-height: 1;
+}
+.cs-title span { color: var(--cyan) }
+.cs-sub {
+  font-family: var(--head); font-size: 10px; font-weight: 600;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--t3);
+  margin-bottom: 40px;
+}
+
+/* countdown */
+.countdown { display: flex; gap: 12px; justify-content: center; margin-bottom: 40px }
+.cd-unit {
+  background: var(--bg3); border: 1px solid var(--br2); border-radius: 8px;
+  padding: 18px 20px; min-width: 90px;
+  position: relative; overflow: hidden;
+}
+.cd-unit::before {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent); opacity: .6;
+}
+.cd-n {
+  font-family: var(--head); font-size: 44px; font-weight: 900; line-height: 1;
+  color: var(--t1); display: block;
+  transition: all .15s;
+}
+.cd-n.flip { animation: flip .15s ease both }
+@keyframes flip { 0%{transform:translateY(-6px);opacity:0} 100%{transform:translateY(0);opacity:1} }
+.cd-l {
+  font-family: var(--head); font-size: 9px; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--t3); margin-top: 6px;
+}
+.cd-sep {
+  font-family: var(--head); font-size: 36px; font-weight: 900;
+  color: var(--t3); align-self: center; padding-bottom: 20px;
+  animation: blink-sep 1s step-end infinite;
+}
+@keyframes blink-sep { 0%,100%{opacity:1} 50%{opacity:.15} }
+
+/* message */
+.cs-msg {
+  font-size: 14px; color: var(--t2); line-height: 1.75; margin-bottom: 32px;
+}
+
+/* notify box */
+.notify-row {
+  display: flex; gap: 0; border: 1px solid var(--br2); border-radius: 5px; overflow: hidden;
+}
+.notify-input {
+  flex: 1; background: var(--bg3); border: none; outline: none;
+  padding: 12px 16px; font-family: var(--body); font-size: 13px;
+  color: var(--t1);
+}
+.notify-input::placeholder { color: var(--t3) }
+.notify-btn {
+  padding: 12px 22px; background: var(--blue2); color: #fff; border: none;
+  font-family: var(--head); font-size: 11px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; cursor: pointer; transition: background .18s; white-space: nowrap;
+}
+.notify-btn:hover { background: var(--blue) }
+.notify-ok { font-size: 12px; color: var(--green); margin-top: 8px; display: none; font-family: var(--head); letter-spacing: .06em }
+.notify-ok.on { display: block }
+
+/* scanlines */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 5; pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+}
+
+@media (max-width: 600px) {
+  .card { padding: 32px 22px }
+  .countdown { gap: 6px }
+  .cd-unit { min-width: 68px; padding: 14px 12px }
+  .cd-n { font-size: 32px }
+  .cd-sep { font-size: 26px }
+  .fn-tabs, .fh-stats { display: none }
+  .fh-h1 { font-size: 36px }
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<!-- BLURRED FAKE SITE BEHIND -->
+<div class="fake-site" aria-hidden="true">
+
+  <!-- fake nav -->
+  <div class="fn">
+    <div class="fn-logo">
+      <div class="fn-dot"></div>
+      <div class="fn-title">Grand Circuit</div>
+    </div>
+    <div class="fn-tabs">
+      <div class="fn-tab on">Info</div>
+      <div class="fn-tab">Bracket</div>
+      <div class="fn-tab">Teams</div>
+      <div class="fn-tab">Matches</div>
+      <div class="fn-tab">Standings</div>
+    </div>
+    <div class="fn-btns">
+      <div class="fn-btn">Sign In</div>
+      <div class="fn-btn p">Register</div>
+    </div>
+  </div>
+
+  <!-- fake hero -->
+  <div class="fh">
+    <div class="fh-grid"></div>
+    <div class="fh-inner">
+      <div>
+        <div class="fh-tag">Registration Open</div>
+        <div class="fh-h1">
+          <span>Grand</span>
+          <span class="l2">Circuit</span>
+        </div>
+      </div>
+      <div class="fh-stats">
+        <div class="fh-stat"><div class="fh-stat-n">16</div><div class="fh-stat-l">Teams</div></div>
+        <div class="fh-stat"><div class="fh-stat-n">4</div><div class="fh-stat-l">Rounds</div></div>
+        <div class="fh-stat"><div class="fh-stat-n">24</div><div class="fh-stat-l">Matches</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- fake content -->
+  <div class="fc">
+    <div class="fc-tabs">
+      <div class="fc-tab-title">How it works</div>
+    </div>
+    <div class="fc-grid">
+      <div class="fc-card">
+        <div class="fc-card-top" style="background:linear-gradient(90deg,var(--blue),var(--cyan))"></div>
+        <div class="fc-card-body">
+          <div class="fc-card-num">01</div>
+          <div class="fc-card-title">Create your account</div>
+          <div class="fc-bar full"></div>
+          <div class="fc-bar med"></div>
+          <div class="fc-bar short"></div>
+        </div>
+      </div>
+      <div class="fc-card">
+        <div class="fc-card-top" style="background:linear-gradient(90deg,var(--cyan),var(--green))"></div>
+        <div class="fc-card-body">
+          <div class="fc-card-num">02</div>
+          <div class="fc-card-title">Create your team</div>
+          <div class="fc-bar full"></div>
+          <div class="fc-bar short"></div>
+          <div class="fc-bar med"></div>
+        </div>
+      </div>
+      <div class="fc-card">
+        <div class="fc-card-top" style="background:linear-gradient(90deg,var(--green),#ffb800)"></div>
+        <div class="fc-card-body">
+          <div class="fc-card-num">03</div>
+          <div class="fc-card-title">Add your players</div>
+          <div class="fc-bar med"></div>
+          <div class="fc-bar full"></div>
+          <div class="fc-bar short"></div>
+        </div>
+      </div>
+      <div class="fc-card">
+        <div class="fc-card-top" style="background:linear-gradient(90deg,#ffb800,var(--red))"></div>
+        <div class="fc-card-body">
+          <div class="fc-card-num">04</div>
+          <div class="fc-card-title">Enroll in the tournament</div>
+          <div class="fc-bar full"></div>
+          <div class="fc-bar med"></div>
+          <div class="fc-bar short"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- COUNTDOWN OVERLAY -->
+<div class="overlay">
+  <div class="card">
+    <div class="logo-wrap">
+      <img src="gclogo.png" alt="Grand Circuit">
+    </div>
+
+    <div class="cs-title">Grand <span>Circuit</span></div>
+    <div class="cs-sub">Coming Soon</div>
+
+    <div class="countdown">
+      <div class="cd-unit">
+        <span class="cd-n" id="cd-d">00</span>
+        <div class="cd-l">Days</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit">
+        <span class="cd-n" id="cd-h">00</span>
+        <div class="cd-l">Hours</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit">
+        <span class="cd-n" id="cd-m">00</span>
+        <div class="cd-l">Min</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit">
+        <span class="cd-n" id="cd-s">00</span>
+        <div class="cd-l">Sec</div>
+      </div>
+    </div>
+
+    <p class="cs-msg">
+      The Grand Circuit is almost here.<br>
+      The official Mario Kart tournament platform launches soon.
+    </p>
+
+    <div class="notify-row">
+      <input class="notify-input" id="notify-email" type="email" placeholder="your@email.com">
+      <button class="notify-btn" onclick="doNotify()">Notify me</button>
+    </div>
+    <div class="notify-ok" id="notify-ok">✓ You're on the list — we'll let you know!</div>
+  </div>
+</div>
+
+<script>
+/* ── CANVAS ── */
+(function(){
+  const c=document.getElementById('bg'),ctx=c.getContext('2d');
+  let W,H,pts=[];
+  function resize(){ W=c.width=innerWidth; H=c.height=innerHeight }
+  function init(){
+    pts=[];
+    const n=Math.floor(W*H/12000);
+    for(let i=0;i<n;i++)
+      pts.push({x:Math.random()*W,y:Math.random()*H,
+        vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,
+        r:Math.random()*1.2+.3,a:Math.random()*.5+.1});
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach((p,i)=>{
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(0,212,255,${p.a})`;ctx.fill();
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+      for(let j=i+1;j<pts.length;j++){
+        const q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<100){ ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+          ctx.strokeStyle=`rgba(30,111,255,${.07*(1-d/100)})`;ctx.lineWidth=.6;ctx.stroke(); }
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',()=>{resize();init()});
+  resize();init();draw();
+})();
+
+/* ══════════════════════════════════
+   COUNTDOWN
+   ── Cambia TARGET por tu fecha ──
+══════════════════════════════════ */
+const TARGET = new Date('2025-05-08T00:00:00'); // <-- CAMBIA ESTA FECHA
+
+function pad(n){ return String(n).padStart(2,'0') }
+
+function tick(){
+  const now=new Date();
+  const diff=TARGET-now;
+  if(diff<=0){
+    ['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='00');
+    window.location.replace('index.html');
+    return;
+  }
+  const d=Math.floor(diff/864e5);
+  const h=Math.floor((diff%864e5)/36e5);
+  const m=Math.floor((diff%36e5)/6e4);
+  const s=Math.floor((diff%6e4)/1e3);
+  function update(id,val){
+    const el=document.getElementById(id);
+    const newVal=pad(val);
+    if(el.textContent!==newVal){
+      el.classList.remove('flip');
+      void el.offsetWidth;
+      el.classList.add('flip');
+      el.textContent=newVal;
+    }
+  }
+  update('cd-d',d);
+  update('cd-h',h);
+  update('cd-m',m);
+  update('cd-s',s);
+}
+tick();
+setInterval(tick,1000);
+
+/* ── NOTIFY ── */
+function doNotify(){
+  const email=document.getElementById('notify-email').value.trim();
+  if(!email||!email.includes('@')) return;
+  document.getElementById('notify-ok').classList.add('on');
+  document.getElementById('notify-email').value='';
+  /* aquí puedes conectar con un servicio de email si lo necesitas */
+}
+</script>
+</body>
+</html>
